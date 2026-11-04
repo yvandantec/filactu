@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+  <head><title>Export Feedly de test</title></head>
+  <body>
+    <outline text="Tech" title="Tech">
+      <outline type="rss" text="Blog d'exemple" title="Blog d'exemple" xmlUrl="https://blog.example.test/rss2.xml" htmlUrl="https://blog.example.test/"/>
+      <outline type="rss" text="Journal Atom" title="Journal Atom" xmlUrl="https://atom.example.test/feed.atom" htmlUrl="https://atom.example.test/"/>
+    </outline>
+    <outline text="Actualités" title="Actualités">
+      <outline type="rss" text="Fil RDF" title="Fil RDF" xmlUrl="https://rdf.example.test/rdf.xml"/>
+      <outline type="rss" text="Blog d'exemple" title="Blog d'exemple" xmlUrl="https://blog.example.test/rss2.xml"/>
+    </outline>
+    <outline type="rss" text="Fil isolé" xmlUrl="https://seul.example.test/feed"/>
+    <outline type="rss" text="Adresse invalide" xmlUrl="ftp://bad.example.test/feed"/>
+  </body>
+</opml>

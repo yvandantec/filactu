@@ -1,6 +1,6 @@
 # FilActu — Spécifications
 
-> Version 0.1 — 2026-11-04 — **brouillon à valider**
+> Version 0.1 — 2026-11-04 — validée ; lot **V0.1 livré** (voir [TRACABILITE.md](TRACABILITE.md))
 > Chaque exigence porte un identifiant (`EXG-…`). Les tests y font référence : voir [STRATEGIE-TESTS.md](STRATEGIE-TESTS.md).
 
 ## 1. Vision
@@ -226,7 +226,7 @@ Clé *fine-grained* créée par l'utilisateur, limitée à :
 | `filactu-data` | Contents : lecture et écriture |
 | `filactu` | Actions : lecture et écriture (pour le bouton *Actualiser*) |
 
-Le workflow du collecteur utilise un **secret** distinct (`DATA_REPO_TOKEN`, droits Contents sur `filactu-data` uniquement).
+Le workflow du collecteur lit la clé dans le **secret** `DATA_REPO_TOKEN` du dépôt `filactu`. Pour rester simple, c'est la même clé. Une clé dédiée, limitée à Contents sur `filactu-data`, reste possible. Sans ce secret, la collecte est ignorée sans erreur.
 
 ## 8. Risques identifiés
 

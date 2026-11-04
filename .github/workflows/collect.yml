@@ -1,0 +1,61 @@
+name: Collecte
+
+# Récupère les fils toutes les 15 minutes et écrit les articles dans le dépôt PRIVÉ filactu-data.
+# Ce dépôt est public : les journaux ne doivent contenir aucune adresse ni aucun titre (DEC-03).
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: collect
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      HAS_TOKEN: ${{ secrets.DATA_REPO_TOKEN != '' }}
+    steps:
+      - name: Clé du robot absente
+        if: env.HAS_TOKEN != 'true'
+        run: echo "::notice::Secret DATA_REPO_TOKEN non configuré : collecte ignorée (voir le guide utilisateur § 2.2)."
+      - uses: actions/checkout@v4
+        if: env.HAS_TOKEN == 'true'
+      - uses: actions/checkout@v4
+        if: env.HAS_TOKEN == 'true'
+        with:
+          repository: ${{ github.repository_owner }}/filactu-data
+          token: ${{ secrets.DATA_REPO_TOKEN }}
+          path: data
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        if: env.HAS_TOKEN == 'true'
+        with:
+          node-version: 22
+          cache: npm
+      - if: env.HAS_TOKEN == 'true'
+        run: npm ci --ignore-scripts --no-audit --no-fund --loglevel=error
+      - name: Collecter
+        if: env.HAS_TOKEN == 'true'
+        run: npx tsx collector/main.ts
+        env:
+          FILACTU_DATA_DIR: data
+      - name: Enregistrer
+        if: env.HAS_TOKEN == 'true'
+        working-directory: data
+        run: |
+          git config user.name "filactu-bot"
+          git config user.email "filactu-bot@users.noreply.github.com"
+          git add -A items meta
+          if git diff --cached --quiet; then echo "Rien de nouveau"; exit 0; fi
+          git commit -q -m "Collecte"
+          for i in 1 2 3; do
+            git pull -q --rebase && git push -q && exit 0
+            sleep 5
+          done
+          echo "Échec de l'envoi" && exit 1

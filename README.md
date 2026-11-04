@@ -5,7 +5,17 @@ Une seule appli web installable pour le PC, le téléphone et la tablette Androi
 
 ---
 
-> **État : cadrage.** Les spécifications sont en cours de validation ; le code n'est pas encore écrit.
+> **Version 0.1 (socle)** — <https://yvandantec.github.io/filactu/> · Mise en route : [guide utilisateur § 2](docs/GUIDE-UTILISATEUR.md#2-première-installation-une-seule-fois)
+
+## Développement
+
+```bash
+npm install
+npm run dev          # appli en local
+npm run verify       # tout vérifier avant un commit (types, tests, couverture, build, bout en bout, traçabilité)
+```
+
+Toute évolution suit le [processus décrit dans la stratégie de tests](docs/STRATEGIE-TESTS.md#5-processus-pour-chaque-évolution).
 
 ## En bref
 

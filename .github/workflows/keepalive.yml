@@ -1,0 +1,19 @@
+name: Maintien de la collecte
+
+# GitHub désactive les tâches planifiées d'un dépôt public inactif depuis 60 jours.
+# Ce workflow les réactive chaque mois (voir SPECIFICATIONS.md § 8).
+on:
+  schedule:
+    - cron: '17 6 1 * *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/collect.yml/enable"
+        env:
+          GH_TOKEN: ${{ github.token }}

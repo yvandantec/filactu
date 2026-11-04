@@ -1,6 +1,6 @@
 # FilActu — Guide utilisateur
 
-> Version 0.1 — rédigée à partir des spécifications ; elle sera complétée de captures d'écran à chaque livraison.
+> Version 0.1 — à jour de FilActu 0.1.0 ; elle sera complétée de captures d'écran à chaque livraison.
 > Les sections marquées *(V0.x)* décrivent des fonctions qui arrivent avec cette version.
 
 ## 1. Ce qu'est FilActu
@@ -23,19 +23,30 @@ Vos données (abonnements, lectures) sont stockées dans **votre** dépôt GitHu
    - **Actions** : *Read and write*
 5. Cliquez **Generate token** et copiez la clé (elle commence par `github_pat_`). Gardez-la dans votre gestionnaire de mots de passe : GitHub ne vous la remontrera plus.
 
-### 2.2 Ouvrir FilActu
+### 2.2 Donner la clé au robot de collecte
+
+Le robot qui récupère vos fils toutes les 15 minutes a besoin de la même clé pour écrire dans votre dépôt privé.
+
+1. Ouvrez <https://github.com/yvandantec/filactu/settings/secrets/actions/new>.
+2. **Name** : `DATA_REPO_TOKEN`
+3. **Secret** : collez la clé créée au § 2.1.
+4. Cliquez **Add secret**.
+
+Tant que ce secret n'existe pas, le robot ne fait rien (sans erreur).
+
+### 2.3 Ouvrir FilActu
 
 - Adresse : **<https://yvandantec.github.io/filactu/>**
 - Au premier lancement, collez la clé, puis validez. Le dépôt de données `yvandantec/filactu-data` est proposé par défaut.
 
-### 2.3 Installer l'appli
+### 2.4 Installer l'appli
 
 - **Android (téléphone ou tablette)** : ouvrez l'adresse dans Chrome → menu ⋮ → **Installer l'application** (ou « Ajouter à l'écran d'accueil »). L'icône verte FilActu apparaît avec vos autres applis.
 - **PC** : dans Chrome ou Edge, cliquez l'icône d'installation à droite de la barre d'adresse. Vous pouvez aussi simplement garder l'onglet ouvert.
 
-Répétez l'étape 2.2 sur chaque appareil : la clé est saisie une fois par appareil.
+Répétez l'étape 2.3 sur chaque appareil : la clé est saisie une fois par appareil.
 
-### 2.4 Importer vos abonnements Feedly
+### 2.5 Importer vos abonnements Feedly
 
 1. Dans Feedly : **Organize** (ou *Manage feeds*) → **Export OPML**. Un fichier `feedly-….opml` est téléchargé.
 2. Dans FilActu : **Réglages** → **Importer un fichier OPML** → choisissez le fichier.
@@ -46,7 +57,7 @@ Répétez l'étape 2.2 sur chaque appareil : la clé est saisie une fois par app
 | Zone | Rôle |
 |---|---|
 | **Volet de gauche** | *Aujourd'hui*, *Tous les articles*, *À lire plus tard*, puis vos catégories. Touchez le chevron d'une catégorie pour voir ses fils. Le chiffre indique le nombre d'articles non lus. |
-| **En-tête** | Nom de la vue et boutons : ✓ *Tout marquer comme lu*, ▤ *Affichage*, ⟳ *Actualiser*, 🔍 *Rechercher*. |
+| **En-tête** | Nom de la vue, nombre de non-lus et boutons : ✓✓ *Tout marquer comme lu*, ⟳ *Actualiser* (lance une collecte immédiate). Les boutons ▤ *Affichage* *(V0.2)* et 🔍 *Rechercher* *(V0.3)* arriveront ensuite. |
 | **Liste d'articles** | Les articles du plus récent au plus ancien. Les articles lus sont atténués. |
 
 Sur téléphone, le volet est caché : touchez ☰ en haut à gauche, ou glissez depuis le bord gauche.
@@ -64,8 +75,8 @@ Sur téléphone, le volet est caché : touchez ☰ en haut à gauche, ou glissez
 ## 5. Lu / non lu
 
 - Un article devient **lu** quand vous l'ouvrez ou quand vous le faites défiler au-delà du haut de l'écran *(V0.2)*. Ce comportement se règle dans **Réglages → Marquer comme lu en défilant**.
-- Pour remettre un article en **non lu** : bouton ● sur l'article, balayage vers la gauche sur mobile, ou touche `m` sur PC.
-- **Tout marquer comme lu** (✓) *(V0.2)* : choisissez *Tout*, *Plus vieux qu'un jour* ou *Plus vieux qu'une semaine*. Une notification **Annuler** reste affichée 10 secondes.
+- Pour remettre un article en **non lu** : bouton ● à droite de l'article (balayage vers la gauche sur mobile *(V0.2)*, touche `m` sur PC *(V0.3)*). Le point est vert tant que l'article n'est pas lu.
+- **Tout marquer comme lu** (✓✓) : marque tous les articles de la vue affichée, après confirmation. En V0.2, vous pourrez choisir *Tout*, *Plus vieux qu'un jour* ou *Plus vieux qu'une semaine*. Une notification **Annuler** reste affichée 10 secondes.
 
 ## 6. À lire plus tard *(V0.2)*
 
@@ -112,14 +123,14 @@ Ces articles sont gardés **pour toujours**, alors que les autres disparaissent 
 | Thème | Clair, sombre ou automatique *(V0.3)* |
 | Marquer comme lu en défilant | Activé par défaut *(V0.2)* |
 | Masquer les fils sans non-lus | Allège le volet de gauche |
-| Importer / Exporter OPML | Voir § 2.4 et § 7 |
+| Importer / Exporter OPML | Voir § 2.5 et § 7 |
 | Déconnecter cet appareil | Efface la clé et le cache de cet appareil (vos données restent sur GitHub) |
 
 ## 12. Questions fréquentes
 
 **Les nouveaux articles n'arrivent pas.** Appuyez sur ⟳. Si un bandeau signale que la dernière collecte date de plus de 2 heures, ouvrez l'onglet *Actions* du dépôt `filactu` sur GitHub et vérifiez que le workflow *Collecte* est activé.
 
-**« Clé refusée » ou « droit manquant ».** La clé a expiré ou il lui manque un droit : refaites le § 2.1 puis Réglages → *Changer de clé*.
+**« Clé refusée » ou « droit manquant ».** La clé a expiré ou il lui manque un droit : refaites les § 2.1 et 2.2, puis Réglages → *Déconnecter cet appareil* et saisissez la nouvelle clé.
 
 **J'ai perdu mon téléphone.** Sur GitHub, supprimez la clé (*Settings → Developer settings → Personal access tokens*) et créez-en une nouvelle pour vos autres appareils.
 

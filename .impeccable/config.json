@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/core/text.ts"
+        ],
+        "createdAt": "2026-11-04T16:30:26.226Z",
+        "reason": "Claude: regex d'extraction d'image dans un parseur, pas une balise affichée"
+      }
+    ]
+  }
+}
