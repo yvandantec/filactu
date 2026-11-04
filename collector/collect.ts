@@ -2,7 +2,7 @@
 // IMPORTANT (DEC-03) : les journaux sont publics ; on n'y écrit QUE des compteurs.
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
-import { discoverFeedUrl, looksLikeFeed, parseFeed } from '../src/core/feed';
+import { discoverFeedUrl, knownFeedUrl, looksLikeFeed, parseFeed } from '../src/core/feed';
 import { dayFromPath, dayKey, expiredDays, newItemsFrom, SeenIndex } from '../src/core/items';
 import { safeHttpUrl } from '../src/core/text';
 import type { DayFile, Feed, FeedRunStatus, FeedsStatus, Item, Subscriptions } from '../src/core/types';
@@ -123,6 +123,11 @@ export async function collect(opts: CollectOptions): Promise<CollectStats> {
     const st: FeedRunStatus = status.feeds[feed.id] ?? { failures: 0 };
     status.feeds[feed.id] = st;
     try {
+      // Adresses de pages connues (YouTube…) : fil déduit sans téléchargement (EXG-017)
+      if (!st.resolvedUrl) {
+        const known = knownFeedUrl(feed.url);
+        if (known) st.resolvedUrl = known;
+      }
       let url = st.resolvedUrl ?? feed.url;
       const conditional: Record<string, string> = {};
       if (st.etag) conditional['If-None-Match'] = st.etag;

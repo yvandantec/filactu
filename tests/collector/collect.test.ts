@@ -122,6 +122,32 @@ describe('collecteur', () => {
     expect(hits['/site']).toBe(1);
   });
 
+  test('EXG-017 · une adresse de playlist YouTube est collectée via le fil officiel', async () => {
+    const page = 'https://www.youtube.com/playlist?list=UUtest';
+    const subs: Subscriptions = {
+      version: 1, updatedAt: '', categories: [{ id: 'tech', name: 'Tech', order: 0 }],
+      feeds: [{ id: feedIdFor(page), url: page, title: '', categories: ['tech'], addedAt: '', status: 'pending' }],
+    };
+    await mkdir(join(dir, 'state'), { recursive: true });
+    await writeFile(join(dir, 'state/subscriptions.json'), JSON.stringify(subs));
+    const asked: string[] = [];
+    const fakeFetch = (async (input: string | URL | Request) => {
+      const url = String(input);
+      asked.push(url);
+      return url === 'https://www.youtube.com/feeds/videos.xml?playlist_id=UUtest'
+        ? new Response(fx('youtube.xml'), { status: 200, headers: { 'content-type': 'application/atom+xml' } })
+        : new Response('<html>page</html>', { status: 200, headers: { 'content-type': 'text/html' } });
+    }) as typeof fetch;
+    const stats = await collect({ dataDir: dir, now, fetchImpl: fakeFetch });
+    expect(stats).toMatchObject({ ok: 1, errors: 0, newItems: 1 });
+    expect(asked).toEqual(['https://www.youtube.com/feeds/videos.xml?playlist_id=UUtest']);
+    const status = await readJson<FeedsStatus>('meta/feeds-status.json');
+    expect(status.feeds[feedIdFor(page)]).toMatchObject({
+      resolvedUrl: 'https://www.youtube.com/feeds/videos.xml?playlist_id=UUtest',
+      title: 'Chaîne de test',
+    });
+  });
+
   test('EXG-072 · les fichiers de plus de 30 jours sont supprimés', async () => {
     await writeSubs([]);
     await mkdir(join(dir, 'items'), { recursive: true });

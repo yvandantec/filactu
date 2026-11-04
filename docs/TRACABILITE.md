@@ -1,6 +1,6 @@
 # Matrice de traçabilité
 
-> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2. Ne pas modifier à la main.
+> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3. Ne pas modifier à la main.
 
 | Exigence | Lot livré | Tests | Statut |
 |---|---|---|---|
@@ -11,6 +11,7 @@
 | **EXG-011** Ajouter un abonnement par URL de fil ou de site, avec un nom facultatif, et le ranger dans une catégorie existante ou nouvelle. | oui | 9 | ✅ couverte |
 | **EXG-012** Renommer, déplacer (changer de catégorie), désabonner un fil. |  | 0 | — à venir |
 | **EXG-013** Créer, renommer, réordonner, supprimer une catégorie. | oui | 12 | ✅ couverte |
+| **EXG-017** Accepter les adresses de pages YouTube (playlist, chaîne) comme abonnements. | oui | 5 | ✅ couverte |
 | **EXG-016** Associer une icône à une catégorie. | oui | 3 | ✅ couverte |
 | **EXG-014** Exporter les abonnements en OPML. |  | 1 | ✅ couverte |
 | **EXG-015** Signaler les fils en erreur. |  | 1 | ✅ couverte |
@@ -112,6 +113,13 @@
 - tests/e2e/manage.spec.ts › EXG-011 · EXG-016 · ajouter un abonnement dans une nouvelle catégorie avec icône
 - tests/e2e/manage.spec.ts › EXG-013 · EXG-016 · créer une catégorie avec icône, la renommer, changer son icône, la réordonner
 - tests/unit/subscriptions.test.ts › EXG-016 · associer, changer et retirer une icône
+
+### EXG-017
+- tests/collector/collect.test.ts › EXG-017 · une adresse de playlist YouTube est collectée via le fil officiel
+- tests/unit/youtube.test.ts › EXG-017 · une playlist YouTube est convertie en fil
+- tests/unit/youtube.test.ts › EXG-017 · une chaîne YouTube (/channel/UC…) est convertie en fil
+- tests/unit/youtube.test.ts › EXG-017 · les autres adresses ne sont pas modifiées
+- tests/unit/youtube.test.ts › EXG-017 · résumé et vignette d’une vidéo viennent de media:group
 
 ### EXG-020
 - tests/e2e/reader.spec.ts › EXG-020 · volet : vues fixes, catégories dépliables et compteurs de non-lus

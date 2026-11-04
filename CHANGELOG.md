@@ -2,6 +2,12 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [0.1.3] — 2026-11-04 — Fils YouTube
+
+### Ajouté
+- Les adresses de playlist et de chaîne YouTube sont reconnues et converties en fil (EXG-017).
+- Les vidéos YouTube affichent leur description comme résumé et leur miniature comme vignette.
+
 ## [0.1.2] — 2026-11-04 — Abonnements et catégories
 
 ### Ajouté

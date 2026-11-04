@@ -1,6 +1,6 @@
 # FilActu — Spécifications
 
-> Version 0.1 — 2026-11-04 — validée ; lots **V0.1 et V0.1.2 livrés** (voir [TRACABILITE.md](TRACABILITE.md))
+> Version 0.1 — 2026-11-04 — validée ; lots **V0.1, V0.1.2 et V0.1.3 livrés** (voir [TRACABILITE.md](TRACABILITE.md))
 > Chaque exigence porte un identifiant (`EXG-…`). Les tests y font référence : voir [STRATEGIE-TESTS.md](STRATEGIE-TESTS.md).
 
 ## 1. Vision
@@ -134,6 +134,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | EXG-011 | Ajouter un abonnement par URL de fil **ou** de site, avec un nom facultatif, et le ranger dans une catégorie existante ou nouvelle. | Bouton « Ajouter un fil » dans le volet. Une adresse invalide ou déjà suivie est refusée avec un message. Sans nom saisi, le titre du fil est repris après la première collecte. Une URL de site est résolue par le collecteur (balise `<link rel="alternate">`) ; une collecte est lancée aussitôt. |
 | EXG-012 | Renommer, déplacer (changer de catégorie), désabonner un fil. | Effet visible immédiatement et sur les autres appareils après synchronisation. |
 | EXG-013 | Créer, renommer, réordonner, supprimer une catégorie. | Écran « Gérer les catégories » accessible depuis le volet. Un nom vide ou déjà pris est refusé. Supprimer une catégorie non vide demande où déplacer ses fils (ou de les désabonner) ; un fil rangé aussi dans une autre catégorie y reste simplement. |
+| EXG-017 | Accepter les adresses de pages YouTube (playlist, chaîne) comme abonnements. | Une adresse `youtube.com/playlist?list=…` ou `youtube.com/channel/…` est convertie par le collecteur en fil YouTube officiel (`feeds/videos.xml`) ; la description et la miniature de chaque vidéo servent de résumé et de vignette. |
 | EXG-016 | Associer une icône à une catégorie. | Choix parmi une palette d'icônes (ou aucune) à la création et ensuite ; l'icône s'affiche devant le nom de la catégorie dans le volet et est synchronisée. |
 | EXG-014 | Exporter les abonnements en OPML. | Le fichier se réimporte dans Feedly ou dans FilActu sans perte. |
 | EXG-015 | Signaler les fils en erreur. | Une icône d'alerte apparaît sur un fil après 3 échecs consécutifs, avec la date du dernier succès. |
@@ -246,6 +247,7 @@ Le workflow du collecteur lit la clé dans le **secret** `DATA_REPO_TOKEN` du d�
 |---|---|---|
 | **V0.1 — Socle** | Squelette PWA, connexion, collecteur, import OPML, liste Magazine, ouverture dans le navigateur, lu à l'ouverture | EXG-001→003, 010, 020→022, 030 (Magazine), 031, 033, 040, 070, 072, 073, 077 |
 | **V0.1.2 — Abonnements et catégories** | Ajout d'un fil, gestion et icônes des catégories, marquer la page lue | EXG-011, 013, 016, 045 |
+| **V0.1.3 — Fils YouTube** | Adresses de pages YouTube reconnues | EXG-017 |
 | **V0.2 — Feedly-like** | 3 affichages, lu en défilant, tout marquer lu, à lire plus tard, renommer/déplacer un fil | EXG-012, 014, 015, 023, 024, 030, 032, 034, 041→044, 050, 051 |
 | **V0.3 — Confort** | Recherche, thème sombre, raccourcis, hors connexion, actualisation à la demande, robustesse de la synchro | EXG-060→062, 071, 074→076 |
 | **V1.0** | Finitions, accessibilité, performance, documentation complète | ENF-01→08 |

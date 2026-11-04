@@ -117,7 +117,8 @@ function atomLink(v: Node, base?: string): string | undefined {
 function atomEntry(o: Record<string, Node>, base?: string): ParsedItem | null {
   const link = atomLink(o['link'], base);
   if (!link) return null;
-  const summary = txt(o['summary']);
+  const group = o['media:group'] as Record<string, Node> | undefined;
+  const summary = txt(o['summary']) || txt(group?.['media:description']);
   const content = txt(o['content']);
   const title = truncate(htmlToText(txt(o['title'])), 300) || link;
   return {
@@ -195,6 +196,26 @@ export function discoverFeedUrl(html: string, pageUrl: string): string | undefin
     if (url && !/comments/i.test(url)) found.push({ href: url, atom: type.includes('atom') });
   }
   return found[0]?.href;
+}
+
+/**
+ * Adresses de pages connues dont le fil se déduit directement (EXG-017) :
+ * playlist et chaîne YouTube → fil officiel feeds/videos.xml.
+ */
+export function knownFeedUrl(url: string): string | undefined {
+  let u: URL;
+  try {
+    u = new URL(url);
+  } catch {
+    return undefined;
+  }
+  if (!/(^|\.)youtube\.com$/i.test(u.hostname) || u.pathname.startsWith('/feeds/')) return undefined;
+  const yt = 'https://www.youtube.com/feeds/videos.xml';
+  const list = u.searchParams.get('list');
+  if (u.pathname === '/playlist' && list) return `${yt}?playlist_id=${encodeURIComponent(list)}`;
+  const channel = /^\/channel\/(UC[\w-]+)/.exec(u.pathname)?.[1];
+  if (channel) return `${yt}?channel_id=${channel}`;
+  return undefined;
 }
 
 /** Vrai si le texte ressemble à un fil plutôt qu'à une page HTML. */

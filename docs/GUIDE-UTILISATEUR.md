@@ -88,7 +88,7 @@ Ces articles sont gardés **pour toujours**, alors que les autres disparaissent 
 
 ### Ajouter un fil
 1. En bas du volet de gauche, touchez **+ Ajouter un fil**.
-2. Collez l'adresse du fil, ou simplement celle du site : FilActu trouve le fil tout seul.
+2. Collez l'adresse du fil, ou simplement celle du site : FilActu trouve le fil tout seul. Pour **YouTube**, l'adresse d'une playlist (`youtube.com/playlist?list=…`) ou d'une chaîne (`youtube.com/channel/…`) suffit : chaque nouvelle vidéo apparaît avec sa miniature et sa description.
 3. Donnez-lui un nom si vous le souhaitez ; sinon le titre du fil est repris automatiquement.
 4. Choisissez sa **catégorie**, ou *+ Nouvelle catégorie…* pour en créer une (avec son icône) au passage.
 5. Touchez **Ajouter** : une collecte est lancée aussitôt, les articles arrivent en une à deux minutes.
