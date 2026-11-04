@@ -38,6 +38,14 @@ export function markRead(state: ReadingState, itemId: string, read: boolean, now
   return { ...state, unread: { ...state.unread, [itemId]: at } };
 }
 
+/** Marque lus plusieurs articles d'un coup (EXG-045). */
+export function markManyRead(state: ReadingState, itemIds: string[], now = new Date()): ReadingState {
+  const at = now.toISOString();
+  const read = { ...state.read };
+  for (const id of itemIds) read[id] = at;
+  return { ...state, read };
+}
+
 export function markAllBefore(state: ReadingState, key: string, before: Date): ReadingState {
   return { ...state, markedBefore: { ...state.markedBefore, [key]: before.toISOString() } };
 }

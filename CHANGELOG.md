@@ -2,6 +2,18 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [0.1.2] — 2026-11-04 — Abonnements et catégories
+
+### Ajouté
+- Bouton « Ajouter un fil » : adresse du fil ou du site, nom facultatif, catégorie existante ou nouvelle (EXG-011).
+- Écran « Gérer les catégories » : créer, renommer, réordonner, supprimer (avec déplacement des fils ou désabonnement) (EXG-013).
+- Icône au choix pour chaque catégorie, affichée dans le volet (EXG-016).
+- En bas de la liste, bouton pour marquer comme lus les articles affichés (EXG-045).
+
+### Modifié
+- Un fil sans nom saisi prend le titre trouvé par le collecteur, sinon le nom du site.
+- Un doublon d'abonnement est détecté aussi par son adresse.
+
 ## [0.1.1] — 2026-11-04
 
 ### Corrigé

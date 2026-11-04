@@ -3,7 +3,7 @@
 import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const DELIVERED = ['V0.1']; // lots livrés : à compléter à chaque version
+const DELIVERED = ['V0.1', 'V0.1.2']; // lots livrés : à compléter à chaque version
 
 const spec = readFileSync('docs/SPECIFICATIONS.md', 'utf8');
 

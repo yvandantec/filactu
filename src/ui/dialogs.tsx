@@ -1,0 +1,230 @@
+import type { ComponentChildren } from 'preact';
+import { useEffect, useRef, useState } from 'preact/hooks';
+import type { AppState, Store } from '../app/store';
+import { CATEGORY_ICONS, exclusiveFeeds } from '../core/subscriptions';
+import type { Category } from '../core/types';
+import { IconChevron, IconClose } from './icons';
+
+export function Dialog({ title, onClose, children, wide }: {
+  title: string; onClose: () => void; children: ComponentChildren; wide?: boolean;
+}) {
+  const id = 'dlg-' + title.replace(/\W+/g, '-');
+  useEffect(() => {
+    const esc = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', esc);
+    return () => window.removeEventListener('keydown', esc);
+  }, [onClose]);
+  return (
+    <div class="dialog-backdrop" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div class={`dialog ${wide ? 'dialog-wide' : ''}`} role="dialog" aria-modal="true" aria-labelledby={id}>
+        <header class="dialog-head">
+          <h2 id={id}>{title}</h2>
+          <button class="icon-btn" aria-label="Fermer" onClick={onClose}><IconClose /></button>
+        </header>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+export function sortedCategories(state: AppState): Category[] {
+  return [...state.subs.categories].sort((a, b) => a.order - b.order);
+}
+
+// ---------- Palette d'icônes (EXG-016) ----------
+
+export function IconPicker({ value, onChange, label }: { value?: string; onChange: (icon: string | null) => void; label: string }) {
+  return (
+    <div class="icon-picker" role="radiogroup" aria-label={label}>
+      <button type="button" role="radio" aria-checked={!value} aria-label="Aucune icône"
+        class={`icon-choice none ${!value ? 'selected' : ''}`} onClick={() => onChange(null)}>∅</button>
+      {CATEGORY_ICONS.map((ic) => (
+        <button type="button" role="radio" aria-checked={value === ic} aria-label={`Icône ${ic}`} key={ic}
+          class={`icon-choice ${value === ic ? 'selected' : ''}`} onClick={() => onChange(ic)}>{ic}</button>
+      ))}
+    </div>
+  );
+}
+
+// ---------- Ajouter un abonnement (EXG-011) ----------
+
+const NEW = '__new__';
+
+export function AddFeedDialog({ store, state, onClose, initialCategory }: {
+  store: Store; state: AppState; onClose: () => void; initialCategory?: string;
+}) {
+  const cats = sortedCategories(state);
+  const [url, setUrl] = useState('');
+  const [title, setTitle] = useState('');
+  const [cat, setCat] = useState(initialCategory ?? cats[0]?.id ?? NEW);
+  const [newName, setNewName] = useState('');
+  const [newIcon, setNewIcon] = useState<string | undefined>();
+  const first = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    store.clearError();
+    first.current?.focus();
+  }, []);
+
+  const submit = async (e: Event) => {
+    e.preventDefault();
+    const ok = await store.addFeed({
+      url,
+      title,
+      ...(cat === NEW ? { newCategory: { name: newName, icon: newIcon } } : { categoryId: cat }),
+    });
+    if (ok) onClose();
+  };
+
+  return (
+    <Dialog title="Ajouter un fil" onClose={onClose}>
+      <form class="dialog-form" onSubmit={submit}>
+        <label>
+          Adresse du fil ou du site
+          <input ref={first} type="url" inputMode="url" placeholder="https://exemple.fr/rss" required spellcheck={false}
+            value={url} onInput={(e) => setUrl(e.currentTarget.value)} />
+        </label>
+        <label>
+          <span>Nom <span class="optional">(facultatif)</span></span>
+          <input type="text" placeholder="Repris du fil si vide" value={title} onInput={(e) => setTitle(e.currentTarget.value)} />
+        </label>
+        <label>
+          Catégorie
+          <select value={cat} onChange={(e) => setCat(e.currentTarget.value)}>
+            {cats.map((c) => <option value={c.id} key={c.id}>{c.icon ? `${c.icon} ` : ''}{c.name}</option>)}
+            <option value={NEW}>+ Nouvelle catégorie…</option>
+          </select>
+        </label>
+        {cat === NEW && (
+          <div class="subpanel">
+            <label>
+              Nom de la nouvelle catégorie
+              <input type="text" required value={newName} onInput={(e) => setNewName(e.currentTarget.value)} />
+            </label>
+            <span class="field-label">Icône</span>
+            <IconPicker value={newIcon} onChange={(i) => setNewIcon(i ?? undefined)} label="Icône de la nouvelle catégorie" />
+          </div>
+        )}
+        {state.error && <p class="form-error" role="alert">{state.error}</p>}
+        <div class="row end">
+          <button type="button" class="btn" onClick={onClose}>Annuler</button>
+          <button type="submit" class="btn-primary" disabled={state.loading}>{state.loading ? 'Ajout…' : 'Ajouter'}</button>
+        </div>
+      </form>
+    </Dialog>
+  );
+}
+
+// ---------- Gérer les catégories (EXG-013, EXG-016) ----------
+
+export function CategoriesDialog({ store, state, onClose }: { store: Store; state: AppState; onClose: () => void }) {
+  const cats = sortedCategories(state);
+  const [newName, setNewName] = useState('');
+  const [newIcon, setNewIcon] = useState<string | undefined>();
+  const [iconFor, setIconFor] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
+  useEffect(() => store.clearError(), []);
+
+  const create = async (e: Event) => {
+    e.preventDefault();
+    if (await store.createCategory(newName, newIcon)) {
+      setNewName('');
+      setNewIcon(undefined);
+    }
+  };
+
+  return (
+    <Dialog title="Gérer les catégories" onClose={onClose} wide>
+      <ul class="cat-list">
+        {cats.length === 0 && <li class="muted cat-empty">Aucune catégorie pour l’instant.</li>}
+        {cats.map((c, i) => (
+          <li key={c.id} class="cat-item" data-cat={c.id}>
+            <div class="cat-line">
+              <button class="icon-slot" aria-label={`Changer l’icône de ${c.name}`} aria-expanded={iconFor === c.id}
+                onClick={() => setIconFor(iconFor === c.id ? null : c.id)}>
+                {c.icon ?? <span class="icon-placeholder">＋</span>}
+              </button>
+              <RenameInput category={c} store={store} />
+              <span class="cat-feeds muted">{state.subs.feeds.filter((f) => f.categories.includes(c.id)).length} fils</span>
+              <button class="icon-btn" aria-label={`Monter ${c.name}`} disabled={i === 0} onClick={() => void store.moveCategory(c.id, -1)}>
+                <IconChevron class="up" />
+              </button>
+              <button class="icon-btn" aria-label={`Descendre ${c.name}`} disabled={i === cats.length - 1}
+                onClick={() => void store.moveCategory(c.id, 1)}>
+                <IconChevron class="down" />
+              </button>
+              <button class="btn btn-small btn-danger" onClick={() => setDeleting(deleting === c.id ? null : c.id)}>Supprimer</button>
+            </div>
+            {iconFor === c.id && (
+              <IconPicker value={c.icon} label={`Icône de ${c.name}`}
+                onChange={(icon) => { void store.updateCategory(c.id, { icon }); setIconFor(null); }} />
+            )}
+            {deleting === c.id && (
+              <DeletePanel category={c} state={state} store={store} onDone={() => setDeleting(null)} />
+            )}
+          </li>
+        ))}
+      </ul>
+      <form class="dialog-section dialog-form" onSubmit={create}>
+        <h3>Nouvelle catégorie</h3>
+        <label>
+          Nom
+          <input type="text" required value={newName} onInput={(e) => setNewName(e.currentTarget.value)} />
+        </label>
+        <span class="field-label">Icône</span>
+        <IconPicker value={newIcon} onChange={(i) => setNewIcon(i ?? undefined)} label="Icône de la nouvelle catégorie" />
+        {state.error && <p class="form-error" role="alert">{state.error}</p>}
+        <div class="row end">
+          <button type="submit" class="btn-primary" disabled={state.loading}>Créer la catégorie</button>
+        </div>
+      </form>
+    </Dialog>
+  );
+}
+
+function RenameInput({ category, store }: { category: Category; store: Store }) {
+  const [value, setValue] = useState(category.name);
+  useEffect(() => setValue(category.name), [category.name]);
+  const save = () => {
+    if (value.trim() && value.trim() !== category.name) void store.updateCategory(category.id, { name: value });
+    else setValue(category.name);
+  };
+  return (
+    <input class="rename" type="text" aria-label={`Nom de la catégorie ${category.name}`} value={value}
+      onInput={(e) => setValue(e.currentTarget.value)} onBlur={save}
+      onKeyDown={(e) => { if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur(); }} />
+  );
+}
+
+function DeletePanel({ category, state, store, onDone }: { category: Category; state: AppState; store: Store; onDone: () => void }) {
+  const orphans = exclusiveFeeds(state.subs, category.id);
+  const others = sortedCategories(state).filter((c) => c.id !== category.id);
+  const [choice, setChoice] = useState<string>(others[0]?.id ?? 'unsubscribe');
+  const confirm = async () => {
+    const ok = await store.deleteCategory(category.id, choice === 'unsubscribe' ? 'unsubscribe' : { moveTo: choice });
+    if (ok) onDone();
+  };
+  return (
+    <div class="subpanel danger-panel" role="group" aria-label={`Suppression de ${category.name}`}>
+      {orphans.length === 0 ? (
+        <p>Supprimer la catégorie « {category.name} » ? Ses fils restent rangés dans leurs autres catégories.</p>
+      ) : (
+        <>
+          <p>
+            {orphans.length === 1 ? '1 fil n’est rangé' : `${orphans.length} fils ne sont rangés`} que dans « {category.name} ».
+            Que faire {orphans.length === 1 ? 'de ce fil' : 'de ces fils'} ?
+          </p>
+          <label>
+            <select aria-label="Destination des fils" value={choice} onChange={(e) => setChoice(e.currentTarget.value)}>
+              {others.map((c) => <option key={c.id} value={c.id}>Déplacer vers « {c.name} »</option>)}
+              <option value="unsubscribe">Me désabonner de ces fils</option>
+            </select>
+          </label>
+        </>
+      )}
+      <div class="row end">
+        <button class="btn" onClick={onDone}>Annuler</button>
+        <button class="btn btn-danger-solid" onClick={() => void confirm()}>Confirmer la suppression</button>
+      </div>
+    </div>
+  );
+}

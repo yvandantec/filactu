@@ -136,14 +136,14 @@ export function exportOpml(subs: Subscriptions): string {
     lines.push(`    <outline text="${esc(c.name)}" title="${esc(c.name)}">`);
     for (const f of subs.feeds.filter((x) => x.categories.includes(c.id))) {
       const html = f.siteUrl ? ` htmlUrl="${esc(f.siteUrl)}"` : '';
-      lines.push(
-        `      <outline type="rss" text="${esc(f.title)}" title="${esc(f.title)}" xmlUrl="${esc(f.url)}"${html}/>`,
-      );
+      const t = esc(f.title || f.url);
+      lines.push(`      <outline type="rss" text="${t}" title="${t}" xmlUrl="${esc(f.url)}"${html}/>`);
     }
     lines.push('    </outline>');
   }
   for (const f of subs.feeds.filter((x) => x.categories.length === 0)) {
-    lines.push(`    <outline type="rss" text="${esc(f.title)}" title="${esc(f.title)}" xmlUrl="${esc(f.url)}"/>`);
+    const t = esc(f.title || f.url);
+    lines.push(`    <outline type="rss" text="${t}" title="${t}" xmlUrl="${esc(f.url)}"/>`);
   }
   lines.push('  </body>', '</opml>');
   return lines.join('\n') + '\n';

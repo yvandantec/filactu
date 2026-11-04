@@ -1,6 +1,6 @@
 # Matrice de traçabilité
 
-> Générée par `npm run trace` — lots livrés : V0.1. Ne pas modifier à la main.
+> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2. Ne pas modifier à la main.
 
 | Exigence | Lot livré | Tests | Statut |
 |---|---|---|---|
@@ -8,9 +8,10 @@
 | **EXG-002** La clé est mémorisée sur l'appareil et peut être effacée depuis les réglages (« Déconnecter cet appareil »). | oui | 1 | ✅ couverte |
 | **EXG-003** L'appli s'installe sur Android (téléphone et tablette) et sur PC (Chrome/Edge). | oui | 1 | ✅ couverte |
 | **EXG-010** Importer un fichier OPML (export Feedly). | oui | 5 | ✅ couverte |
-| **EXG-011** Ajouter un abonnement par URL de fil ou de site. |  | 2 | ✅ couverte |
+| **EXG-011** Ajouter un abonnement par URL de fil ou de site, avec un nom facultatif, et le ranger dans une catégorie existante ou nouvelle. | oui | 9 | ✅ couverte |
 | **EXG-012** Renommer, déplacer (changer de catégorie), désabonner un fil. |  | 0 | — à venir |
-| **EXG-013** Créer, renommer, réordonner, supprimer une catégorie. |  | 0 | — à venir |
+| **EXG-013** Créer, renommer, réordonner, supprimer une catégorie. | oui | 12 | ✅ couverte |
+| **EXG-016** Associer une icône à une catégorie. | oui | 3 | ✅ couverte |
 | **EXG-014** Exporter les abonnements en OPML. |  | 1 | ✅ couverte |
 | **EXG-015** Signaler les fils en erreur. |  | 1 | ✅ couverte |
 | **EXG-020** Volet de navigation avec : Aujourd'hui, Tous les articles, À lire plus tard, puis les catégories dépliables contenant leurs fils. | oui | 3 | ✅ couverte |
@@ -29,6 +30,7 @@
 | **EXG-042** Basculer lu/non lu manuellement sur un article. |  | 1 | ✅ couverte |
 | **EXG-043** *Tout marquer comme lu* sur la vue en cours (fil, catégorie, Aujourd'hui, Tous) avec le choix : tout, plus vieux qu'un jour, plus vieux qu'une semaine. |  | 2 | ✅ couverte |
 | **EXG-044** Les compteurs de non-lus se mettent à jour immédiatement. |  | 0 | — à venir |
+| **EXG-045** En bas de la liste, un bouton marque comme lus tous les articles affichés sur la page. | oui | 2 | ✅ couverte |
 | **EXG-050** Ajouter ou retirer un article de « À lire plus tard ». |  | 0 | — à venir |
 | **EXG-051** Les articles mis de côté sont conservés sans limite de durée, même après la purge des 30 jours. |  | 0 | — à venir |
 | **EXG-060** Rechercher dans les titres et résumés des articles conservés (30 jours + à lire plus tard), dans la vue courante ou partout. |  | 0 | — à venir |
@@ -77,13 +79,39 @@
 
 ### EXG-011
 - tests/collector/collect.test.ts › EXG-011 · une adresse de site est résolue vers son fil
+- tests/e2e/manage.spec.ts › EXG-011 · ajouter un abonnement dans une catégorie existante
+- tests/e2e/manage.spec.ts › EXG-011 · une adresse déjà suivie est refusée
+- tests/e2e/manage.spec.ts › EXG-011 · EXG-016 · ajouter un abonnement dans une nouvelle catégorie avec icône
 - tests/unit/feed.test.ts › EXG-011 · découvre le fil annoncé par une page HTML
+- tests/unit/subscriptions.test.ts › EXG-011 · ajouter un fil dans une catégorie existante
+- tests/unit/subscriptions.test.ts › EXG-011 · ajouter un fil dans une nouvelle catégorie avec icône
+- tests/unit/subscriptions.test.ts › EXG-011 · adresse invalide, doublon ou catégorie manquante refusés
+- tests/unit/subscriptions.test.ts › EXG-011 · nom affiché : saisi, sinon trouvé par le collecteur, sinon le site
+
+### EXG-013
+- tests/e2e/manage.spec.ts › EXG-013 · EXG-016 · créer une catégorie avec icône, la renommer, changer son icône, la réordonner
+- tests/e2e/manage.spec.ts › EXG-013 · un nom de catégorie déjà pris est refusé
+- tests/e2e/manage.spec.ts › EXG-013 · supprimer une catégorie non vide en déplaçant ses fils
+- tests/e2e/manage.spec.ts › EXG-013 · supprimer une catégorie en se désabonnant de ses fils
+- tests/unit/subscriptions.test.ts › EXG-013 · créer une catégorie (nom nettoyé, ordre en fin de liste)
+- tests/unit/subscriptions.test.ts › EXG-013 · un nom vide ou déjà pris est refusé
+- tests/unit/subscriptions.test.ts › EXG-013 · deux noms proches donnent des identifiants distincts
+- tests/unit/subscriptions.test.ts › EXG-013 · renommer une catégorie
+- tests/unit/subscriptions.test.ts › EXG-013 · réordonner
+- tests/unit/subscriptions.test.ts › EXG-013 · supprimer en déplaçant les fils vers une autre catégorie
+- tests/unit/subscriptions.test.ts › EXG-013 · supprimer en se désabonnant des fils (un fil rangé ailleurs reste)
+- tests/unit/subscriptions.test.ts › EXG-013 · suppression : destination invalide refusée
 
 ### EXG-014
 - tests/unit/opml.test.ts › EXG-014 · l’export se ré-importe sans perte
 
 ### EXG-015
 - tests/collector/collect.test.ts › EXG-015 · les échecs consécutifs sont comptés puis remis à zéro
+
+### EXG-016
+- tests/e2e/manage.spec.ts › EXG-011 · EXG-016 · ajouter un abonnement dans une nouvelle catégorie avec icône
+- tests/e2e/manage.spec.ts › EXG-013 · EXG-016 · créer une catégorie avec icône, la renommer, changer son icône, la réordonner
+- tests/unit/subscriptions.test.ts › EXG-016 · associer, changer et retirer une icône
 
 ### EXG-020
 - tests/e2e/reader.spec.ts › EXG-020 · volet : vues fixes, catégories dépliables et compteurs de non-lus
@@ -121,6 +149,10 @@
 ### EXG-043
 - tests/e2e/reader.spec.ts › EXG-043 · tout marquer comme lu sur la vue
 - tests/unit/reading.test.ts › EXG-043 · tout marquer lu couvre le fil, la catégorie ou tout
+
+### EXG-045
+- tests/e2e/manage.spec.ts › EXG-045 · le bouton de bas de page marque lus les articles affichés
+- tests/unit/reading.test.ts › EXG-045 · marquer lus plusieurs articles d’un coup, sans toucher aux autres
 
 ### EXG-070
 - tests/collector/collect.test.ts › EXG-070 · collecte RSS, Atom et RDF dans le fichier du jour

@@ -4,6 +4,8 @@ import { DEFAULT_DATA_REPO, STALE_COLLECT_MS } from '../app/store';
 import { isRead } from '../core/reading';
 import { ageLabel, itemsForView, unreadCounts, type UnreadCounts, type ViewId } from '../core/views';
 import type { Feed, Item, Subscriptions, FeedsStatus } from '../core/types';
+import { feedLabel } from '../core/subscriptions';
+import { AddFeedDialog, CategoriesDialog } from './dialogs';
 import {
   IconAlert, IconAll, IconBookmark, IconCheckAll, IconChevron, IconClose, IconDot, IconMenu,
   IconRefresh, IconSettings, IconToday, Logo,
@@ -68,17 +70,22 @@ function Setup({ store, state }: { store: Store; state: AppState }) {
 
 // ---------- Lecteur ----------
 
-function viewTitle(view: ViewId, subs: Subscriptions): string {
+function viewTitle(view: ViewId, subs: Subscriptions, status: FeedsStatus): string {
   if (view === 'today') return 'Aujourd’hui';
   if (view === 'all') return 'Tous les articles';
   if (view === 'saved') return 'À lire plus tard';
-  if (view.startsWith('feed:')) return subs.feeds.find((f) => f.id === view.slice(5))?.title ?? 'Fil';
-  return subs.categories.find((c) => c.id === view.slice(9))?.name ?? 'Catégorie';
+  if (view.startsWith('feed:')) {
+    const f = subs.feeds.find((x) => x.id === view.slice(5));
+    return f ? feedLabel(f, status) : 'Fil';
+  }
+  const c = subs.categories.find((x) => x.id === view.slice(9));
+  return c ? `${c.icon ? c.icon + ' ' : ''}${c.name}` : 'Catégorie';
 }
 
 function Reader({ store, state }: { store: Store; state: AppState }) {
   const [drawer, setDrawer] = useState(false);
   const [settings, setSettings] = useState(false);
+  const [dialog, setDialog] = useState<'add' | 'categories' | null>(null);
   const now = new Date();
   const counts = useMemo(() => unreadCounts(state.items, state.subs, state.reading), [state.items, state.subs, state.reading]);
   const items = useMemo(
@@ -114,13 +121,16 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
 
   return (
     <div class={`app ${drawer ? 'drawer-open' : ''}`}>
-      <Sidebar state={state} counts={counts} onGo={go} onSettings={() => { setSettings(true); setDrawer(false); }} />
+      <Sidebar state={state} counts={counts} onGo={go}
+        onSettings={() => { setSettings(true); setDrawer(false); }}
+        onAddFeed={() => { setDialog('add'); setDrawer(false); }}
+        onCategories={() => { setDialog('categories'); setDrawer(false); }} />
       <div class="scrim" onClick={() => setDrawer(false)} aria-hidden="true" />
       <main class="main">
         <header class="topbar">
           <button class="icon-btn menu-btn" aria-label="Ouvrir le menu" onClick={() => setDrawer(true)}><IconMenu /></button>
           <div class="view-head">
-            <h1 class="view-title">{viewTitle(state.view, state.subs)}</h1>
+            <h1 class="view-title">{viewTitle(state.view, state.subs, state.status)}</h1>
             {state.view !== 'saved' && <span class="view-count" data-testid="view-unread">{viewUnread} non lus</span>}
           </div>
           <div class="actions">
@@ -147,10 +157,16 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
           <div class="banner">La dernière collecte date de plus de 2 heures. Vérifiez le robot de collecte sur GitHub (voir le guide).</div>
         )}
         <section class="content" aria-live="polite">
-          <ArticleList store={store} state={state} items={items} feedsById={feedsById} onSettings={() => setSettings(true)} />
+          <ArticleList store={store} state={state} items={items} feedsById={feedsById}
+            onSettings={() => setSettings(true)} onAddFeed={() => setDialog('add')} />
         </section>
       </main>
       {settings && <Settings store={store} state={state} onClose={() => setSettings(false)} />}
+      {dialog === 'add' && (
+        <AddFeedDialog store={store} state={state} onClose={() => setDialog(null)}
+          initialCategory={state.view.startsWith('category:') ? state.view.slice(9) : undefined} />
+      )}
+      {dialog === 'categories' && <CategoriesDialog store={store} state={state} onClose={() => setDialog(null)} />}
       {state.toast && <div class="toast" role="status">{state.toast}</div>}
     </div>
   );
@@ -162,8 +178,9 @@ function Count({ n }: { n: number | undefined }) {
   return n ? <span class="count">{n > 999 ? '999+' : n}</span> : null;
 }
 
-function Sidebar({ state, counts, onGo, onSettings }: {
+function Sidebar({ state, counts, onGo, onSettings, onAddFeed, onCategories }: {
   state: AppState; counts: UnreadCounts; onGo: (v: ViewId) => void; onSettings: () => void;
+  onAddFeed: () => void; onCategories: () => void;
 }) {
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const cats = [...state.subs.categories].sort((a, b) => a.order - b.order);
@@ -180,7 +197,10 @@ function Sidebar({ state, counts, onGo, onSettings }: {
         {nav('today', 'Aujourd’hui', <IconToday />, counts.today)}
         {nav('all', 'Tous les articles', <IconAll />, counts.all)}
         {nav('saved', 'À lire plus tard', <IconBookmark />, savedCount)}
-        <h2 class="nav-heading">Catégories</h2>
+        <div class="nav-heading-row">
+          <h2 class="nav-heading">Catégories</h2>
+          <button class="link-btn" onClick={onCategories}>Gérer</button>
+        </div>
         {cats.length === 0 && <p class="nav-empty">Aucun abonnement pour l’instant.</p>}
         {cats.map((c) => {
           const feeds = state.subs.feeds.filter((f) => f.categories.includes(c.id));
@@ -193,6 +213,7 @@ function Sidebar({ state, counts, onGo, onSettings }: {
                   <IconChevron class={isOpen ? 'rot' : ''} />
                 </button>
                 <button class="cat-name" onClick={() => onGo(`category:${c.id}`)}>
+                  {c.icon && <span class="cat-icon" aria-hidden="true">{c.icon}</span>}
                   <span class="nav-label">{c.name}</span><Count n={counts.categories[c.id]} />
                 </button>
               </div>
@@ -201,6 +222,7 @@ function Sidebar({ state, counts, onGo, onSettings }: {
           );
         })}
       </nav>
+      <button class="nav-item add-feed-btn" onClick={onAddFeed}><span class="plus" aria-hidden="true">+</span><span class="nav-label">Ajouter un fil</span></button>
       <button class="nav-item settings-btn" onClick={onSettings}><IconSettings /><span class="nav-label">Réglages</span></button>
     </aside>
   );
@@ -212,7 +234,7 @@ function FeedIcon({ feed, status }: { feed: Feed; status: FeedsStatus }) {
   if (src && !broken) {
     return <img class="favicon" src={src} alt="" loading="lazy" referrerpolicy="no-referrer" onError={() => setBroken(true)} />;
   }
-  return <span class="favicon letter" aria-hidden="true">{(feed.title.trim()[0] ?? '?').toUpperCase()}</span>;
+  return <span class="favicon letter" aria-hidden="true">{(feedLabel(feed, status).trim()[0] ?? '?').toUpperCase()}</span>;
 }
 
 function FeedRow({ feed, state, n, onGo }: { feed: Feed; state: AppState; n?: number; onGo: (v: ViewId) => void }) {
@@ -222,7 +244,7 @@ function FeedRow({ feed, state, n, onGo }: { feed: Feed; state: AppState; n?: nu
   return (
     <button class={`nav-item feed-row ${state.view === `feed:${feed.id}` ? 'active' : ''}`} onClick={() => onGo(`feed:${feed.id}`)}>
       <FeedIcon feed={feed} status={state.status} />
-      <span class="nav-label">{feed.title}</span>
+      <span class="nav-label">{feedLabel(feed, state.status)}</span>
       {failing && <span class="warn" title={`Fil en erreur ${since}`}><IconAlert width={16} height={16} /></span>}
       <Count n={n} />
     </button>
@@ -231,8 +253,8 @@ function FeedRow({ feed, state, n, onGo }: { feed: Feed; state: AppState; n?: nu
 
 // ---------- Liste d'articles, affichage Magazine (EXG-030, EXG-031, EXG-033) ----------
 
-function ArticleList({ store, state, items, feedsById, onSettings }: {
-  store: Store; state: AppState; items: Item[]; feedsById: Map<string, Feed>; onSettings: () => void;
+function ArticleList({ store, state, items, feedsById, onSettings, onAddFeed }: {
+  store: Store; state: AppState; items: Item[]; feedsById: Map<string, Feed>; onSettings: () => void; onAddFeed: () => void;
 }) {
   const [limit, setLimit] = useState(PAGE_SIZE);
   const sentinel = useRef<HTMLDivElement>(null);
@@ -251,7 +273,10 @@ function ArticleList({ store, state, items, feedsById, onSettings }: {
         <Logo size={64} />
         <h2>Bienvenue dans FilActu</h2>
         <p>Commencez par importer vos abonnements Feedly (fichier OPML).</p>
-        <button class="btn-primary" onClick={onSettings}>Importer mes abonnements</button>
+        <div class="row center">
+          <button class="btn-primary" onClick={onSettings}>Importer mes abonnements</button>
+          <button class="btn" onClick={onAddFeed}>Ajouter un fil</button>
+        </div>
       </div>
     );
   }
@@ -264,20 +289,34 @@ function ArticleList({ store, state, items, feedsById, onSettings }: {
     );
   }
   const now = new Date();
+  const page = items.slice(0, limit);
+  const unreadOnPage = page.filter((i) => !isRead(state.reading, i, state.subs)).length;
   return (
     <>
       <ul class="articles magazine">
-        {items.slice(0, limit).map((item) => (
-          <ArticleCard key={item.id} item={item} feed={feedsById.get(item.feedId)}
+        {page.map((item) => (
+          <ArticleCard key={item.id} item={item} feed={feedsById.get(item.feedId)} status={state.status}
             read={isRead(state.reading, item, state.subs)} now={now} store={store} />
         ))}
       </ul>
+      {/* EXG-045 : marquer lus les articles affichés */}
+      <div class="page-end">
+        {unreadOnPage > 0 ? (
+          <button class="btn mark-page-btn" onClick={() => store.markPageRead(page)}>
+            <IconCheckAll /> Marquer {unreadOnPage === 1 ? 'l’article affiché' : `les ${unreadOnPage} articles affichés`} comme lu{unreadOnPage === 1 ? '' : 's'}
+          </button>
+        ) : (
+          <p class="muted">Tout est lu sur cette page.</p>
+        )}
+      </div>
       <div ref={sentinel} class="sentinel" />
     </>
   );
 }
 
-function ArticleCard({ item, feed, read, now, store }: { item: Item; feed?: Feed; read: boolean; now: Date; store: Store }) {
+function ArticleCard({ item, feed, status, read, now, store }: {
+  item: Item; feed?: Feed; status: FeedsStatus; read: boolean; now: Date; store: Store;
+}) {
   const [imgOk, setImgOk] = useState(true);
   return (
     <li class={`article ${read ? 'read' : ''}`} data-id={item.id}>
@@ -288,7 +327,7 @@ function ArticleCard({ item, feed, read, now, store }: { item: Item; feed?: Feed
         <div class="article-body">
           <h3 class="article-title">{item.title}</h3>
           <p class="article-meta">
-            <span class="source">{feed?.title ?? ''}</span>
+            <span class="source">{feed ? feedLabel(feed, status) : ''}</span>
             {item.author && <span> · {item.author}</span>}
             <span> · <time dateTime={item.published}>{ageLabel(item.published, now)}</time></span>
           </p>

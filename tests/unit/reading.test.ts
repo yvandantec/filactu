@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { diffReading, isEmptyDelta, isRead, markAllBefore, markRead, mergeReading, pruneReading } from '../../src/core/reading';
+import { diffReading, isEmptyDelta, isRead, markAllBefore, markManyRead, markRead, mergeReading, pruneReading } from '../../src/core/reading';
 import { ageLabel, itemsForView, unreadCounts } from '../../src/core/views';
 import { emptyReading, type Item, type Subscriptions } from '../../src/core/types';
 
@@ -36,6 +36,14 @@ describe('état de lecture', () => {
     // remis en non lu après un « tout marquer lu »
     const s = markRead(markAllBefore(emptyReading(), 'all', before), 'a', false, t('2026-11-04T13:00:00Z'));
     expect(isRead(s, a, subs)).toBe(false);
+  });
+
+  test('EXG-045 · marquer lus plusieurs articles d’un coup, sans toucher aux autres', () => {
+    const c = item('c', 'f1', '2026-11-04T09:00:00Z');
+    const s = markManyRead(markRead(emptyReading(), 'a', false, t('2026-11-04T10:30:00Z')), ['a', 'b'], t('2026-11-04T11:00:00Z'));
+    expect(isRead(s, a)).toBe(true); // remis lu après un « non lu » antérieur
+    expect(isRead(s, b)).toBe(true);
+    expect(isRead(s, c)).toBe(false);
   });
 
   test('EXG-075 · la fusion de deux appareils ne perd rien', () => {

@@ -181,6 +181,63 @@ button:disabled { opacity: .5; cursor: default; }
 
 .scrim { display: none; }
 
+/* ---------- Catégories, ajout de fil, bas de page (EXG-011, 013, 016, 045) ---------- */
+.nav-heading-row { display: flex; align-items: baseline; justify-content: space-between; margin: 18px 10px 6px; }
+.nav-heading-row .nav-heading { margin: 0; }
+.link-btn { border: 0; background: none; color: var(--accent-strong); font-size: 12.5px; font-weight: 600; padding: 4px 6px; border-radius: 6px; }
+.link-btn:hover { background: var(--bg-hover); }
+.cat-icon { font-size: 16px; line-height: 1; width: 20px; text-align: center; flex: none; }
+.add-feed-btn { color: var(--accent-strong); font-weight: 600; margin-top: 6px; }
+.add-feed-btn .plus { width: 20px; text-align: center; font-size: 20px; line-height: 1; }
+
+.dialog-wide { width: min(640px, 100%); }
+.dialog-form { display: flex; flex-direction: column; gap: 14px; padding: 8px 22px 20px; }
+.dialog-section.dialog-form { padding-top: 12px; }
+.dialog-form label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 14px; }
+.dialog-form input, .dialog-form select, .subpanel select, .rename {
+  font: inherit; font-weight: 400; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--bg); color: var(--text); min-height: 44px;
+}
+.optional { font-weight: 400; color: var(--text-3); }
+.field-label { font-weight: 600; font-size: 14px; margin-bottom: -6px; }
+.subpanel { display: flex; flex-direction: column; gap: 12px; padding: 14px; border-radius: 10px; background: var(--bg-side); border: 1px solid var(--border); }
+.subpanel p { margin: 0; font-size: 14px; }
+.row.end { justify-content: flex-end; }
+.row.center { justify-content: center; }
+
+.icon-picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 4px; }
+.icon-choice {
+  height: 40px; border: 1px solid transparent; border-radius: 8px; background: var(--bg-side); font-size: 20px; line-height: 1;
+}
+.icon-choice:hover { background: var(--bg-hover); }
+.icon-choice.selected { border-color: var(--accent); background: var(--accent-soft); }
+.icon-choice.none { font-size: 16px; color: var(--text-3); }
+
+.cat-list { list-style: none; margin: 0; padding: 4px 22px 12px; display: flex; flex-direction: column; gap: 8px; }
+.cat-empty { padding: 8px 0; }
+.cat-item { display: flex; flex-direction: column; gap: 10px; }
+.cat-line { display: flex; align-items: center; gap: 6px; }
+.icon-slot {
+  width: 44px; height: 44px; flex: none; border: 1px dashed var(--border); border-radius: 10px; background: var(--bg-side);
+  font-size: 22px; line-height: 1;
+}
+.icon-slot:hover { border-color: var(--accent); }
+.icon-placeholder { font-size: 16px; color: var(--text-3); }
+.rename { flex: 1; min-width: 0; }
+.cat-feeds { font-size: 12.5px; white-space: nowrap; margin: 0 4px; }
+.icon-btn .up { transform: rotate(-90deg); }
+.icon-btn .down { transform: rotate(90deg); }
+.btn-small { min-height: 36px; padding: 6px 10px; font-size: 13px; }
+.danger-panel { border-color: #f1c0b9; background: #fdf3f1; }
+.btn-danger-solid { background: var(--danger); border: 1px solid var(--danger); color: #fff; border-radius: 8px; padding: 10px 16px; font-weight: 600; min-height: 44px; }
+@media (prefers-color-scheme: dark) {
+  .danger-panel { border-color: #5c2a24; background: #2a1715; }
+}
+
+.page-end { max-width: 780px; margin: 24px auto 0; display: flex; justify-content: center; }
+.mark-page-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--accent-strong); border-color: var(--accent); }
+.mark-page-btn:hover { background: var(--accent-soft); }
+
 /* ---------- Téléphone et tablette portrait (EXG-021) ---------- */
 @media (max-width: 899px) {
   .app { grid-template-columns: 1fr; }
@@ -202,4 +259,9 @@ button:disabled { opacity: .5; cursor: default; }
   .article-title { font-size: 16px; }
   .summary { -webkit-line-clamp: 2; font-size: 13.5px; }
   .read-toggle { top: 8px; right: -6px; }
+  .cat-line { flex-wrap: wrap; }
+  .rename { flex-basis: calc(100% - 56px); }
+  .cat-feeds { flex: 1; }
+  .dialog-backdrop { padding: 0; place-items: end stretch; }
+  .dialog { border-radius: 16px 16px 0 0; max-height: 92vh; }
 }

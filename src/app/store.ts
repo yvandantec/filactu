@@ -1,7 +1,10 @@
 import { clear, get, set } from 'idb-keyval';
 import { dayFromPath, dayPath, expiredDays, flattenDays } from '../core/items';
 import { mergeImport, parseOpml, exportOpml, type ImportStats } from '../core/opml';
-import { diffReading, isEmptyDelta, isRead, markAllBefore, markRead, mergeReading, pruneReading } from '../core/reading';
+import {
+  addFeed, createCategory, deleteCategory, moveCategory, updateCategory, type DeleteMode, type NewFeed,
+} from '../core/subscriptions';
+import { diffReading, isEmptyDelta, isRead, markAllBefore, markManyRead, markRead, mergeReading, pruneReading } from '../core/reading';
 import {
   emptyReading,
   emptySubscriptions,
@@ -334,6 +337,67 @@ export class Store {
     } catch (e) {
       this.setState({ loading: false, error: errorText(e) });
     }
+  }
+
+  /**
+   * Applique une opération sur les abonnements, rejouée sur la version distante en cas de conflit.
+   * Renvoie true si l'opération a réussi ; sinon le message d'erreur est dans state.error.
+   */
+  private async mutateSubs(op: (s: Subscriptions) => Subscriptions, message: string): Promise<boolean> {
+    const client = this.client;
+    if (!client) return false;
+    // Validation immédiate sur l'état local (message d'erreur sans attendre le réseau)
+    try {
+      op(this.state.subs);
+    } catch (e) {
+      this.setState({ error: errorText(e) });
+      return false;
+    }
+    this.setState({ loading: true, error: undefined });
+    try {
+      const res = await client.update<Subscriptions>(PATHS.subs, (cur) => op(cur ?? emptySubscriptions()), message);
+      this.setState({ subs: res.data, loading: false });
+      void safeSet('subs', res.data);
+      return true;
+    } catch (e) {
+      this.setState({ loading: false, error: errorText(e) });
+      return false;
+    }
+  }
+
+  /** Ajout d'un abonnement (EXG-011). */
+  async addFeed(input: NewFeed): Promise<boolean> {
+    const ok = await this.mutateSubs((s) => addFeed(s, input).subs, 'FilActu : nouvel abonnement');
+    if (ok) {
+      this.toast('Abonnement ajouté : les articles arrivent d’ici une à deux minutes');
+      void this.collectNow(true);
+    }
+    return ok;
+  }
+
+  /** Catégories (EXG-013, EXG-016). */
+  createCategory(name: string, icon?: string) {
+    return this.mutateSubs((s) => createCategory(s, name, icon).subs, 'FilActu : nouvelle catégorie');
+  }
+
+  updateCategory(id: string, patch: { name?: string; icon?: string | null }) {
+    return this.mutateSubs((s) => updateCategory(s, id, patch), 'FilActu : catégorie modifiée');
+  }
+
+  async deleteCategory(id: string, mode: DeleteMode) {
+    const ok = await this.mutateSubs((s) => deleteCategory(s, id, mode), 'FilActu : catégorie supprimée');
+    if (ok && this.state.view === `category:${id}`) this.setView('today');
+    return ok;
+  }
+
+  moveCategory(id: string, delta: -1 | 1) {
+    return this.mutateSubs((s) => moveCategory(s, id, delta), 'FilActu : ordre des catégories');
+  }
+
+  /** Marque lus les articles affichés sur la page (EXG-045). */
+  markPageRead(items: Item[]) {
+    const ids = items.filter((i) => !isRead(this.state.reading, i, this.state.subs)).map((i) => i.id);
+    if (ids.length) this.updateReading(markManyRead(this.state.reading, ids));
   }
 
   exportOpml(): string {

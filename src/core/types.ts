@@ -4,6 +4,7 @@ export interface Category {
   id: string;
   name: string;
   order: number;
+  icon?: string; // EXG-016 : émoji choisi dans la palette
 }
 
 export type FeedStatus = 'active' | 'pending' | 'error';

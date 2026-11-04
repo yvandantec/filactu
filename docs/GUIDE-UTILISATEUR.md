@@ -77,17 +77,32 @@ Sur téléphone, le volet est caché : touchez ☰ en haut à gauche, ou glissez
 - Un article devient **lu** quand vous l'ouvrez ou quand vous le faites défiler au-delà du haut de l'écran *(V0.2)*. Ce comportement se règle dans **Réglages → Marquer comme lu en défilant**.
 - Pour remettre un article en **non lu** : bouton ● à droite de l'article (balayage vers la gauche sur mobile *(V0.2)*, touche `m` sur PC *(V0.3)*). Le point est vert tant que l'article n'est pas lu.
 - **Tout marquer comme lu** (✓✓) : marque tous les articles de la vue affichée, après confirmation. En V0.2, vous pourrez choisir *Tout*, *Plus vieux qu'un jour* ou *Plus vieux qu'une semaine*. Une notification **Annuler** reste affichée 10 secondes.
+- **Marquer la page comme lue** : en bas de la liste, le bouton *Marquer les N articles affichés comme lus* marque d'un coup les articles que vous venez de parcourir. Les articles plus anciens, pas encore affichés, restent non lus.
 
 ## 6. À lire plus tard *(V0.2)*
 
 Bouton 🔖 sur l'article, balayage vers la droite sur mobile, ou touche `s`.
 Ces articles sont gardés **pour toujours**, alors que les autres disparaissent après 30 jours.
 
-## 7. Gérer les abonnements *(V0.2)*
+## 7. Gérer les abonnements et les catégories
 
-- **Ajouter un fil** : bouton **+** en bas du volet. Collez l'adresse du fil ou simplement celle du site : FilActu trouve le fil tout seul à la collecte suivante.
-- **Renommer, changer de catégorie, se désabonner** : menu ⋯ à côté du fil.
-- **Catégories** : menu ⋯ à côté de la catégorie pour la renommer, la déplacer ou la supprimer.
+### Ajouter un fil
+1. En bas du volet de gauche, touchez **+ Ajouter un fil**.
+2. Collez l'adresse du fil, ou simplement celle du site : FilActu trouve le fil tout seul.
+3. Donnez-lui un nom si vous le souhaitez ; sinon le titre du fil est repris automatiquement.
+4. Choisissez sa **catégorie**, ou *+ Nouvelle catégorie…* pour en créer une (avec son icône) au passage.
+5. Touchez **Ajouter** : une collecte est lancée aussitôt, les articles arrivent en une à deux minutes.
+
+### Gérer les catégories
+Dans le volet, à droite de « Catégories », touchez **Gérer** :
+- **Créer** : en bas de l'écran, saisissez un nom, choisissez une icône, puis *Créer la catégorie*.
+- **Renommer** : modifiez le nom dans sa case puis appuyez sur Entrée (ou touchez ailleurs).
+- **Icône** : touchez la case carrée à gauche du nom, puis choisissez une icône (∅ pour aucune). Elle s'affiche devant le nom dans le volet.
+- **Ordre** : flèches ˄ ˅ pour monter ou descendre la catégorie dans le volet.
+- **Supprimer** : si certains fils ne sont rangés que dans cette catégorie, FilActu vous demande de les **déplacer** vers une autre catégorie ou de vous **désabonner**. Un fil rangé aussi ailleurs y reste simplement.
+
+### Et aussi
+- **Renommer un fil, le changer de catégorie, se désabonner** *(V0.2)* : menu ⋯ à côté du fil.
 - **Fil en erreur** ⚠ : le site n'a pas répondu lors des 3 dernières collectes. Survolez l'icône pour voir depuis quand.
 - **Exporter** : Réglages → *Exporter en OPML* (sauvegarde, ou retour vers un autre lecteur).
 
