@@ -2,6 +2,15 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [0.3.2] — 2026-11-04 — Confort de lecture
+
+### Ajouté
+- Taille du texte des articles sur 3 niveaux (Petit, Normal, Grand), réglée séparément pour le PC et le téléphone (EXG-037).
+- Sur Android, choix du navigateur qui ouvre les articles (Brave, Firefox, Edge, Samsung Internet, Chrome) au lieu de l'onglet intégré de Chrome (EXG-038).
+
+### Documentation
+- Guide : vider le cache de Chrome règle le message « appli déjà installée ».
+
 ## [0.3.1] — 2026-11-04
 
 ### Modifié

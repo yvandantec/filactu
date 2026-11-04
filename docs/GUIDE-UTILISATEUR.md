@@ -70,6 +70,7 @@ Sur téléphone, le volet est caché : touchez ☰ en haut à gauche, ou glissez
   - **Magazine** (par défaut) : affichage compact façon Feedly — titre, « fil / fraîcheur » et vignette à droite. Une dizaine d'articles tiennent sur un écran de téléphone.
   - **Cartes** : grille avec grandes images.
   - **Afficher le début de l'article** : ajoute deux lignes de résumé sous chaque titre. Ce réglage est distinct selon l'écran : **activé par défaut sur PC** (version riche), **désactivé par défaut sur téléphone** (version compacte). Il vaut pour toutes les vues.
+  - **Taille du texte** : *Petit*, *Normal* ou *Grand*, pour les titres, le fil / la fraîcheur et le début de l'article. Réglée séparément pour le PC et le téléphone.
   - **Non lus seulement** : coché par défaut. Un article que vous lisez reste affiché (atténué) jusqu'à ce que vous changiez de vue.
   - **Plus anciens d'abord** : inverse l'ordre.
 
@@ -143,6 +144,8 @@ Dans le volet, à droite de « Catégories », touchez **Gérer** :
 | Réglage | Effet |
 |---|---|
 | Thème | Automatique (comme le téléphone ou le PC), clair ou sombre |
+| Taille du texte des articles | Petit, Normal ou Grand (réglée séparément pour le PC et le téléphone) |
+| Ouvrir les articles avec *(Android seulement)* | Navigateur qui ouvre les articles : Brave, Firefox, Edge, Samsung Internet ou Chrome. *Automatique* garde l'onglet intégré de Chrome. |
 | Marquer comme lu en défilant | Activé par défaut |
 | Afficher le début des articles | Même option que dans ▦, réglée séparément pour le PC et le téléphone |
 | Masquer les fils sans articles non lus | Allège le volet de gauche |
@@ -155,7 +158,9 @@ Dans le volet, à droite de « Catégories », touchez **Gérer** :
 
 **« Clé refusée » ou « droit manquant ».** La clé a expiré ou il lui manque un droit : refaites les § 2.1 et 2.2, puis Réglages → *Déconnecter cet appareil* et saisissez la nouvelle clé.
 
-**Android dit « appli déjà installée » puis « impossible de lancer l'application ».** Une installation précédente a échoué à moitié. Dans l'ordre :
+**Les articles s'ouvrent dans un onglet intégré de Chrome au lieu de mon navigateur (Brave…).** C'est le comportement normal d'une appli installée par Chrome. Dans Réglages → *Ouvrir les articles avec*, choisissez votre navigateur : les articles s'y ouvriront directement.
+
+**Android dit « appli déjà installée » puis « impossible de lancer l'application ».** Une installation précédente a échoué à moitié. Le plus efficace est de **vider le cache de Chrome** (Paramètres du téléphone → Applications → Chrome → Stockage → *Vider le cache*), puis de réinstaller. Sinon, dans l'ordre :
 1. Paramètres du téléphone → Applications : si « FilActu » apparaît, désinstallez-la. Supprimez aussi toute icône FilActu de l'écran d'accueil.
 2. Chrome → ⋮ → Paramètres → Paramètres des sites → Toutes les données des sites → `yvandantec.github.io` → **Effacer et réinitialiser**.
 3. Redémarrez le téléphone, rouvrez l'adresse dans Chrome, puis ⋮ → **Installer l'application**.

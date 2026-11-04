@@ -280,6 +280,43 @@ test.describe('fils et icônes', () => {
   });
 });
 
+test.describe('confort de lecture', () => {
+  test('EXG-037 · trois tailles de texte, synchronisées par type d’écran', async ({ page }, info) => {
+    const gh = await startWithData(page);
+    const title = page.locator('.article-title').first();
+    const size = async () => parseFloat(await title.evaluate((e) => getComputedStyle(e).fontSize));
+    const normal = await size();
+    await page.getByRole('button', { name: 'Options d’affichage' }).click();
+    const menu = page.getByRole('dialog', { name: 'Options d’affichage' });
+    await menu.getByRole('radio', { name: 'Grand' }).click();
+    expect(await size()).toBeGreaterThan(normal);
+    await menu.getByRole('radio', { name: 'Petit' }).click();
+    expect(await size()).toBeLessThan(normal);
+    const key = info.project.name === 'pc' ? 'fontSize:wide' : 'fontSize:narrow';
+    await expect.poll(() => reading(gh)?.prefs[key], { timeout: 5000 }).toBe('small');
+  });
+
+  test('EXG-038 · sur Android, les articles s’ouvrent dans le navigateur choisi', async ({ page }, info) => {
+    test.skip(info.project.name !== 'telephone', 'réglage propre à Android');
+    await startWithData(page);
+    await openNav(page);
+    await page.getByRole('button', { name: 'Réglages' }).click();
+    await page.getByLabel('Ouvrir les articles avec').selectOption('brave');
+    await page.getByRole('button', { name: 'Fermer' }).click();
+    const link = page.locator('.article').first().locator('a.article-link');
+    await expect(link).toHaveAttribute('href', /^intent:\/\/f_blog\.example\.test\/i_1#Intent;scheme=https;.*package=com\.brave\.browser;/);
+    await expect(link).not.toHaveAttribute('target', '_blank');
+  });
+
+  test('EXG-038 · réglage absent hors Android', async ({ page }, info) => {
+    test.skip(info.project.name !== 'pc', 'PC');
+    await startWithData(page);
+    await page.getByRole('button', { name: 'Réglages' }).click();
+    await expect(page.getByLabel('Ouvrir les articles avec')).toHaveCount(0);
+    await expect(page.locator('.article').first().locator('a.article-link')).toHaveAttribute('href', 'https://f_blog.example.test/i_1');
+  });
+});
+
 test('EXG-001 · la reconnexion fonctionne après une déconnexion', async ({ page }) => {
   const gh = new FakeGitHub();
   seed(gh);

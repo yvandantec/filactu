@@ -155,6 +155,8 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | ID | Exigence | Critères d'acceptation |
 |---|---|---|
 | EXG-030 | Trois affichages : **Titres** (une ligne : source, titre, âge), **Magazine** compact façon Feedly (titre de taille modérée sur 3 lignes au plus, vignette à droite, « fil / fraîcheur » sur une ligne), **Cartes** (grille, grande image, titre, fil, fraîcheur). | Le choix est mémorisé par fil ou catégorie et synchronisé. Par défaut : Magazine. |
+| EXG-037 | Taille du texte des articles réglable sur 3 niveaux : Petit, Normal, Grand. | Réglage dans « Options d'affichage » et « Réglages », distinct pour grand et petit écran, synchronisé ; il agrandit ou réduit titres, fil / fraîcheur et début de l'article dans les 3 affichages. |
+| EXG-038 | Sur Android, choisir le navigateur qui ouvre les articles (Brave, Firefox, Edge, Samsung Internet, Chrome), au lieu de l'onglet intégré de Chrome. | Réglage visible seulement sur Android ; le lien de l'article devient un lien `intent://` vers l'application choisie, avec retour à l'adresse normale si elle n'est pas installée. « Automatique » garde le comportement standard. |
 | EXG-036 | Option « Afficher le début de l'article », réglée séparément pour les grands écrans (PC, tablette paysage : activée par défaut, version riche) et les petits écrans (téléphone, tablette portrait : désactivée par défaut, version compacte). | En Magazine sans début d'article, au moins 5 articles sont visibles sur un écran de téléphone (390 × 844). Chaque réglage est synchronisé entre les appareils du même type d'écran. |
 | EXG-031 | Résumé de chaque article : texte brut sans HTML, environ 400 caractères maximum, coupé au mot. | Pas de script, pas de style ni de traqueur hérité du fil. |
 | EXG-032 | En affichage Titres, un appui long (mobile) ou le survol (PC) montre le résumé. | — |
@@ -252,5 +254,6 @@ Le workflow du collecteur lit la clé dans le **secret** `DATA_REPO_TOKEN` du d�
 | **V0.1.3 — Fils YouTube** | Adresses de pages YouTube reconnues | EXG-017 |
 | **V0.2 — Feedly-like** | 3 affichages, lu en défilant, tout marquer lu, à lire plus tard, renommer/déplacer un fil | EXG-012, 014, 015, 023, 024, 030, 032, 034, 041→044, 050, 051 |
 | **V0.3.1 — Affichage compact, icônes suggérées** | Demandes du 2026-11-04 | EXG-018, 036 |
+| **V0.3.2 — Confort de lecture** | Taille du texte, navigateur des articles sur Android | EXG-037, 038 |
 | **V0.3 — Confort** | Recherche, thème sombre, raccourcis, hors connexion, actualisation à la demande, robustesse de la synchro | EXG-060→062, 071, 074→076 |
 | **V1.0** | Finitions, accessibilité, performance, documentation complète | ENF-01→08 |

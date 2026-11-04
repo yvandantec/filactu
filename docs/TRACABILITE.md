@@ -1,6 +1,6 @@
 # Matrice de traçabilité
 
-> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1. Ne pas modifier à la main.
+> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2. Ne pas modifier à la main.
 
 | Exigence | Lot livré | Tests | Statut |
 |---|---|---|---|
@@ -22,6 +22,8 @@
 | **EXG-023** Les articles sont triés du plus récent au plus ancien ; l'option « plus ancien d'abord » est disponible par vue. | oui | 2 | ✅ couverte |
 | **EXG-024** Filtre « non lus seulement » / « tous ». | oui | 1 | ✅ couverte |
 | **EXG-030** Trois affichages : Titres (une ligne : source, titre, âge), Magazine compact façon Feedly (titre de taille modérée sur 3 lignes au plus, vignette à droite, « fil / fraîcheur » sur une ligne), Cartes (grille, grande image, titre, fil, fraîcheur). | oui | 5 | ✅ couverte |
+| **EXG-037** Taille du texte des articles réglable sur 3 niveaux : Petit, Normal, Grand. | oui | 2 | ✅ couverte |
+| **EXG-038** Sur Android, choisir le navigateur qui ouvre les articles (Brave, Firefox, Edge, Samsung Internet, Chrome), au lieu de l'onglet intégré de Chrome. | oui | 6 | ✅ couverte |
 | **EXG-036** Option « Afficher le début de l'article », réglée séparément pour les grands écrans (PC, tablette paysage : activée par défaut, version riche) et les petits écrans (téléphone, tablette portrait : désactivée par défaut, version compacte). | oui | 4 | ✅ couverte |
 | **EXG-031** Résumé de chaque article : texte brut sans HTML, environ 400 caractères maximum, coupé au mot. | oui | 5 | ✅ couverte |
 | **EXG-032** En affichage Titres, un appui long (mobile) ou le survol (PC) montre le résumé. | oui | 1 | ✅ couverte |
@@ -186,6 +188,18 @@
 - tests/e2e/v03.spec.ts › EXG-036 · début de l’article : affiché par défaut sur PC, masqué sur petit écran
 - tests/e2e/v03.spec.ts › EXG-036 · l’option est réglée par type d’écran et synchronisée
 - tests/unit/v03.test.ts › EXG-030 · EXG-036 · préférences synchronisées entre appareils (la plus récente gagne)
+
+### EXG-037
+- tests/e2e/v03.spec.ts › EXG-037 · trois tailles de texte, synchronisées par type d’écran
+- tests/unit/links.test.ts › EXG-037 · trois niveaux, Normal par défaut
+
+### EXG-038
+- tests/e2e/v03.spec.ts › EXG-038 · sur Android, les articles s’ouvrent dans le navigateur choisi
+- tests/e2e/v03.spec.ts › EXG-038 · réglage absent hors Android
+- tests/unit/links.test.ts › EXG-038 · lien intent:// vers Brave avec retour à l’adresse normale
+- tests/unit/links.test.ts › EXG-038 · seulement sur Android, et seulement si un navigateur est choisi
+- tests/unit/links.test.ts › EXG-038 · adresses invalides laissées telles quelles
+- tests/unit/links.test.ts › EXG-038 · liste des navigateurs proposés
 
 ### EXG-040
 - tests/e2e/reader.spec.ts › EXG-033 · EXG-034 · EXG-040 · EXG-044 · un clic ouvre l’article dans le navigateur et le marque lu

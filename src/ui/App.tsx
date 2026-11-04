@@ -9,6 +9,7 @@ import {
 } from '../core/views';
 import type { Feed, FeedsStatus, Item, Subscriptions } from '../core/types';
 import { feedLabel } from '../core/subscriptions';
+import { ANDROID_BROWSERS, articleHref, fontScale, FONT_SIZES, isAndroid, type FontSize } from '../core/links';
 import { AddFeedDialog, CategoriesDialog, Dialog, FeedDialog } from './dialogs';
 import {
   IconAlert, IconAll, IconBookmark, IconBookmarkFilled, IconCheckAll, IconChevron, IconClose, IconDot, IconMenu,
@@ -42,6 +43,13 @@ export function useWideScreen(): boolean {
 function summaryPref(wide: boolean): [string, boolean] {
   return wide ? ['showSummary:wide', true] : ['showSummary:narrow', false];
 }
+
+/** Clé de la taille du texte selon le type d'écran (EXG-037). */
+function fontPref(wide: boolean): string {
+  return wide ? 'fontSize:wide' : 'fontSize:narrow';
+}
+
+const ANDROID = typeof navigator !== 'undefined' && isAndroid(navigator.userAgent);
 
 const GUIDE_URL = 'https://github.com/yvandantec/filactu/blob/main/docs/GUIDE-UTILISATEUR.md';
 const PAGE_SIZE = 150;
@@ -138,6 +146,9 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
   const wide = useWideScreen();
   const [summaryKey, summaryDefault] = summaryPref(wide);
   const showSummary = getPref<boolean>(reading, summaryKey, summaryDefault);
+  const fontKey = fontPref(wide);
+  const fontSize = getPref<FontSize>(reading, fontKey, 'normal');
+  const browser = getPref<string>(reading, 'androidBrowser', 'auto');
   const activeQuery = searchOpen ? query.trim() : '';
 
   // Articles lus pendant la consultation : restent affichés jusqu'au changement de vue (EXG-024)
@@ -180,7 +191,9 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
   };
 
   const openItem = (item: Item) => {
-    window.open(item.link, '_blank', 'noopener,noreferrer');
+    const href = articleHref(item.link, browser, navigator.userAgent);
+    if (href !== item.link) window.location.href = href;
+    else window.open(item.link, '_blank', 'noopener,noreferrer');
     store.open(item);
   };
 
@@ -278,7 +291,8 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
                 onClick={() => setMenu(menu === 'view' ? null : 'view')}><IconView /></button>
               {menu === 'view' && (
                 <ViewMenu store={store} view={view} mode={mode} unreadOnly={unreadOnly} oldestFirst={oldestFirst}
-                  showSummary={showSummary} summaryKey={summaryKey} onClose={() => setMenu(null)} />
+                  showSummary={showSummary} summaryKey={summaryKey} fontKey={fontKey} fontSize={fontSize}
+                  onClose={() => setMenu(null)} />
               )}
             </div>
             {view !== 'saved' && (
@@ -318,6 +332,7 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
         )}
         <section class="content" aria-live="polite">
           <ArticleList store={store} state={state} items={list} mode={mode} showSummary={showSummary} feedsById={feedsById}
+            fontSize={fontSize} browser={browser}
             selected={selected} searching={!!activeQuery}
             onSettings={() => setDialog('settings')} onAddFeed={() => setDialog('add')} />
         </section>
@@ -346,9 +361,9 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
 
 // ---------- Options d'affichage (EXG-023, EXG-024, EXG-030, EXG-036) ----------
 
-function ViewMenu({ store, view, mode, unreadOnly, oldestFirst, showSummary, summaryKey, onClose }: {
+function ViewMenu({ store, view, mode, unreadOnly, oldestFirst, showSummary, summaryKey, fontKey, fontSize, onClose }: {
   store: Store; view: ViewId; mode: DisplayMode; unreadOnly: boolean; oldestFirst: boolean; showSummary: boolean;
-  summaryKey: string; onClose: () => void;
+  summaryKey: string; fontKey: string; fontSize: FontSize; onClose: () => void;
 }) {
   return (
     <div class="popover view-menu" role="dialog" aria-label="Options d’affichage">
@@ -356,6 +371,13 @@ function ViewMenu({ store, view, mode, unreadOnly, oldestFirst, showSummary, sum
         {DISPLAY_MODES.map((m) => (
           <button key={m} role="radio" aria-checked={mode === m} class={`seg-btn ${mode === m ? 'on' : ''}`}
             onClick={() => store.setPref(prefKey('mode', view), m)}>{MODE_LABELS[m]}</button>
+        ))}
+      </div>
+      <span class="menu-label" id="font-size-label">Taille du texte</span>
+      <div class="seg" role="radiogroup" aria-labelledby="font-size-label">
+        {FONT_SIZES.map((f) => (
+          <button key={f.id} role="radio" aria-checked={fontSize === f.id} class={`seg-btn font-${f.id} ${fontSize === f.id ? 'on' : ''}`}
+            onClick={() => store.setPref(fontKey, f.id)}>{f.label}</button>
         ))}
       </div>
       <label class="check"><input type="checkbox" checked={showSummary} onChange={(e) => store.setPref(summaryKey, e.currentTarget.checked)} /> Afficher le début de l’article</label>
@@ -460,9 +482,9 @@ function FeedRow({ feed, state, n, onGo, onEdit }: {
 
 // ---------- Liste d'articles (EXG-030 à EXG-036, EXG-041, EXG-042, EXG-045, EXG-050) ----------
 
-function ArticleList({ store, state, items, mode, showSummary, feedsById, selected, searching, onSettings, onAddFeed }: {
+function ArticleList({ store, state, items, mode, showSummary, feedsById, fontSize, browser, selected, searching, onSettings, onAddFeed }: {
   store: Store; state: AppState; items: Item[]; mode: DisplayMode; showSummary: boolean; feedsById: Map<string, Feed>;
-  selected: string | null; searching: boolean; onSettings: () => void; onAddFeed: () => void;
+  fontSize: FontSize; browser: string; selected: string | null; searching: boolean; onSettings: () => void; onAddFeed: () => void;
 }) {
   const [limit, setLimit] = useState(PAGE_SIZE);
   const sentinel = useRef<HTMLDivElement>(null);
@@ -530,11 +552,11 @@ function ArticleList({ store, state, items, mode, showSummary, feedsById, select
   const unreadOnPage = page.filter((i) => !isRead(state.reading, i, state.subs)).length;
   return (
     <>
-      <ul ref={listRef} class={`articles ${mode}`}>
+      <ul ref={listRef} class={`articles ${mode}`} style={{ '--fs': String(fontScale(fontSize)) }}>
         {page.map((item) => (
           <ArticleRow key={item.id} item={item} feed={feedsById.get(item.feedId)} status={state.status} mode={mode}
             showSummary={showSummary} read={isRead(state.reading, item, state.subs)} saved={isSaved(state.reading, item.id)}
-            selected={selected === item.id} now={now} store={store} />
+            selected={selected === item.id} now={now} store={store} browser={browser} />
         ))}
       </ul>
       {/* EXG-045 : marquer lus les articles affichés */}
@@ -554,10 +576,13 @@ function ArticleList({ store, state, items, mode, showSummary, feedsById, select
 
 const SWIPE = 80;
 
-function ArticleRow({ item, feed, status, mode, showSummary, read, saved, selected, now, store }: {
+function ArticleRow({ item, feed, status, mode, showSummary, read, saved, selected, now, store, browser }: {
   item: Item; feed?: Feed; status: FeedsStatus; mode: DisplayMode; showSummary: boolean; read: boolean; saved: boolean;
-  selected: boolean; now: Date; store: Store;
+  selected: boolean; now: Date; store: Store; browser: string;
 }) {
+  // Sur Android, lien intent:// vers le navigateur choisi (EXG-038)
+  const href = articleHref(item.link, browser, navigator.userAgent);
+  const target = href === item.link ? '_blank' : undefined;
   const [imgOk, setImgOk] = useState(true);
   const [expanded, setExpanded] = useState(false);
   const [dx, setDx] = useState(0);
@@ -630,7 +655,7 @@ function ArticleRow({ item, feed, status, mode, showSummary, read, saved, select
       <div class="article-inner" style={dx ? { transform: `translateX(${dx}px)` } : undefined}>
         {mode === 'titles' ? (
           <>
-            <a class="article-link" href={item.link} target="_blank" rel="noopener noreferrer" onClick={onClick}
+            <a class="article-link" href={href} target={target} rel="noopener noreferrer" onClick={onClick}
               title={item.summary || undefined}>
               <span class="source">{source}</span>
               <h3 class="article-title">{item.title}</h3>
@@ -641,7 +666,7 @@ function ArticleRow({ item, feed, status, mode, showSummary, read, saved, select
           </>
         ) : mode === 'cards' ? (
           <>
-            <a class="article-link" href={item.link} target="_blank" rel="noopener noreferrer" onClick={onClick}>
+            <a class="article-link" href={href} target={target} rel="noopener noreferrer" onClick={onClick}>
               {thumb || <div class="thumb thumb-empty" aria-hidden="true" />}
               <h3 class="article-title">{item.title}</h3>
             </a>
@@ -651,14 +676,14 @@ function ArticleRow({ item, feed, status, mode, showSummary, read, saved, select
         ) : (
           <>
             <div class="article-body">
-              <a class="article-link" href={item.link} target="_blank" rel="noopener noreferrer" onClick={onClick}>
+              <a class="article-link" href={href} target={target} rel="noopener noreferrer" onClick={onClick}>
                 <h3 class="article-title">{item.title}</h3>
               </a>
               <div class="meta-row">{meta}{actions}</div>
               {summary}
             </div>
             {thumb && (
-              <a class="thumb-link" href={item.link} target="_blank" rel="noopener noreferrer" onClick={onClick} tabIndex={-1} aria-hidden="true">
+              <a class="thumb-link" href={href} target={target} rel="noopener noreferrer" onClick={onClick} tabIndex={-1} aria-hidden="true">
                 {thumb}
               </a>
             )}
@@ -691,6 +716,7 @@ function Settings({ store, state, onClose }: { store: Store; state: AppState; on
   const r = state.reading;
   const wide = useWideScreen();
   const [summaryKey, summaryDefault] = summaryPref(wide);
+  const fontKey = fontPref(wide);
 
   return (
     <Dialog title="Réglages" onClose={onClose}>
@@ -714,6 +740,20 @@ function Settings({ store, state, onClose }: { store: Store; state: AppState; on
             <option value="dark">Sombre</option>
           </select>
         </label>
+        <label class="field">
+          Taille du texte des articles {wide ? '(grand écran)' : '(petit écran)'}
+          <select value={getPref(r, fontKey, 'normal')} onChange={(e) => store.setPref(fontKey, e.currentTarget.value)}>
+            {FONT_SIZES.map((f) => <option key={f.id} value={f.id}>{f.label}</option>)}
+          </select>
+        </label>
+        {ANDROID && (
+          <label class="field">
+            Ouvrir les articles avec
+            <select value={getPref(r, 'androidBrowser', 'auto')} onChange={(e) => store.setPref('androidBrowser', e.currentTarget.value)}>
+              {ANDROID_BROWSERS.map((b) => <option key={b.id} value={b.id}>{b.label}</option>)}
+            </select>
+          </label>
+        )}
         <label class="check"><input type="checkbox" checked={getPref(r, 'markOnScroll', true)}
           onChange={(e) => store.setPref('markOnScroll', e.currentTarget.checked)} /> Marquer comme lu en défilant</label>
         <label class="check"><input type="checkbox" checked={getPref(r, summaryKey, summaryDefault)}
