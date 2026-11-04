@@ -29,7 +29,7 @@ test('EXG-011 · ajouter un abonnement dans une catégorie existante', async ({ 
   await expect.poll(() => gh.dispatches).toBe(1);
   await openNav(page);
   await page.locator('.sidebar').getByRole('button', { name: 'Déplier Actualités' }).click();
-  await expect(page.locator('.sidebar').getByRole('button', { name: /Mon nouveau fil/ })).toBeVisible();
+  await expect(page.locator('.sidebar').getByRole('button', { name: /^Mon nouveau fil/ })).toBeVisible();
 });
 
 test('EXG-011 · une adresse déjà suivie est refusée', async ({ page }) => {

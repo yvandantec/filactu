@@ -2,6 +2,29 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [0.3.0] — 2026-11-04 — Lots V0.2 et V0.3, affichage compact
+
+### Ajouté
+- Trois affichages au choix par vue : Titres, Magazine compact façon Feedly, Cartes (EXG-030).
+- Option « Afficher le début de l'article », désactivée par défaut : une dizaine d'articles par écran de téléphone (EXG-036).
+- Résumé au survol (PC) ou à l'appui long (mobile) en affichage Titres (EXG-032).
+- Filtre « Non lus seulement » (par défaut) et tri « Plus anciens d'abord » par vue (EXG-023, EXG-024).
+- Marquer lu en défilant, réglable (EXG-041).
+- Balayage sur mobile : gauche = lu / non lu, droite = à lire plus tard (EXG-042, EXG-050).
+- « Tout marquer comme lu » : tout, plus vieux qu'un jour, plus vieux qu'une semaine, avec Annuler pendant 10 s (EXG-043).
+- À lire plus tard : bouton, liste dédiée, conservation sans limite (EXG-050, EXG-051).
+- Renommer un fil, changer ses catégories, se désabonner (EXG-012).
+- Icône proposée automatiquement d'après le nom de la catégorie, y compris à l'import, et bouton « Proposer les icônes manquantes » (EXG-018).
+- Recherche sans accents, dans la vue ou partout (EXG-060).
+- Thème clair, sombre ou automatique, synchronisé (EXG-061).
+- Raccourcis clavier sur PC et aide (`?`) (EXG-062).
+- Mode hors connexion : bandeau, lecture du cache, actions envoyées au retour du réseau (EXG-074).
+- Rechargement automatique après « Actualiser », et message si la collecte tarde (EXG-071).
+- Réglage « Masquer les fils sans articles non lus » (EXG-020).
+
+### Modifié
+- Préférences d'affichage synchronisées entre appareils.
+
 ## [0.1.3] — 2026-11-04 — Fils YouTube
 
 ### Ajouté

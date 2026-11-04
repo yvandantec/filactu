@@ -1,6 +1,6 @@
 # FilActu — Spécifications
 
-> Version 0.1 — 2026-11-04 — validée ; lots **V0.1, V0.1.2 et V0.1.3 livrés** (voir [TRACABILITE.md](TRACABILITE.md))
+> Version 0.1 — 2026-11-04 — validée ; lots **V0.1 à V0.3.1 livrés** (voir [TRACABILITE.md](TRACABILITE.md))
 > Chaque exigence porte un identifiant (`EXG-…`). Les tests y font référence : voir [STRATEGIE-TESTS.md](STRATEGIE-TESTS.md).
 
 ## 1. Vision
@@ -132,9 +132,10 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 |---|---|---|
 | EXG-010 | Importer un fichier OPML (export Feedly). | Les catégories et les fils sont créés ; un fil présent dans plusieurs catégories est rattaché à toutes ; une ré-importation ne crée pas de doublon ; un résumé « X fils, Y catégories importés, Z ignorés » s'affiche. |
 | EXG-011 | Ajouter un abonnement par URL de fil **ou** de site, avec un nom facultatif, et le ranger dans une catégorie existante ou nouvelle. | Bouton « Ajouter un fil » dans le volet. Une adresse invalide ou déjà suivie est refusée avec un message. Sans nom saisi, le titre du fil est repris après la première collecte. Une URL de site est résolue par le collecteur (balise `<link rel="alternate">`) ; une collecte est lancée aussitôt. |
-| EXG-012 | Renommer, déplacer (changer de catégorie), désabonner un fil. | Effet visible immédiatement et sur les autres appareils après synchronisation. |
+| EXG-012 | Renommer, déplacer (changer de catégorie), désabonner un fil. | Menu ⋯ sur le fil dans le volet. Un fil garde au moins une catégorie. Effet visible immédiatement et sur les autres appareils après synchronisation. |
 | EXG-013 | Créer, renommer, réordonner, supprimer une catégorie. | Écran « Gérer les catégories » accessible depuis le volet. Un nom vide ou déjà pris est refusé. Supprimer une catégorie non vide demande où déplacer ses fils (ou de les désabonner) ; un fil rangé aussi dans une autre catégorie y reste simplement. |
 | EXG-017 | Accepter les adresses de pages YouTube (playlist, chaîne) comme abonnements. | Une adresse `youtube.com/playlist?list=…` ou `youtube.com/channel/…` est convertie par le collecteur en fil YouTube officiel (`feeds/videos.xml`) ; la description et la miniature de chaque vidéo servent de résumé et de vignette. |
+| EXG-018 | Proposer automatiquement une icône d'après le nom de la catégorie. | Pendant la saisie du nom (création, ajout de fil), l'icône suggérée est présélectionnée tant que l'utilisateur n'en a pas choisi une autre ; les catégories importées reçoivent une icône suggérée ; un bouton « Proposer les icônes manquantes » complète les catégories sans icône. |
 | EXG-016 | Associer une icône à une catégorie. | Choix parmi une palette d'icônes (ou aucune) à la création et ensuite ; l'icône s'affiche devant le nom de la catégorie dans le volet et est synchronisée. |
 | EXG-014 | Exporter les abonnements en OPML. | Le fichier se réimporte dans Feedly ou dans FilActu sans perte. |
 | EXG-015 | Signaler les fils en erreur. | Une icône d'alerte apparaît sur un fil après 3 échecs consécutifs, avec la date du dernier succès. |
@@ -147,13 +148,14 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | EXG-021 | Disposition adaptée à l'écran. | PC et tablette paysage : volet fixe à gauche. Téléphone et tablette portrait : volet escamotable (bouton menu, glissement depuis le bord). |
 | EXG-022 | En-tête de liste : nom de la vue, nombre de non-lus, boutons *Tout marquer comme lu*, *Changer d'affichage*, *Actualiser*, *Rechercher*. | — |
 | EXG-023 | Les articles sont triés du plus récent au plus ancien ; l'option « plus ancien d'abord » est disponible par vue. | — |
-| EXG-024 | Filtre « non lus seulement » / « tous ». | Mémorisé par vue. |
+| EXG-024 | Filtre « non lus seulement » / « tous ». | Mémorisé par vue ; « non lus seulement » par défaut. Un article lu pendant la consultation reste affiché (atténué) jusqu'au changement de vue. |
 
 ### 4.4 Liste d'articles et résumé
 
 | ID | Exigence | Critères d'acceptation |
 |---|---|---|
-| EXG-030 | Trois affichages : **Titres** (une ligne : source, titre, âge), **Magazine** (vignette, titre, source, âge, 2–3 lignes de résumé), **Cartes** (grille, grande image, titre, début du résumé). | Le choix est mémorisé par fil ou catégorie et synchronisé. Par défaut : Magazine. |
+| EXG-030 | Trois affichages : **Titres** (une ligne : source, titre, âge), **Magazine** compact façon Feedly (titre de taille modérée sur 3 lignes au plus, vignette à droite, « fil / fraîcheur » sur une ligne), **Cartes** (grille, grande image, titre, fil, fraîcheur). | Le choix est mémorisé par fil ou catégorie et synchronisé. Par défaut : Magazine. |
+| EXG-036 | Option « Afficher le début de l'article » (désactivée par défaut) pour garder un affichage compact. | En Magazine sans début d'article, au moins 5 articles sont visibles sur un écran de téléphone (390 × 844). L'option est synchronisée entre appareils. |
 | EXG-031 | Résumé de chaque article : texte brut sans HTML, environ 400 caractères maximum, coupé au mot. | Pas de script, pas de style ni de traqueur hérité du fil. |
 | EXG-032 | En affichage Titres, un appui long (mobile) ou le survol (PC) montre le résumé. | — |
 | EXG-033 | Un clic sur un article l'ouvre dans le **navigateur par défaut** (nouvel onglet sur PC). | L'article est marqué lu. |
@@ -249,5 +251,6 @@ Le workflow du collecteur lit la clé dans le **secret** `DATA_REPO_TOKEN` du d�
 | **V0.1.2 — Abonnements et catégories** | Ajout d'un fil, gestion et icônes des catégories, marquer la page lue | EXG-011, 013, 016, 045 |
 | **V0.1.3 — Fils YouTube** | Adresses de pages YouTube reconnues | EXG-017 |
 | **V0.2 — Feedly-like** | 3 affichages, lu en défilant, tout marquer lu, à lire plus tard, renommer/déplacer un fil | EXG-012, 014, 015, 023, 024, 030, 032, 034, 041→044, 050, 051 |
+| **V0.3.1 — Affichage compact, icônes suggérées** | Demandes du 2026-11-04 | EXG-018, 036 |
 | **V0.3 — Confort** | Recherche, thème sombre, raccourcis, hors connexion, actualisation à la demande, robustesse de la synchro | EXG-060→062, 071, 074→076 |
 | **V1.0** | Finitions, accessibilité, performance, documentation complète | ENF-01→08 |

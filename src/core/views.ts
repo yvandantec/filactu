@@ -51,6 +51,34 @@ export function unreadCounts(items: Item[], subs: Subscriptions, reading: Readin
   return counts;
 }
 
+export type DisplayMode = 'titles' | 'magazine' | 'cards';
+export const DISPLAY_MODES: DisplayMode[] = ['titles', 'magazine', 'cards'];
+
+/** Clé de préférence propre à une vue (EXG-023, EXG-024, EXG-030). */
+export function prefKey(name: 'mode' | 'unreadOnly' | 'oldestFirst', view: ViewId): string {
+  return `${name}:${view}`;
+}
+
+/** Texte normalisé pour la recherche : sans accents ni majuscules (EXG-060). */
+export function normalizeSearch(s: string): string {
+  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+}
+
+export function searchItems(items: Item[], query: string): Item[] {
+  const words = normalizeSearch(query).split(/\s+/).filter(Boolean);
+  if (!words.length) return items;
+  return items.filter((i) => {
+    const hay = normalizeSearch(i.title + ' ' + i.summary);
+    return words.every((w) => hay.includes(w));
+  });
+}
+
+/** Tri par date de publication (EXG-023). */
+export function sortItems(items: Item[], oldestFirst: boolean): Item[] {
+  const sorted = [...items].sort((a, b) => (a.published < b.published ? 1 : a.published > b.published ? -1 : 0));
+  return oldestFirst ? sorted.reverse() : sorted;
+}
+
 /** Âge lisible en français : « 5 min », « 3 h », « 2 j ». */
 export function ageLabel(iso: string, now = new Date()): string {
   const s = Math.max(0, (now.getTime() - Date.parse(iso)) / 1000);

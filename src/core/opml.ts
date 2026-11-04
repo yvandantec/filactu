@@ -1,6 +1,7 @@
 import { XMLParser } from 'fast-xml-parser';
 import { feedIdFor, normalizeUrl, slug } from './hash';
 import { safeHttpUrl } from './text';
+import { suggestIcon } from './subscriptions';
 import type { Category, Feed, Subscriptions } from './types';
 
 export interface OpmlFeed {
@@ -88,7 +89,7 @@ export function mergeImport(
     if (found) return found.id;
     let id = slug(name);
     while (categories.some((c) => c.id === id)) id += '-2';
-    categories.push({ id, name, order: categories.length });
+    categories.push({ id, name, order: categories.length, icon: suggestIcon(name) });
     stats.categoriesAdded++;
     return id;
   };

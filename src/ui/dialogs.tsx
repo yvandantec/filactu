@@ -1,7 +1,7 @@
 import type { ComponentChildren } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import type { AppState, Store } from '../app/store';
-import { CATEGORY_ICONS, exclusiveFeeds } from '../core/subscriptions';
+import { CATEGORY_ICONS, exclusiveFeeds, feedLabel, suggestIcon } from '../core/subscriptions';
 import type { Category } from '../core/types';
 import { IconChevron, IconClose } from './icons';
 
@@ -46,6 +46,19 @@ export function IconPicker({ value, onChange, label }: { value?: string; onChang
   );
 }
 
+/**
+ * Icône suggérée d'après le nom saisi (EXG-018), tant que l'utilisateur n'a pas choisi lui-même.
+ * Renvoie [icône, choisir, nom saisi, réinitialiser].
+ */
+function useSuggestedIcon(): [string | undefined, (i: string | undefined) => void, (name: string) => void, () => void] {
+  const [icon, setIcon] = useState<string | undefined>();
+  const touched = useRef(false);
+  const choose = (i: string | undefined) => { touched.current = true; setIcon(i); };
+  const onName = (name: string) => { if (!touched.current) setIcon(name.trim() ? suggestIcon(name) : undefined); };
+  const reset = () => { touched.current = false; setIcon(undefined); };
+  return [icon, choose, onName, reset];
+}
+
 // ---------- Ajouter un abonnement (EXG-011) ----------
 
 const NEW = '__new__';
@@ -58,7 +71,7 @@ export function AddFeedDialog({ store, state, onClose, initialCategory }: {
   const [title, setTitle] = useState('');
   const [cat, setCat] = useState(initialCategory ?? cats[0]?.id ?? NEW);
   const [newName, setNewName] = useState('');
-  const [newIcon, setNewIcon] = useState<string | undefined>();
+  const [newIcon, setNewIcon, onNameForIcon] = useSuggestedIcon();
   const first = useRef<HTMLInputElement>(null);
   useEffect(() => {
     store.clearError();
@@ -98,7 +111,7 @@ export function AddFeedDialog({ store, state, onClose, initialCategory }: {
           <div class="subpanel">
             <label>
               Nom de la nouvelle catégorie
-              <input type="text" required value={newName} onInput={(e) => setNewName(e.currentTarget.value)} />
+              <input type="text" required value={newName} onInput={(e) => { setNewName(e.currentTarget.value); onNameForIcon(e.currentTarget.value); }} />
             </label>
             <span class="field-label">Icône</span>
             <IconPicker value={newIcon} onChange={(i) => setNewIcon(i ?? undefined)} label="Icône de la nouvelle catégorie" />
@@ -119,21 +132,28 @@ export function AddFeedDialog({ store, state, onClose, initialCategory }: {
 export function CategoriesDialog({ store, state, onClose }: { store: Store; state: AppState; onClose: () => void }) {
   const cats = sortedCategories(state);
   const [newName, setNewName] = useState('');
-  const [newIcon, setNewIcon] = useState<string | undefined>();
+  const [newIcon, setNewIcon, onNameForIcon, resetIcon] = useSuggestedIcon();
   const [iconFor, setIconFor] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
   useEffect(() => store.clearError(), []);
+  const missing = cats.filter((c) => !c.icon).length;
 
   const create = async (e: Event) => {
     e.preventDefault();
     if (await store.createCategory(newName, newIcon)) {
       setNewName('');
-      setNewIcon(undefined);
+      resetIcon();
     }
   };
 
   return (
     <Dialog title="Gérer les catégories" onClose={onClose} wide>
+      {missing > 0 && (
+        <div class="dialog-hint">
+          <span>{missing === 1 ? '1 catégorie n’a' : `${missing} catégories n’ont`} pas d’icône.</span>
+          <button class="btn btn-small" onClick={() => void store.fillMissingIcons()}>Proposer les icônes manquantes</button>
+        </div>
+      )}
       <ul class="cat-list">
         {cats.length === 0 && <li class="muted cat-empty">Aucune catégorie pour l’instant.</li>}
         {cats.map((c, i) => (
@@ -168,13 +188,63 @@ export function CategoriesDialog({ store, state, onClose }: { store: Store; stat
         <h3>Nouvelle catégorie</h3>
         <label>
           Nom
-          <input type="text" required value={newName} onInput={(e) => setNewName(e.currentTarget.value)} />
+          <input type="text" required value={newName} onInput={(e) => { setNewName(e.currentTarget.value); onNameForIcon(e.currentTarget.value); }} />
         </label>
         <span class="field-label">Icône</span>
         <IconPicker value={newIcon} onChange={(i) => setNewIcon(i ?? undefined)} label="Icône de la nouvelle catégorie" />
         {state.error && <p class="form-error" role="alert">{state.error}</p>}
         <div class="row end">
           <button type="submit" class="btn-primary" disabled={state.loading}>Créer la catégorie</button>
+        </div>
+      </form>
+    </Dialog>
+  );
+}
+
+// ---------- Modifier un fil (EXG-012) ----------
+
+export function FeedDialog({ store, state, feedId, onClose }: { store: Store; state: AppState; feedId: string; onClose: () => void }) {
+  const feed = state.subs.feeds.find((f) => f.id === feedId);
+  const [title, setTitle] = useState(feed?.title || (feed ? feedLabel(feed, state.status) : ''));
+  const [cats, setCats] = useState<string[]>(feed?.categories ?? []);
+  useEffect(() => store.clearError(), []);
+  if (!feed) return null;
+
+  const save = async (e: Event) => {
+    e.preventDefault();
+    if (await store.updateFeed(feed.id, { title, categories: cats })) onClose();
+  };
+  const unsubscribe = async () => {
+    if (!confirm(`Se désabonner de « ${feedLabel(feed, state.status)} » ?`)) return;
+    if (await store.removeFeed(feed.id)) onClose();
+  };
+  const st = state.status.feeds[feed.id];
+
+  return (
+    <Dialog title="Modifier le fil" onClose={onClose}>
+      <form class="dialog-form" onSubmit={save}>
+        <label>
+          Nom du fil
+          <input type="text" value={title} required onInput={(e) => setTitle(e.currentTarget.value)} />
+        </label>
+        <fieldset class="cat-checks">
+          <legend>Catégories</legend>
+          {sortedCategories(state).map((c) => (
+            <label class="check" key={c.id}>
+              <input type="checkbox" checked={cats.includes(c.id)}
+                onChange={(e) => setCats(e.currentTarget.checked ? [...cats, c.id] : cats.filter((x) => x !== c.id))} />
+              {c.icon ? `${c.icon} ` : ''}{c.name}
+            </label>
+          ))}
+        </fieldset>
+        <p class="muted feed-url">Adresse : {feed.url}{st?.lastError ? ` — dernière erreur : ${st.lastError}` : ''}</p>
+        {state.error && <p class="form-error" role="alert">{state.error}</p>}
+        <div class="row spread">
+          <button type="button" class="btn btn-danger" onClick={() => void unsubscribe()}>Se désabonner</button>
+          <span class="row">
+            <button type="button" class="btn" onClick={onClose}>Annuler</button>
+            <button type="submit" class="btn-primary" disabled={state.loading}>Enregistrer</button>
+          </span>
         </div>
       </form>
     </Dialog>

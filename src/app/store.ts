@@ -2,9 +2,13 @@ import { clear, get, set } from 'idb-keyval';
 import { dayFromPath, dayPath, expiredDays, flattenDays } from '../core/items';
 import { mergeImport, parseOpml, exportOpml, type ImportStats } from '../core/opml';
 import {
-  addFeed, createCategory, deleteCategory, moveCategory, updateCategory, type DeleteMode, type NewFeed,
+  addFeed, createCategory, deleteCategory, fillMissingIcons, moveCategory, removeFeed, updateCategory, updateFeed,
+  type DeleteMode, type NewFeed,
 } from '../core/subscriptions';
-import { diffReading, isEmptyDelta, isRead, markAllBefore, markManyRead, markRead, mergeReading, pruneReading } from '../core/reading';
+import {
+  diffReading, getPref, isEmptyDelta, isRead, isSaved, markAllBefore, markManyRead, markManyUnread, markRead,
+  mergeReading, pruneReading, setPref, setSaved,
+} from '../core/reading';
 import {
   emptyReading,
   emptySubscriptions,
@@ -48,8 +52,14 @@ export interface AppState {
   view: ViewId;
   loading: boolean;
   error?: string;
-  toast?: string;
+  toast?: Toast;
   lastSync?: string;
+  offline: boolean;
+}
+
+export interface Toast {
+  message: string;
+  action?: { label: string; run: () => void };
 }
 
 type Listener = (s: AppState) => void;
@@ -63,6 +73,7 @@ export class Store {
     items: [],
     view: 'today',
     loading: false,
+    offline: false,
   };
   private listeners = new Set<Listener>();
   private client?: GitHubClient;
@@ -84,11 +95,16 @@ export class Store {
     for (const l of this.listeners) l(this.state);
   }
 
-  toast(message: string) {
-    this.setState({ toast: message });
+  toast(message: string, action?: Toast['action'], durationMs = 4000) {
+    const t: Toast = { message, action };
+    this.setState({ toast: t });
     setTimeout(() => {
-      if (this.state.toast === message) this.setState({ toast: undefined });
-    }, 4000);
+      if (this.state.toast === t) this.setState({ toast: undefined });
+    }, durationMs);
+  }
+
+  dismissToast() {
+    this.setState({ toast: undefined });
   }
 
   // ---------- Démarrage et connexion (EXG-001, EXG-002) ----------
@@ -228,6 +244,7 @@ export class Store {
         lastSync: new Date().toISOString(),
         loading: false,
         error: undefined,
+        offline: false,
       };
       this.setState(nextState);
       await Promise.all([
@@ -239,7 +256,9 @@ export class Store {
       ]);
       if (!isEmptyDelta(diffReading(this.remoteReading, merged))) this.scheduleFlush();
     } catch (e) {
-      this.setState({ loading: false, error: errorText(e) });
+      // Hors connexion : on garde les articles en cache, sans message d'erreur (EXG-074)
+      if (e instanceof GitHubError && e.status === 0) this.setState({ loading: false, offline: true });
+      else this.setState({ loading: false, error: errorText(e) });
     }
   }
 
@@ -256,6 +275,7 @@ export class Store {
     clearTimeout(this.flushTimer);
     const local = this.state.reading;
     if (isEmptyDelta(diffReading(this.remoteReading, local))) return;
+    let offlineRetry = false;
     this.flushing = (async () => {
       try {
         const res = await client.update<ReadingState>(
@@ -265,17 +285,21 @@ export class Store {
         );
         this.remoteReading = res.data;
         const merged = mergeReading(this.state.reading, res.data);
-        this.setState({ reading: merged, lastSync: new Date().toISOString() });
+        this.setState({ reading: merged, lastSync: new Date().toISOString(), offline: false });
         await Promise.all([safeSet('reading', merged), safeSet('remoteReading', res.data)]);
       } catch (e) {
         // Hors connexion : l'action reste en attente et sera renvoyée (EXG-074)
-        if (!(e instanceof GitHubError && e.status === 0)) this.setState({ error: errorText(e) });
+        if (e instanceof GitHubError && e.status === 0) {
+          this.setState({ offline: true });
+          offlineRetry = true;
+        } else this.setState({ error: errorText(e) });
       } finally {
         this.flushing = undefined;
       }
     })();
     await this.flushing;
-    if (!isEmptyDelta(diffReading(this.remoteReading, this.state.reading))) this.scheduleFlush();
+    // Hors connexion, on attend le retour du réseau (événement « online ») plutôt que de réessayer en boucle
+    if (!offlineRetry && !isEmptyDelta(diffReading(this.remoteReading, this.state.reading))) this.scheduleFlush();
   }
 
   private updateReading(next: ReadingState) {
@@ -302,9 +326,51 @@ export class Store {
     this.updateReading(markRead(this.state.reading, item.id, read));
   }
 
-  markViewRead(view: ViewId) {
+  /**
+   * Tout marquer lu dans une vue (EXG-043) : tout, ou seulement les articles de plus d'un jour / d'une semaine.
+   * Une notification « Annuler » reste affichée 10 secondes.
+   */
+  markAll(view: ViewId, olderThanDays: 0 | 1 | 7, viewItems: Item[]) {
+    const now = new Date();
+    const before = new Date(now.getTime() - olderThanDays * 86400_000);
+    const { reading, subs } = this.state;
+    const affected = viewItems.filter((i) => !isRead(reading, i, subs) && i.fetched <= before.toISOString()).map((i) => i.id);
+    if (!affected.length) {
+      this.toast('Aucun article à marquer comme lu');
+      return;
+    }
     const key = view === 'today' || view === 'saved' ? 'all' : view;
-    this.updateReading(markAllBefore(this.state.reading, key, new Date()));
+    // « Aujourd'hui » : seuls les articles affichés sont marqués, pas tout l'historique
+    const next = view === 'today' ? markManyRead(reading, affected, now) : markAllBefore(reading, key, before);
+    this.updateReading(next);
+    const n = affected.length;
+    this.toast(
+      `${n} article${n > 1 ? 's' : ''} marqué${n > 1 ? 's' : ''} comme lu${n > 1 ? 's' : ''}`,
+      { label: 'Annuler', run: () => this.updateReading(markManyUnread(this.state.reading, affected)) },
+      10_000,
+    );
+  }
+
+  /** Marque lus des articles sortis de l'écran par le haut (EXG-041). */
+  markIdsRead(ids: string[]) {
+    const todo = ids.filter((id) => !this.state.reading.read[id] || this.state.reading.unread[id]);
+    if (todo.length) this.updateReading(markManyRead(this.state.reading, todo));
+  }
+
+  /** À lire plus tard (EXG-050). */
+  toggleSaved(item: Item) {
+    const saved = isSaved(this.state.reading, item.id);
+    this.updateReading(setSaved(this.state.reading, item, !saved));
+    this.toast(saved ? 'Retiré de « À lire plus tard »' : 'Ajouté à « À lire plus tard »');
+  }
+
+  /** Préférence synchronisée entre appareils (affichage, filtres, thème…). */
+  setPref(key: string, value: unknown) {
+    this.updateReading(setPref(this.state.reading, key, value));
+  }
+
+  pref<T>(key: string, fallback: T): T {
+    return getPref(this.state.reading, key, fallback);
   }
 
   async importOpml(text: string): Promise<ImportStats | undefined> {
@@ -394,6 +460,24 @@ export class Store {
     return this.mutateSubs((s) => moveCategory(s, id, delta), 'FilActu : ordre des catégories');
   }
 
+  /** Icônes suggérées pour les catégories qui n'en ont pas (EXG-018). */
+  fillMissingIcons() {
+    return this.mutateSubs((s) => fillMissingIcons(s), 'FilActu : icônes des catégories');
+  }
+
+  /** Renommer / déplacer un fil (EXG-012). */
+  updateFeed(id: string, patch: { title?: string; categories?: string[] }) {
+    return this.mutateSubs((s) => updateFeed(s, id, patch), 'FilActu : fil modifié');
+  }
+
+  /** Se désabonner d'un fil (EXG-012). */
+  async removeFeed(id: string) {
+    const ok = await this.mutateSubs((s) => removeFeed(s, id), 'FilActu : désabonnement');
+    if (ok && this.state.view === `feed:${id}`) this.setView('today');
+    if (ok) this.toast('Abonnement supprimé');
+    return ok;
+  }
+
   /** Marque lus les articles affichés sur la page (EXG-045). */
   markPageRead(items: Item[]) {
     const ids = items.filter((i) => !isRead(this.state.reading, i, this.state.subs)).map((i) => i.id);
@@ -409,8 +493,18 @@ export class Store {
     const client = this.client;
     if (!client) return;
     try {
+      const requested = new Date().toISOString();
       await client.dispatchCollect();
       if (!silent) this.toast('Collecte demandée : les nouveaux articles arrivent d’ici une à deux minutes');
+      // Rechargement automatique, puis message si la collecte tarde (EXG-071)
+      setTimeout(() => void this.refresh(), 75_000);
+      setTimeout(() => {
+        void this.refresh().then(() => {
+          if (!silent && !((this.state.status.lastRun ?? '') > requested)) {
+            this.toast('La collecte n’est pas encore terminée : GitHub est peut-être chargé. Réessayez dans quelques minutes.');
+          }
+        });
+      }, 180_000);
     } catch (e) {
       if (!silent) this.toast(errorText(e));
     }

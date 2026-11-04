@@ -1,6 +1,6 @@
 # FilActu — Guide utilisateur
 
-> Version 0.1 — à jour de FilActu 0.1.0 ; elle sera complétée de captures d'écran à chaque livraison.
+> Version 0.3 — à jour de FilActu 0.3.0 ; elle sera complétée de captures d'écran à chaque livraison.
 > Les sections marquées *(V0.x)* décrivent des fonctions qui arrivent avec cette version.
 
 ## 1. Ce qu'est FilActu
@@ -56,33 +56,34 @@ Répétez l'étape 2.3 sur chaque appareil : la clé est saisie une fois par app
 
 | Zone | Rôle |
 |---|---|
-| **Volet de gauche** | *Aujourd'hui*, *Tous les articles*, *À lire plus tard*, puis vos catégories. Touchez le chevron d'une catégorie pour voir ses fils. Le chiffre indique le nombre d'articles non lus. |
-| **En-tête** | Nom de la vue, nombre de non-lus et boutons : ✓✓ *Tout marquer comme lu*, ⟳ *Actualiser* (lance une collecte immédiate). Les boutons ▤ *Affichage* *(V0.2)* et 🔍 *Rechercher* *(V0.3)* arriveront ensuite. |
-| **Liste d'articles** | Les articles du plus récent au plus ancien. Les articles lus sont atténués. |
+| **Volet de gauche** | *Aujourd'hui*, *Tous les articles*, *À lire plus tard*, puis vos catégories avec leur icône. Touchez le chevron d'une catégorie pour voir ses fils. Le chiffre indique le nombre d'articles non lus. |
+| **En-tête** | Nom de la vue, nombre de non-lus et boutons : 🔍 *Rechercher*, ▦ *Options d'affichage*, ✓✓ *Tout marquer comme lu*, ⟳ *Actualiser* (lance une collecte immédiate). |
+| **Liste d'articles** | Par défaut, seuls les articles **non lus** sont affichés, du plus récent au plus ancien. |
 
 Sur téléphone, le volet est caché : touchez ☰ en haut à gauche, ou glissez depuis le bord gauche.
 
 ## 4. Lire
 
 - **Toucher ou cliquer un article** ouvre l'article complet dans votre navigateur. Il est alors marqué comme lu.
-- **Changer d'affichage** (▤) :
-  - *Titres* : une ligne par article, pour survoler beaucoup d'articles ; appui long ou survol pour voir le résumé ;
-  - *Magazine* : vignette et début du résumé (par défaut) ;
-  - *Cartes* : grandes images en grille.
-  Le choix est retenu pour chaque catégorie ou fil.
-- **Non lus seulement / Tous** : filtre dans l'en-tête.
+- **Options d'affichage** (▦), retenues pour chaque vue et synchronisées entre vos appareils :
+  - **Titres** : une ligne par article (fil, titre, fraîcheur), pour parcourir très vite. Sur PC, laissez la souris sur un titre pour voir le résumé ; sur mobile, faites un appui long.
+  - **Magazine** (par défaut) : affichage compact façon Feedly — titre, « fil / fraîcheur » et vignette à droite. Une dizaine d'articles tiennent sur un écran de téléphone.
+  - **Cartes** : grille avec grandes images.
+  - **Afficher le début de l'article** : ajoute deux lignes de résumé sous chaque titre (désactivé par défaut pour rester compact). Réglage commun à toutes les vues.
+  - **Non lus seulement** : coché par défaut. Un article que vous lisez reste affiché (atténué) jusqu'à ce que vous changiez de vue.
+  - **Plus anciens d'abord** : inverse l'ordre.
 
 ## 5. Lu / non lu
 
-- Un article devient **lu** quand vous l'ouvrez ou quand vous le faites défiler au-delà du haut de l'écran *(V0.2)*. Ce comportement se règle dans **Réglages → Marquer comme lu en défilant**.
-- Pour remettre un article en **non lu** : bouton ● à droite de l'article (balayage vers la gauche sur mobile *(V0.2)*, touche `m` sur PC *(V0.3)*). Le point est vert tant que l'article n'est pas lu.
-- **Tout marquer comme lu** (✓✓) : marque tous les articles de la vue affichée, après confirmation. En V0.2, vous pourrez choisir *Tout*, *Plus vieux qu'un jour* ou *Plus vieux qu'une semaine*. Une notification **Annuler** reste affichée 10 secondes.
-- **Marquer la page comme lue** : en bas de la liste, le bouton *Marquer les N articles affichés comme lus* marque d'un coup les articles que vous venez de parcourir. Les articles plus anciens, pas encore affichés, restent non lus.
+- Un article devient **lu** quand vous l'ouvrez, ou quand vous le faites **défiler au-delà du haut de l'écran**. Ce second comportement se désactive dans **Réglages → Marquer comme lu en défilant**.
+- Bouton ● à droite de chaque article : vert = non lu ; touchez-le pour basculer lu / non lu. Sur mobile, **balayez l'article vers la gauche** ; sur PC, touche `m`.
+- **Tout marquer comme lu** (✓✓) : choisissez *Tout*, *Plus vieux qu'un jour* ou *Plus vieux qu'une semaine*. Une notification **Annuler** reste affichée 10 secondes.
+- **Marquer la page comme lue** : en bas de la liste, le bouton *Marquer les N articles affichés comme lus* marque d'un coup les articles que vous venez de parcourir.
 
-## 6. À lire plus tard *(V0.2)*
+## 6. À lire plus tard
 
-Bouton 🔖 sur l'article, balayage vers la droite sur mobile, ou touche `s`.
-Ces articles sont gardés **pour toujours**, alors que les autres disparaissent après 30 jours.
+Bouton 🔖 sur l'article, **balayage vers la droite** sur mobile, ou touche `s` sur PC. Retrouvez-les dans *À lire plus tard* (volet de gauche).
+Ces articles sont gardés **pour toujours**, alors que les autres disparaissent après 30 jours. Touchez à nouveau 🔖 pour en retirer un.
 
 ## 7. Gérer les abonnements et les catégories
 
@@ -90,27 +91,33 @@ Ces articles sont gardés **pour toujours**, alors que les autres disparaissent 
 1. En bas du volet de gauche, touchez **+ Ajouter un fil**.
 2. Collez l'adresse du fil, ou simplement celle du site : FilActu trouve le fil tout seul. Pour **YouTube**, l'adresse d'une playlist (`youtube.com/playlist?list=…`) ou d'une chaîne (`youtube.com/channel/…`) suffit : chaque nouvelle vidéo apparaît avec sa miniature et sa description.
 3. Donnez-lui un nom si vous le souhaitez ; sinon le titre du fil est repris automatiquement.
-4. Choisissez sa **catégorie**, ou *+ Nouvelle catégorie…* pour en créer une (avec son icône) au passage.
+4. Choisissez sa **catégorie**, ou *+ Nouvelle catégorie…* pour en créer une au passage : une icône est proposée d'après son nom.
 5. Touchez **Ajouter** : une collecte est lancée aussitôt, les articles arrivent en une à deux minutes.
+
+### Renommer un fil, le déplacer, s'en désabonner
+Dans le volet, dépliez la catégorie, puis touchez **⋯** à droite du fil (sur PC, il apparaît au survol) :
+- changez son **nom** ;
+- cochez une ou plusieurs **catégories** (au moins une) ;
+- **Se désabonner** le retire de vos abonnements.
 
 ### Gérer les catégories
 Dans le volet, à droite de « Catégories », touchez **Gérer** :
-- **Créer** : en bas de l'écran, saisissez un nom, choisissez une icône, puis *Créer la catégorie*.
+- **Créer** : saisissez un nom ; **une icône est proposée automatiquement** (⚽ pour « Sport », 💻 pour « Tech », 📰 pour « Actualités »…). Choisissez-en une autre si vous préférez, puis *Créer la catégorie*.
+- **Proposer les icônes manquantes** : donne d'un coup une icône à toutes les catégories qui n'en ont pas (par exemple celles importées depuis Feedly).
 - **Renommer** : modifiez le nom dans sa case puis appuyez sur Entrée (ou touchez ailleurs).
-- **Icône** : touchez la case carrée à gauche du nom, puis choisissez une icône (∅ pour aucune). Elle s'affiche devant le nom dans le volet.
+- **Icône** : touchez la case carrée à gauche du nom, puis choisissez une icône (∅ pour aucune).
 - **Ordre** : flèches ˄ ˅ pour monter ou descendre la catégorie dans le volet.
 - **Supprimer** : si certains fils ne sont rangés que dans cette catégorie, FilActu vous demande de les **déplacer** vers une autre catégorie ou de vous **désabonner**. Un fil rangé aussi ailleurs y reste simplement.
 
 ### Et aussi
-- **Renommer un fil, le changer de catégorie, se désabonner** *(V0.2)* : menu ⋯ à côté du fil.
-- **Fil en erreur** ⚠ : le site n'a pas répondu lors des 3 dernières collectes. Survolez l'icône pour voir depuis quand.
+- **Fil en erreur** ⚠ : le site n'a pas répondu lors des 3 dernières collectes. Survolez l'icône pour voir depuis quand. Certains sites refusent les lecteurs automatiques : FilActu ne contourne pas ce refus.
 - **Exporter** : Réglages → *Exporter en OPML* (sauvegarde, ou retour vers un autre lecteur).
 
-## 8. Rechercher *(V0.3)*
+## 8. Rechercher
 
-🔍 ou touche `/`. La recherche porte sur les titres et résumés des 30 derniers jours et sur vos articles à lire plus tard, sans tenir compte des accents ni des majuscules.
+🔍 ou touche `/`. La recherche porte sur les titres et résumés, sans tenir compte des accents ni des majuscules (« entree » trouve « Entrée »). Elle cherche dans la vue affichée ; cochez **Partout** pour chercher dans tous les articles des 30 derniers jours et dans vos articles à lire plus tard. Fermez avec ✕ ou `Échap`.
 
-## 9. Raccourcis clavier (PC) *(V0.3)*
+## 9. Raccourcis clavier (PC)
 
 | Touche | Action |
 |---|---|
@@ -118,26 +125,27 @@ Dans le volet, à droite de « Catégories », touchez **Gérer** :
 | `o` ou `Entrée` | Ouvrir l'article dans le navigateur |
 | `m` | Lu / non lu |
 | `s` | À lire plus tard |
-| `Maj` + `A` | Tout marquer comme lu |
+| `Maj` + `A` | Tout marquer comme lu (avec Annuler) |
 | `v` | Changer d'affichage |
 | `r` | Actualiser |
 | `/` | Rechercher |
-| `g` puis `t` / `a` | Aller à Aujourd'hui / Tous |
+| `g` puis `t` / `a` / `s` | Aller à Aujourd'hui / Tous / À lire plus tard |
 | `?` | Afficher l'aide des raccourcis |
 
 ## 10. Plusieurs appareils et hors connexion
 
-- Chaque action est enregistrée sur l'appareil immédiatement, puis envoyée à GitHub dans les secondes qui suivent.
+- Chaque action (lu, à lire plus tard, préférences d'affichage, thème) est enregistrée sur l'appareil immédiatement, puis envoyée à GitHub dans les secondes qui suivent.
 - Sur l'autre appareil, l'état est rafraîchi à l'ouverture, au bouton ⟳ et toutes les 2 minutes quand l'appli est affichée.
-- **Sans réseau** *(V0.3)* : vous lisez les articles déjà chargés ; vos actions sont envoyées au retour du réseau.
+- **Sans réseau** : un bandeau « Hors connexion » s'affiche ; vous lisez les articles déjà chargés et vos actions sont envoyées automatiquement au retour du réseau.
 
 ## 11. Réglages
 
 | Réglage | Effet |
 |---|---|
-| Thème | Clair, sombre ou automatique *(V0.3)* |
-| Marquer comme lu en défilant | Activé par défaut *(V0.2)* |
-| Masquer les fils sans non-lus | Allège le volet de gauche |
+| Thème | Automatique (comme le téléphone ou le PC), clair ou sombre |
+| Marquer comme lu en défilant | Activé par défaut |
+| Afficher le début des articles | Même option que dans ▦ |
+| Masquer les fils sans articles non lus | Allège le volet de gauche |
 | Importer / Exporter OPML | Voir § 2.5 et § 7 |
 | Déconnecter cet appareil | Efface la clé et le cache de cet appareil (vos données restent sur GitHub) |
 

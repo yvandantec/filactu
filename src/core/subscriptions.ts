@@ -8,9 +8,63 @@ export class SubscriptionError extends Error {}
 
 /** Palette d'icônes proposée pour les catégories (EXG-016). */
 export const CATEGORY_ICONS = [
-  '📰', '💻', '🔬', '🧠', '🎮', '🎬', '🎵', '📚', '⚽', '🍳', '✈️', '💼',
-  '💰', '🏛️', '🌍', '🚗', '🏠', '🎨', '📷', '🩺', '🌱', '🔧', '🛒', '⭐',
+  '📰', '💻', '🔬', '🧠', '🎮', '🎲', '🎬', '📺', '🎵', '📚', '⚽', '🏀',
+  '🚴', '🍳', '🍷', '✈️', '💼', '💰', '🏛️', '🌍', '🚗', '🏠', '🎨', '📷',
+  '🩺', '🌱', '🐾', '👶', '🎭', '🔧', '🛒', '⭐', '📁',
 ];
+
+/** Mots-clés → icône (EXG-018). Ordre important : le premier mot-clé trouvé gagne. */
+const ICON_RULES: [RegExp, string][] = [
+  [/jeux? de societe|board ?game|ludique|plateau/, '🎲'],
+  [/basket|nba/, '🏀'],
+  [/velo|cycl|running|course a pied|marathon|trail|triathlon/, '🚴'],
+  [/sport|foot|rugby|tennis|ligue|olymp|f1|formule 1/, '⚽'],
+  [/\bia\b|intelligence artificielle|\bai\b|cerveau|psycho/, '🧠'],
+  [/jeu|jeux|gaming|gamer|vid[eé]oludique|\bjv\b|console|nintendo|playstation|xbox/, '🎮'],
+  [/cinema|film|serie|netflix|streaming/, '🎬'],
+  [/youtube|video|tele|\btv\b|podcast/, '📺'],
+  [/musique|music|concert|rock|jazz|rap/, '🎵'],
+  [/livre|lecture|litterature|\bbd\b|manga|roman|book/, '📚'],
+  [/science|recherche|espace|astro|physique|chimie|biolog/, '🔬'],
+  [/tech|informatique|numerique|digital|dev|code|programm|logiciel|geek|high-tech|android|apple|linux|web/, '💻'],
+  [/cuisine|recette|food|gastro|resto|patisserie/, '🍳'],
+  [/\bvins?\b|biere|oenolog|cocktail/, '🍷'],
+  [/nature|ecolo|environnement|climat|planete|green/, '🌱'],
+  [/voyage|travel|tourisme|vacances/, '✈️'],
+  [/travail|emploi|business|entreprise|pro\b|carriere|management|startup|rh\b/, '💼'],
+  [/financ|argent|bourse|\beco\b|economi|crypto|banque|invest|immobilier/, '💰'],
+  [/politi|gouvern|election|societe|droit|justice/, '🏛️'],
+  [/monde|international|europe|geopoliti/, '🌍'],
+  [/auto|voiture|moto|mobilite|transport/, '🚗'],
+  [/maison|deco|habitat|bricolage|diy|jardin/, '🏠'],
+  [/\barts?\b|design|graphi|dessin|archi/, '🎨'],
+  [/photo/, '📷'],
+  [/sante|medec|bien-etre|nutrition|fitness/, '🩺'],
+  [/animal|animaux|chien|chat|nature sauvage/, '🐾'],
+  [/famille|enfant|parent|bebe/, '👶'],
+  [/humour|rire|blague|satire|parodie|gorafi/, '🎭'],
+  [/shopping|bon plan|promo|achat|deal/, '🛒'],
+  [/actu|news|info|presse|journal|quotidien|medias?/, '📰'],
+];
+
+function normalize(s: string): string {
+  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+}
+
+/** Icône proposée pour un nom de catégorie ; 📁 si rien ne correspond (EXG-018). */
+export function suggestIcon(name: string): string {
+  const n = normalize(name);
+  for (const [re, icon] of ICON_RULES) if (re.test(n)) return icon;
+  return '📁';
+}
+
+/** Ajoute une icône suggérée aux catégories qui n'en ont pas. */
+export function fillMissingIcons(subs: Subscriptions, now = new Date()): Subscriptions {
+  if (subs.categories.every((c) => c.icon)) return subs;
+  return touch(subs, now, {
+    categories: subs.categories.map((c) => (c.icon ? c : { ...c, icon: suggestIcon(c.name) })),
+  });
+}
 
 function touch(subs: Subscriptions, now: Date, patch: Partial<Subscriptions>): Subscriptions {
   return { ...subs, ...patch, updatedAt: now.toISOString() };
@@ -146,6 +200,31 @@ export function addFeed(subs: Subscriptions, input: NewFeed, now = new Date()): 
     status: 'pending',
   };
   return { subs: touch(next, now, { feeds: [...next.feeds, feed] }), feed };
+}
+
+/** Renommer un fil ou changer ses catégories (EXG-012). */
+export function updateFeed(
+  subs: Subscriptions,
+  id: string,
+  patch: { title?: string; categories?: string[] },
+  now = new Date(),
+): Subscriptions {
+  const feed = subs.feeds.find((f) => f.id === id);
+  if (!feed) throw new SubscriptionError('Fil introuvable');
+  const next: Feed = { ...feed };
+  if (patch.title !== undefined) next.title = cleanName(patch.title);
+  if (patch.categories !== undefined) {
+    const cats = [...new Set(patch.categories)].filter((c) => subs.categories.some((x) => x.id === c));
+    if (!cats.length) throw new SubscriptionError('Un fil doit rester rangé dans au moins une catégorie');
+    next.categories = cats;
+  }
+  return touch(subs, now, { feeds: subs.feeds.map((f) => (f.id === id ? next : f)) });
+}
+
+/** Se désabonner d'un fil (EXG-012). */
+export function removeFeed(subs: Subscriptions, id: string, now = new Date()): Subscriptions {
+  if (!subs.feeds.some((f) => f.id === id)) throw new SubscriptionError('Fil introuvable');
+  return touch(subs, now, { feeds: subs.feeds.filter((f) => f.id !== id) });
 }
 
 /** Nom affiché d'un fil : nom saisi, sinon titre trouvé par le collecteur, sinon nom du site. */

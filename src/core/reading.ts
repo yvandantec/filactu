@@ -38,6 +38,34 @@ export function markRead(state: ReadingState, itemId: string, read: boolean, now
   return { ...state, unread: { ...state.unread, [itemId]: at } };
 }
 
+/** Préférence synchronisée (affichage, filtres, thème…). */
+export function setPref(state: ReadingState, key: string, value: unknown, now = new Date()): ReadingState {
+  return { ...state, prefs: { ...state.prefs, [key]: value, updatedAt: now.toISOString() } };
+}
+
+export function getPref<T>(state: ReadingState, key: string, fallback: T): T {
+  const v = state.prefs[key];
+  return v === undefined ? fallback : (v as T);
+}
+
+export function isSaved(state: ReadingState, itemId: string): boolean {
+  const s = state.saved[itemId];
+  return !!s && !s.removed;
+}
+
+/** Ajoute ou retire un article de « À lire plus tard », avec une copie de l'article (EXG-050, EXG-051). */
+export function setSaved(state: ReadingState, item: Item, saved: boolean, now = new Date()): ReadingState {
+  return { ...state, saved: { ...state.saved, [item.id]: { at: now.toISOString(), removed: !saved, item } } };
+}
+
+/** Remet non lus plusieurs articles (annulation d'un « tout marquer lu »). */
+export function markManyUnread(state: ReadingState, itemIds: string[], now = new Date()): ReadingState {
+  const at = now.toISOString();
+  const unread = { ...state.unread };
+  for (const id of itemIds) unread[id] = at;
+  return { ...state, unread };
+}
+
 /** Marque lus plusieurs articles d'un coup (EXG-045). */
 export function markManyRead(state: ReadingState, itemIds: string[], now = new Date()): ReadingState {
   const at = now.toISOString();

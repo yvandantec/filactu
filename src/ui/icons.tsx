@@ -19,7 +19,11 @@ export const IconRefresh = (p: P) => base([<path d="M20 11a8 8 0 1 0-2.3 5.7" />
 export const IconSettings = (p: P) => base([<circle cx="12" cy="12" r="3" />, <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" />], p);
 export const IconAlert = (p: P) => base([<path d="M12 3l10 18H2z" />, <path d="M12 10v4M12 17.5v.5" />], p);
 export const IconClose = (p: P) => base(<path d="M6 6l12 12M18 6L6 18" />, p);
-export const IconDot = (p: P) => base(<circle cx="12" cy="12" r="4" fill="currentColor" />, p);
+export const IconSearch = (p: P) => base([<circle cx="11" cy="11" r="6.5" />, <path d="M20 20l-4.2-4.2" />], p);
+export const IconView = (p: P) => base([<rect x="4" y="4" width="16" height="5" rx="1.5" />, <rect x="4" y="12" width="7" height="8" rx="1.5" />, <rect x="13" y="12" width="7" height="8" rx="1.5" />], p);
+export const IconMore = (p: P) => base([<circle cx="5" cy="12" r="1.2" fill="currentColor" />, <circle cx="12" cy="12" r="1.2" fill="currentColor" />, <circle cx="19" cy="12" r="1.2" fill="currentColor" />], p);
+export const IconBookmarkFilled = (p: P) => base(<path d="M6 4h12v16l-6-4-6 4z" fill="currentColor" />, p);
+export const IconDot =(p: P) => base(<circle cx="12" cy="12" r="4" fill="currentColor" />, p);
 
 export const Logo = ({ size = 28 }: { size?: number }) => (
   <svg viewBox="0 0 512 512" width={size} height={size} aria-hidden="true">

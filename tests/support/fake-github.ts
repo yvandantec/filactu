@@ -2,6 +2,7 @@
 // Imite : GET /repos/{o}/{r}, GET/PUT contents (sha + conflits 409), POST workflow dispatches.
 import type { BrowserContext, Page, Route } from '@playwright/test';
 import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 
 export const GOOD_TOKEN = 'github_pat_TEST_ok';
 export const READONLY_TOKEN = 'github_pat_TEST_readonly';
@@ -34,11 +35,14 @@ export class FakeGitHub {
   async install(target: Page | BrowserContext) {
     await target.route('https://api.github.com/**', (route) => this.handle(route));
     // Aucun vrai site n'est contacté : images et articles des fils de test sont simulés
-    await target.route(/^https?:\/\/[^/]*example\.test\//, (route) =>
-      route.request().resourceType() === 'document'
-        ? route.fulfill({ status: 200, contentType: 'text/html', body: '<title>Article</title><h1>Article</h1>' })
-        : route.fulfill({ status: 404, body: '' }),
-    );
+    await target.route(/^https?:\/\/[^/]*example\.test\//, (route) => {
+      const type = route.request().resourceType();
+      if (type === 'document') return route.fulfill({ status: 200, contentType: 'text/html', body: '<title>Article</title><h1>Article</h1>' });
+      if (type === 'image' && route.request().url().startsWith('https://img.example.test/')) {
+        return route.fulfill({ status: 200, contentType: 'image/png', body: readFileSync('public/icons/icon-192.png') });
+      }
+      return route.fulfill({ status: 404, body: '' });
+    });
   }
 
   private json(route: Route, status: number, body: unknown) {
@@ -105,7 +109,7 @@ function sha(s: string) {
 }
 
 /** Jeu de données de démonstration : 2 catégories, 3 fils, articles du jour. */
-export function seed(gh: FakeGitHub, now = new Date()) {
+export function seed(gh: FakeGitHub, now = new Date(), extra = 0) {
   const iso = (minutesAgo: number) => new Date(now.getTime() - minutesAgo * 60_000).toISOString();
   const day = iso(0).slice(0, 10);
   gh.set('state/subscriptions.json', {
@@ -136,6 +140,10 @@ export function seed(gh: FakeGitHub, now = new Date()) {
       item('i_2', 'f_atom', 'Entrée Atom', 20),
       item('i_3', 'f_news', 'Une nouvelle', 30),
       item('i_4', 'f_blog', 'Deuxième article du blog', 40),
+      // Articles supplémentaires pour les tests de défilement et d'affichage compact
+      ...Array.from({ length: extra }, (_, n) =>
+        item(`x_${n}`, 'f_news', `Article supplémentaire numéro ${n + 1} avec un titre de longueur moyenne`, 50 + n,
+          { image: 'https://img.example.test/x.jpg' })),
     ],
   });
 }
