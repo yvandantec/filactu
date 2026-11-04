@@ -34,8 +34,8 @@
 | **EXG-060** Rechercher dans les titres et résumés des articles conservés (30 jours + à lire plus tard), dans la vue courante ou partout. |  | 0 | — à venir |
 | **EXG-061** Thème clair, sombre ou automatique (suit le système). |  | 0 | — à venir |
 | **EXG-062** Raccourcis clavier sur PC : `j`/`k` article suivant/précédent, `o` ou `Entrée` ouvrir, `m` lu/non lu, `s` à lire plus tard, `Maj+A` tout marquer lu, `r` actualiser, `/` rechercher, `v` changer d'affichage, `g a` Tous, `g t` Aujourd'hui, `?` aide. |  | 0 | — à venir |
-| **EXG-070** Le collecteur récupère tous les fils actifs toutes les 15 minutes. | oui | 9 | ✅ couverte |
-| **EXG-071** Le bouton *Actualiser* déclenche une collecte immédiate puis recharge les articles. |  | 1 | ✅ couverte |
+| **EXG-070** Le collecteur récupère tous les fils actifs toutes les 15 minutes. | oui | 10 | ✅ couverte |
+| **EXG-071** Le bouton *Actualiser* déclenche une collecte immédiate puis recharge les articles. |  | 2 | ✅ couverte |
 | **EXG-072** Les articles de plus de 30 jours sont purgés (hors « À lire plus tard »). | oui | 4 | ✅ couverte |
 | **EXG-073** Chaque action (lu, favori, abonnement, préférence) est enregistrée localement tout de suite, puis envoyée au dépôt de données au plus tard 5 secondes après, ou dès que l'appli passe en arrière-plan. | oui | 2 | ✅ couverte |
 | **EXG-074** Hors connexion, l'appli affiche les articles en cache et met les actions en file d'attente. |  | 0 | — à venir |
@@ -132,9 +132,11 @@
 - tests/unit/feed.test.ts › EXG-070 · lit un fil RSS 1.0 (RDF)
 - tests/unit/feed.test.ts › EXG-070 · un document qui n’est pas un fil est rejeté
 - tests/unit/items.test.ts › EXG-070 · date absente ou future → date de collecte
+- tests/unit/workflows.test.ts › EXG-070 · la collecte est planifiée toutes les 15 minutes
 
 ### EXG-071
 - tests/e2e/reader.spec.ts › EXG-071 · le bouton Actualiser demande une collecte
+- tests/unit/workflows.test.ts › EXG-071 · la collecte peut être lancée à la demande (bouton Actualiser)
 
 ### EXG-072
 - tests/collector/collect.test.ts › EXG-072 · les fichiers de plus de 30 jours sont supprimés

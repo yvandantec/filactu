@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Clé du robot absente
         if: env.HAS_TOKEN != 'true'
-        run: echo "::notice::Secret DATA_REPO_TOKEN non configuré : collecte ignorée (voir le guide utilisateur § 2.2)."
+        run: echo "::notice::Secret DATA_REPO_TOKEN absent, collecte ignorée (voir le guide utilisateur, section 2.2)."
       - uses: actions/checkout@v4
         if: env.HAS_TOKEN == 'true'
       - uses: actions/checkout@v4

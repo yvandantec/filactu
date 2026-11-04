@@ -2,6 +2,12 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [0.1.1] — 2026-11-04
+
+### Corrigé
+- Le robot de collecte ne démarrait pas (fichier de workflow invalide) : le bouton Actualiser affichait « Collecte impossible à lancer (422) ».
+- Nouveau test qui vérifie la validité de tous les workflows GitHub.
+
 ## [0.1.0] — 2026-11-04 — Socle
 
 ### Ajouté

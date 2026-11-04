@@ -1,6 +1,6 @@
 {
   "name": "filactu",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "description": "FilActu - lecteur de fils RSS personnel, inspiré de Feedly, synchronisé via GitHub",
@@ -33,6 +33,7 @@
     "tsx": "^4.19.0",
     "typescript": "^5.6.0",
     "vite": "^5.4.0",
-    "vitest": "^2.1.0"
+    "vitest": "^2.1.0",
+    "yaml": "^2.9.1"
   }
 }
