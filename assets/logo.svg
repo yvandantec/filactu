@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="t">
+  <title id="t">FilActu</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2BB673"/>
+      <stop offset="1" stop-color="#16884F"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <g fill="none" stroke="#fff" stroke-linecap="round" transform="translate(30 4)">
+    <!-- le fil qui arrive et devient le point RSS -->
+    <path d="M62 236 C 112 236 118 352 178 348" stroke-width="22"/>
+    <!-- ondes RSS -->
+    <path d="M178 236 A112 112 0 0 1 290 348" stroke-width="38"/>
+    <path d="M178 150 A198 198 0 0 1 376 348" stroke-width="38"/>
+  </g>
+  <circle cx="208" cy="352" r="34" fill="#fff"/>
+</svg>
