@@ -158,7 +158,7 @@ Dans le volet, à droite de « Catégories », touchez **Gérer** :
 
 **« Clé refusée » ou « droit manquant ».** La clé a expiré ou il lui manque un droit : refaites les § 2.1 et 2.2, puis Réglages → *Déconnecter cet appareil* et saisissez la nouvelle clé.
 
-**Les articles s'ouvrent dans un onglet intégré de Chrome au lieu de mon navigateur (Brave…).** C'est le comportement normal d'une appli installée par Chrome. Dans Réglages → *Ouvrir les articles avec*, choisissez votre navigateur : les articles s'y ouvriront directement.
+**Les articles s'ouvrent dans un onglet intégré de Chrome au lieu de mon navigateur (Brave…).** C'est le comportement normal d'une appli installée par Chrome. Dans Réglages → *Ouvrir les articles avec*, choisissez votre navigateur : les articles s'y ouvriront directement. Si Android affiche à chaque fois un menu « Ouverture avec », choisissez plutôt **Brave — méthode 2 (sans menu de choix)**. Si ce menu persiste encore, c'est Chrome qui l'impose : il suffit alors de toucher Brave.
 
 **Android dit « appli déjà installée » puis « impossible de lancer l'application ».** Une installation précédente a échoué à moitié. Le plus efficace est de **vider le cache de Chrome** (Paramètres du téléphone → Applications → Chrome → Stockage → *Vider le cache*), puis de réinstaller. Sinon, dans l'ordre :
 1. Paramètres du téléphone → Applications : si « FilActu » apparaît, désinstallez-la. Supprimez aussi toute icône FilActu de l'écran d'accueil.

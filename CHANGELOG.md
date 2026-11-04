@@ -2,6 +2,11 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [0.3.3] — 2026-11-04
+
+### Ajouté
+- Option « Brave — méthode 2 » : vise directement l'écran de Brave pour éviter le menu « Ouverture avec » (EXG-038).
+
 ## [0.3.2] — 2026-11-04 — Confort de lecture
 
 ### Ajouté

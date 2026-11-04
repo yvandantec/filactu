@@ -31,7 +31,14 @@ describe('navigateur des articles sur Android', () => {
   });
 
   test('EXG-038 · liste des navigateurs proposés', () => {
-    expect(ANDROID_BROWSERS.map((b) => b.id)).toEqual(['auto', 'brave', 'firefox', 'edge', 'samsung', 'chrome']);
+    expect(ANDROID_BROWSERS.map((b) => b.id)).toEqual(['auto', 'brave', 'brave2', 'firefox', 'edge', 'samsung', 'chrome']);
+  });
+
+  test('EXG-038 · méthode 2 : écran de Brave visé directement (sans menu de choix)', () => {
+    const href = articleHref('https://a.example.test/x', 'brave2', ANDROID);
+    expect(href).toContain(';package=com.brave.browser;');
+    expect(href).toContain(';component=com.brave.browser/org.chromium.chrome.browser.document.ChromeLauncherActivity;');
+    expect(href).toContain('S.browser_fallback_url=');
   });
 });
 

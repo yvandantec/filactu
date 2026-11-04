@@ -23,7 +23,7 @@
 | **EXG-024** Filtre « non lus seulement » / « tous ». | oui | 1 | ✅ couverte |
 | **EXG-030** Trois affichages : Titres (une ligne : source, titre, âge), Magazine compact façon Feedly (titre de taille modérée sur 3 lignes au plus, vignette à droite, « fil / fraîcheur » sur une ligne), Cartes (grille, grande image, titre, fil, fraîcheur). | oui | 5 | ✅ couverte |
 | **EXG-037** Taille du texte des articles réglable sur 3 niveaux : Petit, Normal, Grand. | oui | 2 | ✅ couverte |
-| **EXG-038** Sur Android, choisir le navigateur qui ouvre les articles (Brave, Firefox, Edge, Samsung Internet, Chrome), au lieu de l'onglet intégré de Chrome. | oui | 6 | ✅ couverte |
+| **EXG-038** Sur Android, choisir le navigateur qui ouvre les articles (Brave, Firefox, Edge, Samsung Internet, Chrome), au lieu de l'onglet intégré de Chrome. | oui | 7 | ✅ couverte |
 | **EXG-036** Option « Afficher le début de l'article », réglée séparément pour les grands écrans (PC, tablette paysage : activée par défaut, version riche) et les petits écrans (téléphone, tablette portrait : désactivée par défaut, version compacte). | oui | 4 | ✅ couverte |
 | **EXG-031** Résumé de chaque article : texte brut sans HTML, environ 400 caractères maximum, coupé au mot. | oui | 5 | ✅ couverte |
 | **EXG-032** En affichage Titres, un appui long (mobile) ou le survol (PC) montre le résumé. | oui | 1 | ✅ couverte |
@@ -200,6 +200,7 @@
 - tests/unit/links.test.ts › EXG-038 · seulement sur Android, et seulement si un navigateur est choisi
 - tests/unit/links.test.ts › EXG-038 · adresses invalides laissées telles quelles
 - tests/unit/links.test.ts › EXG-038 · liste des navigateurs proposés
+- tests/unit/links.test.ts › EXG-038 · méthode 2 : écran de Brave visé directement (sans menu de choix)
 
 ### EXG-040
 - tests/e2e/reader.spec.ts › EXG-033 · EXG-034 · EXG-040 · EXG-044 · un clic ouvre l’article dans le navigateur et le marque lu
