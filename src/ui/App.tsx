@@ -25,6 +25,24 @@ export function useStore(store: Store): AppState {
   return s;
 }
 
+/** Grand écran (PC, tablette paysage) ou petit écran (téléphone, tablette portrait) — EXG-036. */
+const WIDE_QUERY = '(min-width: 900px)';
+export function useWideScreen(): boolean {
+  const [wide, setWide] = useState(() => window.matchMedia(WIDE_QUERY).matches);
+  useEffect(() => {
+    const mq = window.matchMedia(WIDE_QUERY);
+    const on = () => setWide(mq.matches);
+    mq.addEventListener('change', on);
+    return () => mq.removeEventListener('change', on);
+  }, []);
+  return wide;
+}
+
+/** Clé et valeur par défaut de l'option « début de l'article » selon le type d'écran. */
+function summaryPref(wide: boolean): [string, boolean] {
+  return wide ? ['showSummary:wide', true] : ['showSummary:narrow', false];
+}
+
 const GUIDE_URL = 'https://github.com/yvandantec/filactu/blob/main/docs/GUIDE-UTILISATEUR.md';
 const PAGE_SIZE = 150;
 const MODE_LABELS: Record<DisplayMode, string> = { titles: 'Titres', magazine: 'Magazine', cards: 'Cartes' };
@@ -117,7 +135,9 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
   const mode = getPref<DisplayMode>(reading, prefKey('mode', view), 'magazine');
   const unreadOnly = view !== 'saved' && getPref<boolean>(reading, prefKey('unreadOnly', view), true);
   const oldestFirst = getPref<boolean>(reading, prefKey('oldestFirst', view), false);
-  const showSummary = getPref<boolean>(reading, 'showSummary', false);
+  const wide = useWideScreen();
+  const [summaryKey, summaryDefault] = summaryPref(wide);
+  const showSummary = getPref<boolean>(reading, summaryKey, summaryDefault);
   const activeQuery = searchOpen ? query.trim() : '';
 
   // Articles lus pendant la consultation : restent affichés jusqu'au changement de vue (EXG-024)
@@ -258,7 +278,7 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
                 onClick={() => setMenu(menu === 'view' ? null : 'view')}><IconView /></button>
               {menu === 'view' && (
                 <ViewMenu store={store} view={view} mode={mode} unreadOnly={unreadOnly} oldestFirst={oldestFirst}
-                  showSummary={showSummary} onClose={() => setMenu(null)} />
+                  showSummary={showSummary} summaryKey={summaryKey} onClose={() => setMenu(null)} />
               )}
             </div>
             {view !== 'saved' && (
@@ -326,8 +346,9 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
 
 // ---------- Options d'affichage (EXG-023, EXG-024, EXG-030, EXG-036) ----------
 
-function ViewMenu({ store, view, mode, unreadOnly, oldestFirst, showSummary, onClose }: {
-  store: Store; view: ViewId; mode: DisplayMode; unreadOnly: boolean; oldestFirst: boolean; showSummary: boolean; onClose: () => void;
+function ViewMenu({ store, view, mode, unreadOnly, oldestFirst, showSummary, summaryKey, onClose }: {
+  store: Store; view: ViewId; mode: DisplayMode; unreadOnly: boolean; oldestFirst: boolean; showSummary: boolean;
+  summaryKey: string; onClose: () => void;
 }) {
   return (
     <div class="popover view-menu" role="dialog" aria-label="Options d’affichage">
@@ -337,7 +358,7 @@ function ViewMenu({ store, view, mode, unreadOnly, oldestFirst, showSummary, onC
             onClick={() => store.setPref(prefKey('mode', view), m)}>{MODE_LABELS[m]}</button>
         ))}
       </div>
-      <label class="check"><input type="checkbox" checked={showSummary} onChange={(e) => store.setPref('showSummary', e.currentTarget.checked)} /> Afficher le début de l’article</label>
+      <label class="check"><input type="checkbox" checked={showSummary} onChange={(e) => store.setPref(summaryKey, e.currentTarget.checked)} /> Afficher le début de l’article</label>
       {view !== 'saved' && (
         <label class="check"><input type="checkbox" checked={unreadOnly} onChange={(e) => store.setPref(prefKey('unreadOnly', view), e.currentTarget.checked)} /> Non lus seulement</label>
       )}
@@ -668,6 +689,8 @@ function Settings({ store, state, onClose }: { store: Store; state: AppState; on
   };
   const lastRun = state.status.lastRun ? new Date(state.status.lastRun).toLocaleString('fr-FR') : 'jamais';
   const r = state.reading;
+  const wide = useWideScreen();
+  const [summaryKey, summaryDefault] = summaryPref(wide);
 
   return (
     <Dialog title="Réglages" onClose={onClose}>
@@ -693,8 +716,9 @@ function Settings({ store, state, onClose }: { store: Store; state: AppState; on
         </label>
         <label class="check"><input type="checkbox" checked={getPref(r, 'markOnScroll', true)}
           onChange={(e) => store.setPref('markOnScroll', e.currentTarget.checked)} /> Marquer comme lu en défilant</label>
-        <label class="check"><input type="checkbox" checked={getPref(r, 'showSummary', false)}
-          onChange={(e) => store.setPref('showSummary', e.currentTarget.checked)} /> Afficher le début des articles</label>
+        <label class="check"><input type="checkbox" checked={getPref(r, summaryKey, summaryDefault)}
+          onChange={(e) => store.setPref(summaryKey, e.currentTarget.checked)} />
+          Afficher le début des articles {wide ? 'sur grand écran (PC)' : 'sur petit écran (téléphone)'}</label>
         <label class="check"><input type="checkbox" checked={getPref(r, 'hideEmptyFeeds', false)}
           onChange={(e) => store.setPref('hideEmptyFeeds', e.currentTarget.checked)} /> Masquer les fils sans articles non lus</label>
       </section>

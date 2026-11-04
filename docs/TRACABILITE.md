@@ -22,7 +22,7 @@
 | **EXG-023** Les articles sont triés du plus récent au plus ancien ; l'option « plus ancien d'abord » est disponible par vue. | oui | 2 | ✅ couverte |
 | **EXG-024** Filtre « non lus seulement » / « tous ». | oui | 1 | ✅ couverte |
 | **EXG-030** Trois affichages : Titres (une ligne : source, titre, âge), Magazine compact façon Feedly (titre de taille modérée sur 3 lignes au plus, vignette à droite, « fil / fraîcheur » sur une ligne), Cartes (grille, grande image, titre, fil, fraîcheur). | oui | 5 | ✅ couverte |
-| **EXG-036** Option « Afficher le début de l'article » (désactivée par défaut) pour garder un affichage compact. | oui | 3 | ✅ couverte |
+| **EXG-036** Option « Afficher le début de l'article », réglée séparément pour les grands écrans (PC, tablette paysage : activée par défaut, version riche) et les petits écrans (téléphone, tablette portrait : désactivée par défaut, version compacte). | oui | 4 | ✅ couverte |
 | **EXG-031** Résumé de chaque article : texte brut sans HTML, environ 400 caractères maximum, coupé au mot. | oui | 5 | ✅ couverte |
 | **EXG-032** En affichage Titres, un appui long (mobile) ou le survol (PC) montre le résumé. | oui | 1 | ✅ couverte |
 | **EXG-033** Un clic sur un article l'ouvre dans le navigateur par défaut (nouvel onglet sur PC). | oui | 1 | ✅ couverte |
@@ -159,7 +159,7 @@
 - tests/e2e/v03.spec.ts › EXG-024 · non lus seulement : l’article lu reste affiché jusqu’au changement de vue
 
 ### EXG-030
-- tests/e2e/reader.spec.ts › EXG-030 · affichage Magazine compact : titre, fil / fraîcheur, sans résumé par défaut
+- tests/e2e/reader.spec.ts › EXG-030 · affichage Magazine : titre, fil / fraîcheur, début de l’article en option
 - tests/e2e/v03.spec.ts › EXG-030 · trois affichages, mémorisés par vue et synchronisés
 - tests/unit/reading.test.ts › EXG-030 · âge lisible
 - tests/unit/text.test.ts › EXG-030 · trouve la première image, en ignorant les pixels de suivi
@@ -183,7 +183,8 @@
 
 ### EXG-036
 - tests/e2e/v03.spec.ts › EXG-036 · affichage compact : au moins 5 articles visibles sur un téléphone
-- tests/e2e/v03.spec.ts › EXG-036 · l’option « début de l’article » est synchronisée
+- tests/e2e/v03.spec.ts › EXG-036 · début de l’article : affiché par défaut sur PC, masqué sur petit écran
+- tests/e2e/v03.spec.ts › EXG-036 · l’option est réglée par type d’écran et synchronisée
 - tests/unit/v03.test.ts › EXG-030 · EXG-036 · préférences synchronisées entre appareils (la plus récente gagne)
 
 ### EXG-040

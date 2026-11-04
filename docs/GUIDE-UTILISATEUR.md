@@ -69,7 +69,7 @@ Sur téléphone, le volet est caché : touchez ☰ en haut à gauche, ou glissez
   - **Titres** : une ligne par article (fil, titre, fraîcheur), pour parcourir très vite. Sur PC, laissez la souris sur un titre pour voir le résumé ; sur mobile, faites un appui long.
   - **Magazine** (par défaut) : affichage compact façon Feedly — titre, « fil / fraîcheur » et vignette à droite. Une dizaine d'articles tiennent sur un écran de téléphone.
   - **Cartes** : grille avec grandes images.
-  - **Afficher le début de l'article** : ajoute deux lignes de résumé sous chaque titre (désactivé par défaut pour rester compact). Réglage commun à toutes les vues.
+  - **Afficher le début de l'article** : ajoute deux lignes de résumé sous chaque titre. Ce réglage est distinct selon l'écran : **activé par défaut sur PC** (version riche), **désactivé par défaut sur téléphone** (version compacte). Il vaut pour toutes les vues.
   - **Non lus seulement** : coché par défaut. Un article que vous lisez reste affiché (atténué) jusqu'à ce que vous changiez de vue.
   - **Plus anciens d'abord** : inverse l'ordre.
 
@@ -144,7 +144,7 @@ Dans le volet, à droite de « Catégories », touchez **Gérer** :
 |---|---|
 | Thème | Automatique (comme le téléphone ou le PC), clair ou sombre |
 | Marquer comme lu en défilant | Activé par défaut |
-| Afficher le début des articles | Même option que dans ▦ |
+| Afficher le début des articles | Même option que dans ▦, réglée séparément pour le PC et le téléphone |
 | Masquer les fils sans articles non lus | Allège le volet de gauche |
 | Importer / Exporter OPML | Voir § 2.5 et § 7 |
 | Déconnecter cet appareil | Efface la clé et le cache de cet appareil (vos données restent sur GitHub) |
@@ -154,6 +154,12 @@ Dans le volet, à droite de « Catégories », touchez **Gérer** :
 **Les nouveaux articles n'arrivent pas.** Appuyez sur ⟳. Si un bandeau signale que la dernière collecte date de plus de 2 heures, ouvrez l'onglet *Actions* du dépôt `filactu` sur GitHub et vérifiez que le workflow *Collecte* est activé.
 
 **« Clé refusée » ou « droit manquant ».** La clé a expiré ou il lui manque un droit : refaites les § 2.1 et 2.2, puis Réglages → *Déconnecter cet appareil* et saisissez la nouvelle clé.
+
+**Android dit « appli déjà installée » puis « impossible de lancer l'application ».** Une installation précédente a échoué à moitié. Dans l'ordre :
+1. Paramètres du téléphone → Applications : si « FilActu » apparaît, désinstallez-la. Supprimez aussi toute icône FilActu de l'écran d'accueil.
+2. Chrome → ⋮ → Paramètres → Paramètres des sites → Toutes les données des sites → `yvandantec.github.io` → **Effacer et réinitialiser**.
+3. Redémarrez le téléphone, rouvrez l'adresse dans Chrome, puis ⋮ → **Installer l'application**.
+4. Sur Samsung, si l'installation échoue encore : Paramètres → Sécurité et confidentialité → **Blocage automatique** peut empêcher l'installation ; désactivez-le le temps d'installer, puis réactivez-le aussitôt.
 
 **J'ai perdu mon téléphone.** Sur GitHub, supprimez la clé (*Settings → Developer settings → Personal access tokens*) et créez-en une nouvelle pour vos autres appareils.
 

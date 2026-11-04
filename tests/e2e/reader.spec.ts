@@ -47,14 +47,15 @@ test('EXG-022 · en-tête : nom de la vue, non-lus, actions', async ({ page }) =
   await expect(page.getByRole('button', { name: 'Actualiser' })).toBeVisible();
 });
 
-test('EXG-030 · affichage Magazine compact : titre, fil / fraîcheur, sans résumé par défaut', async ({ page }) => {
+test('EXG-030 · affichage Magazine : titre, fil / fraîcheur, début de l’article en option', async ({ page }) => {
   await startWithData(page);
   const first = page.locator('.article').first();
   await expect(page.locator('.articles')).toHaveClass(/magazine/);
   await expect(first.locator('.article-title')).toHaveText('Premier article du blog');
   await expect(first.locator('.article-meta')).toHaveText('Blog Exemple / 10 min');
+  await viewOption(page, 'Afficher le début de l’article', false);
   await expect(page.locator('.summary')).toHaveCount(0);
-  await viewOption(page, 'Afficher le début de l’article');
+  await viewOption(page, 'Afficher le début de l’article', true);
   await expect(first.locator('.summary')).toContainText('Résumé de Premier article du blog');
   // EXG-035 : image chargée en différé et sans référent (masquée si elle ne se charge pas)
   const titles = await page.locator('.article-title').allTextContents();
@@ -70,7 +71,7 @@ test('EXG-031 · le résumé est affiché en texte brut', async ({ page }) => {
   gh.set(`items/${day}.json`, file);
   await gh.install(page.context());
   await connect(page);
-  await viewOption(page, 'Afficher le début de l’article');
+  await viewOption(page, 'Afficher le début de l’article', true);
   await expect(page.locator('.summary').first()).toHaveText('<b>pas du HTML</b>');
   await expect(page.locator('.summary b')).toHaveCount(0);
 });

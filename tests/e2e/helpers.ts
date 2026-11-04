@@ -17,10 +17,11 @@ export async function startWithData(page: Page, gh = new FakeGitHub(), doSeed = 
 }
 
 /** Coche / décoche une option du menu « Options d’affichage ». */
-export async function viewOption(page: Page, label: string) {
+export async function viewOption(page: Page, label: string, checked?: boolean) {
   await page.getByRole('button', { name: 'Options d’affichage' }).click();
   const menu = page.getByRole('dialog', { name: 'Options d’affichage' });
-  await menu.getByLabel(label).click();
+  if (checked === undefined) await menu.getByLabel(label).click();
+  else await menu.getByLabel(label).setChecked(checked);
   await menu.getByRole('button', { name: 'Fermer' }).click();
   await expect(menu).toBeHidden();
 }

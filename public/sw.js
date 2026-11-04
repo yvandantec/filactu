@@ -1,6 +1,6 @@
 // Service worker FilActu : coquille de l'appli disponible hors connexion (EXG-003, EXG-074).
 // Les données (api.github.com) ne passent jamais par ce cache.
-const CACHE = 'filactu-shell-v1';
+const CACHE = 'filactu-shell-v2';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/logo.svg'];
 
 self.addEventListener('install', (event) => {
@@ -30,6 +30,20 @@ self.addEventListener('fetch', (event) => {
           return res;
         })
         .catch(() => caches.match('./index.html')),
+    );
+    return;
+  }
+
+  if (url.pathname.endsWith('.webmanifest') || url.pathname.endsWith('/sw.js')) {
+    // Manifeste : toujours la dernière version quand le réseau est disponible
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          const copy = res.clone();
+          caches.open(CACHE).then((c) => c.put(req, copy));
+          return res;
+        })
+        .catch(() => caches.match(req)),
     );
     return;
   }

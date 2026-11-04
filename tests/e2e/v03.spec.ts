@@ -29,6 +29,7 @@ test.describe('affichage', () => {
   test('EXG-036 · affichage compact : au moins 5 articles visibles sur un téléphone', async ({ page }, info) => {
     test.skip(info.project.name !== 'telephone', 'mesure propre au téléphone');
     await startWith(page, 10);
+    await expect(page.locator('.article').nth(5)).toBeAttached();
     await expect(page.locator('.summary')).toHaveCount(0);
     const vh = page.viewportSize()!.height;
     const visible = await page.locator('.article').evaluateAll((els, h) =>
@@ -36,11 +37,20 @@ test.describe('affichage', () => {
     expect(visible).toBeGreaterThanOrEqual(5);
   });
 
-  test('EXG-036 · l’option « début de l’article » est synchronisée', async ({ page }) => {
+  test('EXG-036 · début de l’article : affiché par défaut sur PC, masqué sur petit écran', async ({ page }, info) => {
+    await startWithData(page);
+    const wide = info.project.name === 'pc';
+    await expect(page.locator('.summary')).toHaveCount(wide ? 4 : 0);
+  });
+
+  test('EXG-036 · l’option est réglée par type d’écran et synchronisée', async ({ page }, info) => {
     const gh = await startWithData(page);
+    const wide = info.project.name === 'pc';
+    const key = wide ? 'showSummary:wide' : 'showSummary:narrow';
     await viewOption(page, 'Afficher le début de l’article');
-    await expect(page.locator('.summary').first()).toBeVisible();
-    await expect.poll(() => reading(gh)?.prefs.showSummary, { timeout: 5000 }).toBe(true);
+    await expect(page.locator('.summary')).toHaveCount(wide ? 0 : 4);
+    await expect.poll(() => reading(gh)?.prefs[key], { timeout: 5000 }).toBe(!wide);
+    expect(reading(gh)?.prefs[wide ? 'showSummary:narrow' : 'showSummary:wide']).toBeUndefined();
   });
 
   test('EXG-030 · trois affichages, mémorisés par vue et synchronisés', async ({ page }) => {

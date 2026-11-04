@@ -64,7 +64,7 @@ test('EXG-003 · l’appli est installable (manifeste, icônes, service worker)'
   await page.goto('./');
   const href = await page.locator('link[rel="manifest"]').getAttribute('href');
   const manifest = await (await request.get(href!)).json();
-  expect(manifest).toMatchObject({ name: 'FilActu', display: 'standalone', start_url: './' });
+  expect(manifest).toMatchObject({ name: 'FilActu', id: '/filactu/app', display: 'standalone', start_url: './' });
   const sizes = manifest.icons.map((i: { sizes: string; purpose: string }) => `${i.sizes}/${i.purpose}`);
   expect(sizes).toEqual(expect.arrayContaining(['192x192/any', '512x512/any', '512x512/maskable']));
   for (const icon of manifest.icons) expect((await request.get(icon.src)).ok()).toBe(true);

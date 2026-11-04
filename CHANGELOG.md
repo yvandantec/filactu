@@ -2,6 +2,15 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [0.3.1] — 2026-11-04
+
+### Modifié
+- « Afficher le début de l'article » se règle séparément sur grand écran (activé par défaut, version riche) et sur téléphone (désactivé par défaut, version compacte) (EXG-036).
+- Le manifeste porte un identifiant d'application stable (`id`), et il est toujours relu depuis le réseau : une installation Android ratée auparavant ne bloque plus une nouvelle installation (EXG-003).
+
+### Documentation
+- Guide : marche à suivre quand Android indique « appli déjà installée » / « impossible de lancer l'application ».
+
 ## [0.3.0] — 2026-11-04 — Lots V0.2 et V0.3, affichage compact
 
 ### Ajouté

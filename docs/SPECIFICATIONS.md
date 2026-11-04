@@ -124,7 +124,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 |---|---|---|
 | EXG-001 | Au premier lancement sur un appareil, l'appli demande la clé GitHub et le nom du dépôt de données. | Une clé valide affiche la liste des abonnements. Une clé invalide ou sans droits affiche un message clair qui dit quel droit manque. |
 | EXG-002 | La clé est mémorisée sur l'appareil et peut être effacée depuis les réglages (« Déconnecter cet appareil »). | Après déconnexion, l'appli ne contient plus aucune donnée en cache. |
-| EXG-003 | L'appli s'installe sur Android (téléphone et tablette) et sur PC (Chrome/Edge). | Le manifeste et le service worker sont valides ; l'icône FilActu apparaît sur l'écran d'accueil ; l'appli s'ouvre en plein écran. |
+| EXG-003 | L'appli s'installe sur Android (téléphone et tablette) et sur PC (Chrome/Edge). | Le manifeste (avec un identifiant `id` stable) et le service worker sont valides ; l'icône FilActu apparaît sur l'écran d'accueil ; l'appli s'ouvre en plein écran. |
 
 ### 4.2 Abonnements et catégories
 
@@ -155,7 +155,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | ID | Exigence | Critères d'acceptation |
 |---|---|---|
 | EXG-030 | Trois affichages : **Titres** (une ligne : source, titre, âge), **Magazine** compact façon Feedly (titre de taille modérée sur 3 lignes au plus, vignette à droite, « fil / fraîcheur » sur une ligne), **Cartes** (grille, grande image, titre, fil, fraîcheur). | Le choix est mémorisé par fil ou catégorie et synchronisé. Par défaut : Magazine. |
-| EXG-036 | Option « Afficher le début de l'article » (désactivée par défaut) pour garder un affichage compact. | En Magazine sans début d'article, au moins 5 articles sont visibles sur un écran de téléphone (390 × 844). L'option est synchronisée entre appareils. |
+| EXG-036 | Option « Afficher le début de l'article », réglée séparément pour les grands écrans (PC, tablette paysage : activée par défaut, version riche) et les petits écrans (téléphone, tablette portrait : désactivée par défaut, version compacte). | En Magazine sans début d'article, au moins 5 articles sont visibles sur un écran de téléphone (390 × 844). Chaque réglage est synchronisé entre les appareils du même type d'écran. |
 | EXG-031 | Résumé de chaque article : texte brut sans HTML, environ 400 caractères maximum, coupé au mot. | Pas de script, pas de style ni de traqueur hérité du fil. |
 | EXG-032 | En affichage Titres, un appui long (mobile) ou le survol (PC) montre le résumé. | — |
 | EXG-033 | Un clic sur un article l'ouvre dans le **navigateur par défaut** (nouvel onglet sur PC). | L'article est marqué lu. |

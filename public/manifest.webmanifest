@@ -1,4 +1,5 @@
 {
+  "id": "/filactu/app",
   "name": "FilActu",
   "short_name": "FilActu",
   "description": "Lecteur de fils RSS personnel, synchronisé sur tous vos appareils",
