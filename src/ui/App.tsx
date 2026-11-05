@@ -9,7 +9,7 @@ import {
 } from '../core/views';
 import type { Feed, FeedsStatus, Item, Subscriptions } from '../core/types';
 import { feedLabel } from '../core/subscriptions';
-import { ANDROID_BROWSERS, articleHref, fontScale, FONT_SIZES, isAndroid, type FontSize } from '../core/links';
+import { ANDROID_BROWSERS, articleHref, fontScale, FONT_SIZES, canChooseBrowser, type FontSize } from '../core/links';
 import { AddFeedDialog, CategoriesDialog, Dialog, FeedDialog } from './dialogs';
 import {
   IconAlert, IconAll, IconBookmark, IconBookmarkFilled, IconCheckAll, IconChevron, IconClose, IconDot, IconMenu,
@@ -49,7 +49,7 @@ function fontPref(wide: boolean): string {
   return wide ? 'fontSize:wide' : 'fontSize:narrow';
 }
 
-const ANDROID = typeof navigator !== 'undefined' && isAndroid(navigator.userAgent);
+const ANDROID = typeof navigator !== 'undefined' && canChooseBrowser(navigator.userAgent);
 
 const GUIDE_URL = 'https://github.com/yvandantec/filactu/blob/main/docs/GUIDE-UTILISATEUR.md';
 const PAGE_SIZE = 150;

@@ -26,6 +26,16 @@ export function isAndroid(userAgent: string): boolean {
   return /Android/i.test(userAgent);
 }
 
+/** Vrai dans l'appli Android FilActu (EXG-004) : elle confie elle-même les liens au navigateur par défaut. */
+export function isAndroidApp(userAgent: string): boolean {
+  return /FilActuAndroid\//.test(userAgent);
+}
+
+/** Le réglage « Ouvrir les articles avec » n'a de sens que sur Android, hors de l'appli FilActu. */
+export function canChooseBrowser(userAgent: string): boolean {
+  return isAndroid(userAgent) && !isAndroidApp(userAgent);
+}
+
 /**
  * Lien intent:// qui demande à Android d'ouvrir l'adresse avec une application précise,
  * et revient à l'adresse normale si cette application n'est pas installée.
@@ -46,7 +56,7 @@ export function intentUrl(link: string, pkg: string, activity?: string): string 
 
 /** Adresse à utiliser pour ouvrir un article selon le navigateur choisi. */
 export function articleHref(link: string, browserId: string, userAgent: string): string {
-  if (!isAndroid(userAgent)) return link;
+  if (!canChooseBrowser(userAgent)) return link;
   const b = ANDROID_BROWSERS.find((x) => x.id === browserId);
   return b?.pkg ? intentUrl(link, b.pkg, b.activity) : link;
 }

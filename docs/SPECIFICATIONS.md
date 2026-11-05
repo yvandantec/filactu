@@ -66,6 +66,7 @@ FilActu est un lecteur de fils RSS personnel, inspiré de Feedly :
 | DEC-05 | État de lecture fusionnable (union des « lus », dernier gagnant pour les favoris) | Deux appareils peuvent écrire en même temps sans perdre de données. |
 | DEC-06 | Pas de framework lourd : TypeScript + Vite + Preact | Appli légère, démarrage rapide sur mobile, outillage de test standard (Vitest, Playwright). |
 | DEC-07 | La clé GitHub est stockée sur l'appareil et n'est jamais envoyée ailleurs qu'à `api.github.com` | Sécurité. |
+| DEC-08 | Sur Android, une petite appli native (dossier `android/`, Java, WebView) remplace l'installation par Chrome | Une appli installée par Chrome ouvre toujours les liens dans un onglet intégré de Chrome ou via un menu de choix, quel que soit le navigateur par défaut. L'appli native confie les liens à Android, qui ouvre directement le navigateur par défaut. Clé de signature hors dépôt (`~/.android-keys`). |
 
 ### 3.2 Modèle de données (dépôt `filactu-data`)
 
@@ -124,6 +125,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 |---|---|---|
 | EXG-001 | Au premier lancement sur un appareil, l'appli demande la clé GitHub et le nom du dépôt de données. | Une clé valide affiche la liste des abonnements. Une clé invalide ou sans droits affiche un message clair qui dit quel droit manque. |
 | EXG-002 | La clé est mémorisée sur l'appareil et peut être effacée depuis les réglages (« Déconnecter cet appareil »). | Après déconnexion, l'appli ne contient plus aucune donnée en cache. |
+| EXG-004 | Appli Android à installer (APK) qui affiche FilActu et ouvre chaque article **directement dans le navigateur par défaut** du téléphone (Brave…), sans onglet intégré ni menu de choix. | Les pages de FilActu restent dans l'appli ; tout autre lien est confié à Android (ACTION_VIEW). Retour arrière, import OPML (choix de fichier) et données hors connexion fonctionnent. Le site détecte l'appli et masque le réglage « Ouvrir les articles avec ». Les mises à jour du site arrivent sans réinstaller l'APK. |
 | EXG-003 | L'appli s'installe sur Android (téléphone et tablette) et sur PC (Chrome/Edge). | Le manifeste (avec un identifiant `id` stable) et le service worker sont valides ; l'icône FilActu apparaît sur l'écran d'accueil ; l'appli s'ouvre en plein écran. |
 
 ### 4.2 Abonnements et catégories
@@ -257,5 +259,6 @@ Le workflow du collecteur lit la clé dans le **secret** `DATA_REPO_TOKEN` du d�
 | **V0.3.1 — Affichage compact, icônes suggérées** | Demandes du 2026-11-04 | EXG-018, 036 |
 | **V0.3.2 — Confort de lecture** | Taille du texte, navigateur des articles sur Android | EXG-037, 038 |
 | **V0.3.4 — Fraîcheur des articles** | Collecte lancée par l'appli à l'ouverture | EXG-078 |
+| **V0.4 — Appli Android** | APK qui ouvre les articles dans le navigateur par défaut | EXG-004 |
 | **V0.3 — Confort** | Recherche, thème sombre, raccourcis, hors connexion, actualisation à la demande, robustesse de la synchro | EXG-060→062, 071, 074→076 |
 | **V1.0** | Finitions, accessibilité, performance, documentation complète | ENF-01→08 |

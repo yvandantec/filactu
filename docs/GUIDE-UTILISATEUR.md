@@ -41,7 +41,8 @@ Tant que ce secret n'existe pas, le robot ne fait rien (sans erreur).
 
 ### 2.4 Installer l'appli
 
-- **Android (téléphone ou tablette)** : ouvrez l'adresse dans Chrome → menu ⋮ → **Installer l'application** (ou « Ajouter à l'écran d'accueil »). L'icône verte FilActu apparaît avec vos autres applis.
+- **Android (recommandé) : l'appli FilActu.** Téléchargez le fichier **FilActu-x.y.z.apk** depuis la page <https://github.com/yvandantec/filactu/releases> (rubrique *Assets*), ouvrez-le et acceptez l'installation (Android demande d'autoriser une fois l'installation depuis le navigateur ou l'application Fichiers). Avec cette appli, **chaque article s'ouvre directement dans votre navigateur par défaut** (Brave, Firefox…), dans un nouvel onglet, sans onglet intégré ni menu de choix. Le contenu de FilActu se met à jour tout seul ; l'APK ne se réinstalle que si une nouvelle version d'appli est annoncée. Si vous aviez installé FilActu via Chrome, supprimez cette ancienne icône.
+- **Android, autre possibilité** : ouvrez l'adresse dans Chrome → menu ⋮ → **Installer l'application** (ou « Ajouter à l'écran d'accueil »). L'icône verte FilActu apparaît avec vos autres applis.
 - **PC** : dans Chrome ou Edge, cliquez l'icône d'installation à droite de la barre d'adresse. Vous pouvez aussi simplement garder l'onglet ouvert.
 
 Répétez l'étape 2.3 sur chaque appareil : la clé est saisie une fois par appareil.

@@ -2,6 +2,13 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [0.4.0] — 2026-11-05 — Appli Android
+
+### Ajouté
+- Appli Android FilActu (APK, dossier `android/`) : affiche FilActu et ouvre chaque article directement dans le navigateur par défaut du téléphone (Brave…), sans onglet intégré ni menu de choix (EXG-004, DEC-08).
+- Dans l'appli Android, le réglage « Ouvrir les articles avec » est masqué (inutile).
+- CI : tests et fabrication de l'appli Android à chaque modification.
+
 ## [0.3.4] — 2026-11-05 — Fraîcheur des articles
 
 ### Ajouté

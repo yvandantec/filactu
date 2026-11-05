@@ -1,11 +1,12 @@
 # Matrice de traçabilité
 
-> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4. Ne pas modifier à la main.
+> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4. Ne pas modifier à la main.
 
 | Exigence | Lot livré | Tests | Statut |
 |---|---|---|---|
 | **EXG-001** Au premier lancement sur un appareil, l'appli demande la clé GitHub et le nom du dépôt de données. | oui | 5 | ✅ couverte |
 | **EXG-002** La clé est mémorisée sur l'appareil et peut être effacée depuis les réglages (« Déconnecter cet appareil »). | oui | 1 | ✅ couverte |
+| **EXG-004** Appli Android à installer (APK) qui affiche FilActu et ouvre chaque article directement dans le navigateur par défaut du téléphone (Brave…), sans onglet intégré ni menu de choix. | oui | 2 | ✅ couverte |
 | **EXG-003** L'appli s'installe sur Android (téléphone et tablette) et sur PC (Chrome/Edge). | oui | 1 | ✅ couverte |
 | **EXG-010** Importer un fichier OPML (export Feedly). | oui | 5 | ✅ couverte |
 | **EXG-011** Ajouter un abonnement par URL de fil ou de site, avec un nom facultatif, et le ranger dans une catégorie existante ou nouvelle. | oui | 9 | ✅ couverte |
@@ -76,6 +77,10 @@
 
 ### EXG-003
 - tests/e2e/setup.spec.ts › EXG-003 · l’appli est installable (manifeste, icônes, service worker)
+
+### EXG-004
+- tests/e2e/android-app.spec.ts › EXG-004 · dans l’appli Android, liens normaux et réglage du navigateur masqué
+- tests/unit/links.test.ts › EXG-004 · dans l’appli Android, les liens restent normaux et le réglage est masqué
 
 ### EXG-010
 - tests/e2e/reader.spec.ts › EXG-010 · import du fichier OPML Feedly

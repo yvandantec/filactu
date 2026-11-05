@@ -1,5 +1,7 @@
 import { describe, expect, test } from 'vitest';
-import { ANDROID_BROWSERS, articleHref, fontScale, FONT_SIZES, intentUrl, isAndroid } from '../../src/core/links';
+import {
+  ANDROID_BROWSERS, articleHref, canChooseBrowser, fontScale, FONT_SIZES, intentUrl, isAndroid, isAndroidApp,
+} from '../../src/core/links';
 
 const ANDROID = 'Mozilla/5.0 (Linux; Android 14; SM-S911B) AppleWebKit/537.36 Chrome/130.0 Mobile Safari/537.36';
 const WINDOWS = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/130.0 Safari/537.36';
@@ -39,6 +41,18 @@ describe('navigateur des articles sur Android', () => {
     expect(href).toContain(';package=com.brave.browser;');
     expect(href).toContain(';component=com.brave.browser/org.chromium.chrome.browser.document.ChromeLauncherActivity;');
     expect(href).toContain('S.browser_fallback_url=');
+  });
+});
+
+describe('appli Android FilActu', () => {
+  const APP = ANDROID + ' FilActuAndroid/1.0.0';
+  test('EXG-004 · dans l’appli Android, les liens restent normaux et le réglage est masqué', () => {
+    expect(isAndroidApp(APP)).toBe(true);
+    expect(isAndroidApp(ANDROID)).toBe(false);
+    expect(canChooseBrowser(APP)).toBe(false);
+    expect(canChooseBrowser(ANDROID)).toBe(true);
+    expect(canChooseBrowser(WINDOWS)).toBe(false);
+    expect(articleHref('https://a.example.test/x', 'brave2', APP)).toBe('https://a.example.test/x');
   });
 });
 

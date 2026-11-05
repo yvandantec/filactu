@@ -40,6 +40,21 @@ jobs:
         with:
           path: dist
 
+  android:
+    # Appli Android (EXG-004) : tests unitaires et fabrication (non signée) pour vérifier que tout compile
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - run: chmod +x gradlew && ./gradlew --no-daemon testDebugUnitTest assembleDebug
+
   deploy:
     needs: verify
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
