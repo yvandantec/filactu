@@ -250,3 +250,97 @@ describe('collecteur', () => {
     expect(stats).toMatchObject({ ok: 1, errors: 0, newItems: 1, pageImages: 0 });
   });
 });
+
+describe('grands volumes (ENF-08, EXG-080)', () => {
+  const host = 'https://volume.example.test';
+
+  /** n fils fictifs servis par un fetch simulé (aucun réseau), avec une latence réglable. */
+  async function manyFeeds(n: number) {
+    const subs: Subscriptions = {
+      version: 1, updatedAt: '', categories: [{ id: 'tech', name: 'Tech', order: 0 }],
+      feeds: Array.from({ length: n }, (_, i) => {
+        const url = `${host}/fil${i}.xml`;
+        return { id: feedIdFor(url), url, title: `F${i}`, categories: ['tech'], addedAt: '', status: 'active' as const };
+      }),
+    };
+    await mkdir(join(dir, 'state'), { recursive: true });
+    await writeFile(join(dir, 'state/subscriptions.json'), JSON.stringify(subs));
+    return subs;
+  }
+
+  function simulatedFetch(opts: { feedMs: number; pageMs: number; itemsPerFeed: number; calls?: string[] }) {
+    return (async (input: string | URL | Request, init?: RequestInit) => {
+      const url = String(input);
+      opts.calls?.push(url);
+      const m = /\/fil(\d+)\.xml$/.exec(url);
+      await new Promise<void>((resolve, reject) => {
+        const t = setTimeout(resolve, m ? opts.feedMs : opts.pageMs);
+        init?.signal?.addEventListener('abort', () => { clearTimeout(t); reject(new DOMException('abort', 'AbortError')); });
+      });
+      if (m) {
+        const items = Array.from({ length: opts.itemsPerFeed }, (_, j) =>
+          `<item><title>A${m[1]}-${j}</title><link>${host}/a/${m[1]}/${j}</link><pubDate>Wed, 04 Nov 2026 0${j % 10}:00:00 GMT</pubDate></item>`).join('');
+        return new Response(`<?xml version="1.0"?><rss version="2.0"><channel><title>F${m[1]}</title>${items}</channel></rss>`, { status: 200 });
+      }
+      return new Response(`<html><head><meta property="og:image" content="${host}/img.jpg"></head></html>`, { status: 200 });
+    }) as typeof fetch;
+  }
+
+  test('ENF-08 · 300 fils et 6 000 articles sans image sont collectés en une fois', async () => {
+    await manyFeeds(300);
+    const started = Date.now();
+    const stats = await collect({ dataDir: dir, now, fetchImpl: simulatedFetch({ feedMs: 5, pageMs: 5, itemsPerFeed: 20 }) });
+    expect(Date.now() - started).toBeLessThan(15_000);
+    expect(stats).toMatchObject({ feeds: 300, ok: 300, errors: 0, postponed: 0, newItems: 6000, pageImages: 6000 });
+    const day = await readJson<DayFile>('items/2026-11-04.json');
+    expect(day.items).toHaveLength(6000);
+  }, 30_000);
+
+  test('EXG-080 · passé le budget, les fils restants sont reportés sans erreur et ce qui est collecté est enregistré', async () => {
+    await manyFeeds(40);
+    const lines: string[] = [];
+    const started = Date.now();
+    const stats = await collect({
+      dataDir: dir, now, budgetMs: 300, log: (l) => lines.push(l),
+      fetchImpl: simulatedFetch({ feedMs: 100, pageMs: 5, itemsPerFeed: 1 }),
+    });
+    // les fils commencés avant l'échéance se terminent, rien d'autre ne démarre ensuite
+    expect(Date.now() - started).toBeLessThan(300 + 400);
+    expect(stats.postponed).toBeGreaterThan(0);
+    expect(stats.ok + stats.postponed).toBe(40);
+    expect(stats.errors).toBe(0);
+    const day = await readJson<DayFile>('items/2026-11-04.json');
+    expect(day.items).toHaveLength(stats.ok);
+    const status = await readJson<FeedsStatus>('meta/feeds-status.json');
+    expect(Object.values(status.feeds).every((f) => !f.failures)).toBe(true);
+    expect(lines.join('\n')).toMatch(new RegExp(`${stats.postponed} fils reportés au prochain passage`));
+  });
+
+  test('EXG-080 · les fils reportés passent en priorité à la collecte suivante', async () => {
+    const subs = await manyFeeds(40);
+    const opts = { feedMs: 100, pageMs: 5, itemsPerFeed: 1 };
+    let t = now.getTime();
+    for (let run = 0; run < 6; run++) {
+      t += 15 * 60_000;
+      await collect({ dataDir: dir, now: new Date(t), budgetMs: 300, fetchImpl: simulatedFetch(opts) });
+    }
+    const status = await readJson<FeedsStatus>('meta/feeds-status.json');
+    // au bout de quelques passages, chaque fil a été collecté au moins une fois
+    expect(subs.feeds.every((f) => status.feeds[f.id]?.lastSuccess)).toBe(true);
+  });
+
+  test('EXG-080 · passé le budget, plus aucune page d’article n’est ouverte', async () => {
+    await manyFeeds(1);
+    const calls: string[] = [];
+    const started = Date.now();
+    const stats = await collect({
+      dataDir: dir, now, budgetMs: 200,
+      fetchImpl: simulatedFetch({ feedMs: 5, pageMs: 150, itemsPerFeed: 20, calls }),
+    });
+    expect(Date.now() - started).toBeLessThan(200 + 400);
+    expect(stats).toMatchObject({ ok: 1, errors: 0, newItems: 20 });
+    // 4 pages ouvertes en parallèle : au plus deux vagues avant l'échéance
+    expect(calls.filter((u) => u.includes('/a/')).length).toBeLessThanOrEqual(8);
+    expect(stats.pageImages).toBeLessThan(20);
+  });
+});

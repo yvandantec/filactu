@@ -1,4 +1,4 @@
-// Collecteur FilActu (EXG-070, EXG-072, EXG-077, EXG-011, EXG-015, EXG-079)
+// Collecteur FilActu (EXG-070, EXG-072, EXG-077, EXG-011, EXG-015, EXG-079, EXG-080)
 // IMPORTANT (DEC-03) : les journaux sont publics ; on n'y écrit QUE des compteurs.
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
@@ -13,6 +13,11 @@ export const ERROR_THRESHOLD = 3;
 export const PAGE_IMAGE_LIMIT = 20;
 const PAGE_TIMEOUT_MS = 10_000;
 const PAGE_CONCURRENCY = 4;
+/**
+ * Temps de travail d'une collecte (EXG-080). GitHub arrête le travail au bout de 10 minutes,
+ * installation comprise : passé ce budget, on n'entame plus rien et on enregistre ce qui est collecté.
+ */
+export const COLLECT_BUDGET_MS = 6 * 60_000;
 
 export interface CollectOptions {
   dataDir: string;
@@ -21,6 +26,7 @@ export interface CollectOptions {
   log?: (line: string) => void;
   timeoutMs?: number;
   concurrency?: number;
+  budgetMs?: number;
 }
 
 export interface CollectStats {
@@ -32,6 +38,7 @@ export interface CollectStats {
   newItems: number;
   purgedDays: number;
   pageImages: number;
+  postponed: number;
 }
 
 async function readJson<T>(path: string): Promise<T | undefined> {
@@ -89,10 +96,11 @@ async function pool<T>(items: T[], size: number, fn: (t: T) => Promise<void>): P
  * Pour les nouveaux articles sans image, lit l'image de partage de leur page (EXG-079).
  * Une page injoignable est simplement ignorée : le fil n'est pas mis en erreur.
  */
-async function addPageImages(items: Item[], fetchImpl: typeof fetch, timeoutMs: number): Promise<number> {
+async function addPageImages(items: Item[], fetchImpl: typeof fetch, timeoutMs: number, deadline: number): Promise<number> {
   const todo = items.filter((i) => !i.image).slice(0, PAGE_IMAGE_LIMIT);
   let found = 0;
   await pool(todo, PAGE_CONCURRENCY, async (item) => {
+    if (Date.now() >= deadline) return; // budget épuisé : l'article reste sans vignette (EXG-080)
     try {
       const res = await fetchText(item.link, fetchImpl, Math.min(timeoutMs, PAGE_TIMEOUT_MS), { Accept: 'text/html' });
       if (res.status >= 400) return;
@@ -108,6 +116,13 @@ async function addPageImages(items: Item[], fetchImpl: typeof fetch, timeoutMs: 
   return found;
 }
 
+/** Date de la dernière tentative sur un fil ('' si jamais tenté) : sert à servir d'abord les plus anciens. */
+function lastAttempt(st: FeedRunStatus | undefined): string {
+  const a = st?.lastSuccess ?? '';
+  const b = st?.lastErrorAt ?? '';
+  return a > b ? a : b;
+}
+
 function shortError(e: unknown): string {
   if (e instanceof Error) return e.name === 'AbortError' ? 'Délai dépassé' : e.message.slice(0, 120);
   return 'Erreur inconnue';
@@ -118,9 +133,10 @@ export async function collect(opts: CollectOptions): Promise<CollectStats> {
   const fetchImpl = opts.fetchImpl ?? fetch;
   const log = opts.log ?? (() => {});
   const timeoutMs = opts.timeoutMs ?? 20_000;
+  const deadline = Date.now() + (opts.budgetMs ?? COLLECT_BUDGET_MS);
   const dir = opts.dataDir;
 
-  const stats: CollectStats = { feeds: 0, ok: 0, notModified: 0, errors: 0, discovered: 0, newItems: 0, purgedDays: 0, pageImages: 0 };
+  const stats: CollectStats = { feeds: 0, ok: 0, notModified: 0, errors: 0, discovered: 0, newItems: 0, purgedDays: 0, pageImages: 0, postponed: 0 };
   const subs = await readJson<Subscriptions>(join(dir, 'state/subscriptions.json'));
   const statusPath = join(dir, 'meta/feeds-status.json');
   const status: FeedsStatus = (await readJson<FeedsStatus>(statusPath)) ?? { feeds: {} };
@@ -143,11 +159,17 @@ export async function collect(opts: CollectOptions): Promise<CollectStats> {
   }
   const seen = new SeenIndex(existing);
 
-  const feeds: Feed[] = subs?.feeds ?? [];
+  // Les fils interrogés il y a le plus longtemps passent d'abord : un fil reporté est servi au passage suivant (EXG-080)
+  const feeds: Feed[] = [...(subs?.feeds ?? [])].sort((a, b) =>
+    lastAttempt(status.feeds[a.id]).localeCompare(lastAttempt(status.feeds[b.id])));
   stats.feeds = feeds.length;
   const fresh: Item[] = [];
 
   await pool(feeds, opts.concurrency ?? 8, async (feed) => {
+    if (Date.now() >= deadline) {
+      stats.postponed++;
+      return;
+    }
     const st: FeedRunStatus = status.feeds[feed.id] ?? { failures: 0 };
     status.feeds[feed.id] = st;
     try {
@@ -182,7 +204,9 @@ export async function collect(opts: CollectOptions): Promise<CollectStats> {
 
       const parsed = parseFeed(res.body, url);
       const items = newItemsFrom(feed.id, parsed.items, seen, now);
-      stats.pageImages += await addPageImages(items, fetchImpl, timeoutMs);
+      // (attendre d'abord, puis ajouter : « += await » perdrait des comptes entre fils traités en parallèle)
+      const found = await addPageImages(items, fetchImpl, timeoutMs, deadline);
+      stats.pageImages += found;
       fresh.push(...items);
       st.failures = 0;
       st.lastSuccess = now.toISOString();
@@ -216,7 +240,8 @@ export async function collect(opts: CollectOptions): Promise<CollectStats> {
 
   log(
     `Collecte : ${stats.feeds} fils, ${stats.ok} lus, ${stats.notModified} inchangés, ${stats.errors} en erreur, ` +
-      `${stats.discovered} découverts, ${stats.newItems} nouveaux articles, ${stats.pageImages} vignettes trouvées sur les pages, ${stats.purgedDays} jours purgés`,
+      `${stats.discovered} découverts, ${stats.newItems} nouveaux articles, ${stats.pageImages} vignettes trouvées sur les pages, ${stats.postponed} fils reportés au prochain passage, ` +
+      `${stats.purgedDays} jours purgés`,
   );
   return stats;
 }

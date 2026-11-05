@@ -158,6 +158,8 @@ Dans le volet, à droite de « Catégories », touchez **Gérer** :
 
 **Les nouveaux articles n'arrivent pas, ou le bandeau « La dernière collecte date de plus de 2 heures » s'affiche.** GitHub lance le robot moins souvent que prévu (parfois toutes les quelques heures) ; c'est pourquoi FilActu demande lui-même une collecte à chaque ouverture quand la dernière date de plus de 20 minutes. Si le bandeau reste affiché, la **clé du robot a expiré** : renouvelez-la (§ 2.1) puis mettez-la dans le secret `DATA_REPO_TOKEN` (§ 2.2). Attention : « Regenerate token » sur GitHub rend l'ancienne clé inutilisable partout, il faut donc la remplacer **à la fois** dans le secret et sur chaque appareil.
 
+**Après un gros import, certains fils n'ont pas encore d'articles.** Pour ne jamais dépasser le temps que GitHub lui accorde, le robot s'arrête au bout de 6 minutes et garde ce qu'il a déjà récupéré. Les fils qu'il n'a pas eu le temps de lire passent en premier à la collecte suivante. Ils ne sont pas signalés en erreur ; patientez une ou deux collectes.
+
 **Un article n'a pas de vignette.** Ni le fil ni la page de l'article ne proposent d'image, ou le site n'a pas répondu à temps. Les articles collectés avant la version 0.4.1 ne reçoivent pas d'image après coup.
 
 **« Clé refusée » ou « droit manquant ».** La clé a expiré ou il lui manque un droit : refaites les § 2.1 et 2.2, puis Réglages → *Déconnecter cet appareil* et saisissez la nouvelle clé.

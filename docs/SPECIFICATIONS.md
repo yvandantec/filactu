@@ -205,6 +205,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | EXG-076 | Reprise sur un autre appareil. | Un article lu sur un appareil apparaît lu sur l'autre au plus tard à la prochaine ouverture ou actualisation (et toutes les 2 minutes quand l'appli est au premier plan). |
 | EXG-078 | À l'ouverture de l'appli (et à chaque actualisation automatique), une collecte est lancée si la dernière date de plus de 20 minutes. | GitHub espace en pratique les collectes planifiées de plusieurs heures ; l'appli compense. Au plus une demande toutes les 15 minutes par appareil. Si la collecte reste ancienne de plus de 2 heures, le bandeau indique que la clé du robot (`DATA_REPO_TOKEN`) a peut-être expiré. |
 | EXG-079 | Quand un nouvel article n'a pas d'image dans le fil, le collecteur va chercher l'image de partage déclarée par la page de l'article (`og:image`, à défaut `twitter:image` ou `link rel="image_src"`). | Seulement pour les articles nouveaux sans image ; au plus 20 pages par fil et par collecte ; délai de 10 s par page ; une page injoignable ou sans image laisse l'article sans vignette, sans mettre le fil en erreur ; seule une adresse http(s) est retenue ; les journaux n'indiquent qu'un nombre de vignettes trouvées (DEC-03). |
+| EXG-080 | Une collecte se termine toujours avant la limite de 10 minutes imposée par GitHub, même après un gros import ou si des sites sont lents. | Le collecteur dispose d'un budget de 6 minutes : passé ce délai, il ne commence plus de nouveau fil ni de nouvelle page d'article, enregistre ce qu'il a déjà collecté et reporte les fils restants au passage suivant, sans les compter en erreur. Les fils sont traités du plus anciennement interrogé au plus récent, pour qu'aucun ne soit oublié durablement. Les journaux n'indiquent que le nombre de fils reportés (DEC-03). |
 | EXG-077 | Pas de doublon. | Un même article (même fil, même guid ou même lien) n'apparaît qu'une fois, même s'il est republié avec une nouvelle date. |
 
 ## 5. Exigences non fonctionnelles
@@ -262,5 +263,6 @@ Le workflow du collecteur lit la clé dans le **secret** `DATA_REPO_TOKEN` du d�
 | **V0.3.4 — Fraîcheur des articles** | Collecte lancée par l'appli à l'ouverture | EXG-078 |
 | **V0.4 — Appli Android** | APK qui ouvre les articles dans le navigateur par défaut | EXG-004 |
 | **V0.4.1 — Vignettes** | Image de l'article cherchée sur sa page quand le fil n'en donne pas | EXG-079 |
+| **V0.4.2 — Grands volumes** | Collecte toujours terminée à temps, tenue de charge vérifiée | EXG-080, ENF-08 |
 | **V0.3 — Confort** | Recherche, thème sombre, raccourcis, hors connexion, actualisation à la demande, robustesse de la synchro | EXG-060→062, 071, 074→076 |
 | **V1.0** | Finitions, accessibilité, performance, documentation complète | ENF-01→08 |

@@ -1,6 +1,6 @@
 # Matrice de traçabilité
 
-> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1. Ne pas modifier à la main.
+> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2. Ne pas modifier à la main.
 
 | Exigence | Lot livré | Tests | Statut |
 |---|---|---|---|
@@ -51,6 +51,7 @@
 | **EXG-076** Reprise sur un autre appareil. | oui | 1 | ✅ couverte |
 | **EXG-078** À l'ouverture de l'appli (et à chaque actualisation automatique), une collecte est lancée si la dernière date de plus de 20 minutes. | oui | 2 | ✅ couverte |
 | **EXG-079** Quand un nouvel article n'a pas d'image dans le fil, le collecteur va chercher l'image de partage déclarée par la page de l'article (`og:image`, à défaut `twitter:image` ou `link rel="image_src"`). | oui | 8 | ✅ couverte |
+| **EXG-080** Une collecte se termine toujours avant la limite de 10 minutes imposée par GitHub, même après un gros import ou si des sites sont lents. | oui | 3 | ✅ couverte |
 | **EXG-077** Pas de doublon. | oui | 6 | ✅ couverte |
 | **ENF-01** Performance : affichage de la liste en moins de 1,5 s à l'ouverture sur un téléphone de milieu de gamme (articles en cache), défilement fluide avec 2 000 articles chargés. |  | 0 | — à venir |
 | **ENF-02** Accessibilité : navigation complète au clavier, contrastes conformes RGAA/WCAG AA, libellés pour les lecteurs d'écran, zones tactiles d'au moins 44 px. |  | 0 | — à venir |
@@ -59,12 +60,15 @@
 | **ENF-05** Coût : 0 € (GitHub gratuit). |  | 0 | — à venir |
 | **ENF-06** Compatibilité : Chrome et Edge récents sur PC ; Chrome Android récent ; Firefox PC (sans installation). |  | 0 | — à venir |
 | **ENF-07** Langue : interface en français. |  | 0 | — à venir |
-| **ENF-08** Volume cible : jusqu'à 300 fils et 1 000 nouveaux articles par jour. |  | 0 | — à venir |
+| **ENF-08** Volume cible : jusqu'à 300 fils et 1 000 nouveaux articles par jour. | oui | 1 | ✅ couverte |
 
 ## Détail des tests
 
 ### ENF-03
 - tests/unit/text.test.ts › ENF-03 · seules les URL http(s) sont acceptées
+
+### ENF-08
+- tests/collector/collect.test.ts › ENF-08 · 300 fils et 6 000 articles sans image sont collectés en une fois
 
 ### EXG-001
 - tests/e2e/setup.spec.ts › EXG-001 · une clé valide affiche les abonnements
@@ -313,3 +317,8 @@
 - tests/unit/text.test.ts › EXG-079 · résout les adresses relatives et décode les entités
 - tests/unit/text.test.ts › EXG-079 · préfère og:image, puis twitter:image, puis link image_src
 - tests/unit/text.test.ts › EXG-079 · refuse les adresses non http(s) et ignore le corps de la page
+
+### EXG-080
+- tests/collector/collect.test.ts › EXG-080 · passé le budget, les fils restants sont reportés sans erreur et ce qui est collecté est enregistré
+- tests/collector/collect.test.ts › EXG-080 · les fils reportés passent en priorité à la collecte suivante
+- tests/collector/collect.test.ts › EXG-080 · passé le budget, plus aucune page d’article n’est ouverte

@@ -2,6 +2,16 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [0.4.2] — 2026-11-05 — Grands volumes
+
+### Ajouté
+- La collecte se termine toujours avant la limite de 10 minutes de GitHub : au bout de 6 minutes, le robot n'entame plus de fil ni de page d'article, enregistre ce qu'il a collecté et reporte les fils restants au passage suivant, sans les compter en erreur (EXG-080).
+- Les fils interrogés il y a le plus longtemps passent en premier, pour qu'aucun ne soit oublié.
+- Test de charge : 300 fils et 6 000 articles sans image collectés en une fois (ENF-08).
+
+### Corrigé
+- Le nombre de vignettes trouvées sur les pages, affiché dans le journal de collecte, était sous-estimé.
+
 ## [0.4.1] — 2026-11-05 — Vignettes
 
 ### Ajouté
