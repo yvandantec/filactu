@@ -2,6 +2,14 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [0.3.4] — 2026-11-05 — Fraîcheur des articles
+
+### Ajouté
+- L'appli lance elle-même une collecte à l'ouverture si la dernière date de plus de 20 minutes, car GitHub espace les collectes planifiées de plusieurs heures (EXG-078).
+
+### Modifié
+- Le bandeau « dernière collecte de plus de 2 heures » indique la cause la plus probable : la clé du robot (`DATA_REPO_TOKEN`) a expiré.
+
 ## [0.3.3] — 2026-11-04
 
 ### Ajouté

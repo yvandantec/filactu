@@ -1,6 +1,6 @@
 # Matrice de traçabilité
 
-> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2. Ne pas modifier à la main.
+> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4. Ne pas modifier à la main.
 
 | Exigence | Lot livré | Tests | Statut |
 |---|---|---|---|
@@ -48,6 +48,7 @@
 | **EXG-074** Hors connexion, l'appli affiche les articles en cache et met les actions en file d'attente. | oui | 2 | ✅ couverte |
 | **EXG-075** Écritures concurrentes depuis deux appareils. | oui | 3 | ✅ couverte |
 | **EXG-076** Reprise sur un autre appareil. | oui | 1 | ✅ couverte |
+| **EXG-078** À l'ouverture de l'appli (et à chaque actualisation automatique), une collecte est lancée si la dernière date de plus de 20 minutes. | oui | 2 | ✅ couverte |
 | **EXG-077** Pas de doublon. | oui | 6 | ✅ couverte |
 | **ENF-01** Performance : affichage de la liste en moins de 1,5 s à l'ouverture sur un téléphone de milieu de gamme (articles en cache), défilement fluide avec 2 000 articles chargés. |  | 0 | — à venir |
 | **ENF-02** Accessibilité : navigation complète au clavier, contrastes conformes RGAA/WCAG AA, libellés pour les lecteurs d'écran, zones tactiles d'au moins 44 px. |  | 0 | — à venir |
@@ -292,3 +293,7 @@
 - tests/unit/items.test.ts › EXG-077 · l’index se reconstruit à partir des articles existants
 - tests/unit/items.test.ts › EXG-077 · la liste fusionnée est triée et sans doublon
 - tests/unit/text.test.ts › EXG-077 · identifiants stables et URL normalisées
+
+### EXG-078
+- tests/e2e/fraicheur.spec.ts › EXG-078 · à l’ouverture, une collecte est lancée si la dernière est trop ancienne
+- tests/e2e/fraicheur.spec.ts › EXG-078 · pas de collecte inutile si la dernière est récente

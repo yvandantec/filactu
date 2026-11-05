@@ -201,6 +201,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | EXG-074 | Hors connexion, l'appli affiche les articles en cache et met les actions en file d'attente. | Les actions sont envoyées au retour du réseau, sans perte. |
 | EXG-075 | Écritures concurrentes depuis deux appareils. | Aucune perte : en cas de conflit, l'appli relit le fichier distant, fusionne (DEC-05) et réessaie. |
 | EXG-076 | Reprise sur un autre appareil. | Un article lu sur un appareil apparaît lu sur l'autre au plus tard à la prochaine ouverture ou actualisation (et toutes les 2 minutes quand l'appli est au premier plan). |
+| EXG-078 | À l'ouverture de l'appli (et à chaque actualisation automatique), une collecte est lancée si la dernière date de plus de 20 minutes. | GitHub espace en pratique les collectes planifiées de plusieurs heures ; l'appli compense. Au plus une demande toutes les 15 minutes par appareil. Si la collecte reste ancienne de plus de 2 heures, le bandeau indique que la clé du robot (`DATA_REPO_TOKEN`) a peut-être expiré. |
 | EXG-077 | Pas de doublon. | Un même article (même fil, même guid ou même lien) n'apparaît qu'une fois, même s'il est republié avec une nouvelle date. |
 
 ## 5. Exigences non fonctionnelles
@@ -255,5 +256,6 @@ Le workflow du collecteur lit la clé dans le **secret** `DATA_REPO_TOKEN` du d�
 | **V0.2 — Feedly-like** | 3 affichages, lu en défilant, tout marquer lu, à lire plus tard, renommer/déplacer un fil | EXG-012, 014, 015, 023, 024, 030, 032, 034, 041→044, 050, 051 |
 | **V0.3.1 — Affichage compact, icônes suggérées** | Demandes du 2026-11-04 | EXG-018, 036 |
 | **V0.3.2 — Confort de lecture** | Taille du texte, navigateur des articles sur Android | EXG-037, 038 |
+| **V0.3.4 — Fraîcheur des articles** | Collecte lancée par l'appli à l'ouverture | EXG-078 |
 | **V0.3 — Confort** | Recherche, thème sombre, raccourcis, hors connexion, actualisation à la demande, robustesse de la synchro | EXG-060→062, 071, 074→076 |
 | **V1.0** | Finitions, accessibilité, performance, documentation complète | ENF-01→08 |

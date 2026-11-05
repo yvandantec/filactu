@@ -154,7 +154,7 @@ Dans le volet, à droite de « Catégories », touchez **Gérer** :
 
 ## 12. Questions fréquentes
 
-**Les nouveaux articles n'arrivent pas.** Appuyez sur ⟳. Si un bandeau signale que la dernière collecte date de plus de 2 heures, ouvrez l'onglet *Actions* du dépôt `filactu` sur GitHub et vérifiez que le workflow *Collecte* est activé.
+**Les nouveaux articles n'arrivent pas, ou le bandeau « La dernière collecte date de plus de 2 heures » s'affiche.** GitHub lance le robot moins souvent que prévu (parfois toutes les quelques heures) ; c'est pourquoi FilActu demande lui-même une collecte à chaque ouverture quand la dernière date de plus de 20 minutes. Si le bandeau reste affiché, la **clé du robot a expiré** : renouvelez-la (§ 2.1) puis mettez-la dans le secret `DATA_REPO_TOKEN` (§ 2.2). Attention : « Regenerate token » sur GitHub rend l'ancienne clé inutilisable partout, il faut donc la remplacer **à la fois** dans le secret et sur chaque appareil.
 
 **« Clé refusée » ou « droit manquant ».** La clé a expiré ou il lui manque un droit : refaites les § 2.1 et 2.2, puis Réglages → *Déconnecter cet appareil* et saisissez la nouvelle clé.
 

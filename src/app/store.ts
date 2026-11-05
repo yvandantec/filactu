@@ -25,6 +25,8 @@ export const DEFAULT_DATA_REPO = 'yvandantec/filactu-data';
 export const FLUSH_DELAY_MS = 2000; // EXG-073 : envoi au plus tard 5 s après l'action
 export const POLL_MS = 120_000; // EXG-076
 export const STALE_COLLECT_MS = 2 * 3600_000;
+export const AUTO_COLLECT_AFTER_MS = 20 * 60_000; // EXG-078
+export const AUTO_COLLECT_EVERY_MS = 15 * 60_000;
 
 const PATHS = {
   subs: 'state/subscriptions.json',
@@ -255,11 +257,28 @@ export class Store {
         safeSet('days', nextDays),
       ]);
       if (!isEmptyDelta(diffReading(this.remoteReading, merged))) this.scheduleFlush();
+      void this.autoCollect();
     } catch (e) {
       // Hors connexion : on garde les articles en cache, sans message d'erreur (EXG-074)
       if (e instanceof GitHubError && e.status === 0) this.setState({ loading: false, offline: true });
       else this.setState({ loading: false, error: errorText(e) });
     }
+  }
+
+  /**
+   * GitHub espace en pratique les collectes planifiées de plusieurs heures :
+   * l'appli lance elle-même une collecte si la dernière date de plus de 20 minutes (EXG-078).
+   */
+  private async autoCollect(): Promise<void> {
+    const { subs, status } = this.state;
+    if (!subs.feeds.length) return;
+    const now = Date.now();
+    const last = status.lastRun ? Date.parse(status.lastRun) : 0;
+    if (now - last < AUTO_COLLECT_AFTER_MS) return;
+    const lastAsk = (await safeGet<number>('lastAutoCollect')) ?? 0;
+    if (now - lastAsk < AUTO_COLLECT_EVERY_MS) return;
+    await safeSet('lastAutoCollect', now);
+    await this.collectNow(true);
   }
 
   private scheduleFlush() {

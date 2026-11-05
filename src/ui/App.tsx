@@ -328,7 +328,7 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
           <div class="banner" data-testid="offline">Hors connexion : vous lisez les articles déjà chargés. Vos actions seront envoyées au retour du réseau.</div>
         )}
         {stale && !state.error && !state.offline && (
-          <div class="banner">La dernière collecte date de plus de 2 heures. Vérifiez le robot de collecte sur GitHub (voir le guide).</div>
+          <div class="banner">La dernière collecte date de plus de 2 heures. Une nouvelle collecte vient d’être demandée ; si ce message reste affiché, la clé du robot (secret DATA_REPO_TOKEN) a sans doute expiré : voir le guide, § 2.2.</div>
         )}
         <section class="content" aria-live="polite">
           <ArticleList store={store} state={state} items={list} mode={mode} showSummary={showSummary} feedsById={feedsById}
