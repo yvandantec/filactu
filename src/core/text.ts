@@ -62,6 +62,41 @@ export function safeHttpUrl(url: unknown, base?: string): string | undefined {
   }
 }
 
+function attrValue(tag: string, name: string): string | undefined {
+  const m = new RegExp(`\\s${name}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s"'>]+))`, 'i').exec(tag);
+  return m ? (m[1] ?? m[2] ?? m[3]) : undefined;
+}
+
+const SHARE_IMAGE_KEYS = ['og:image', 'og:image:url', 'og:image:secure_url', 'twitter:image', 'twitter:image:src'];
+
+/**
+ * Image de partage déclarée dans l'en-tête d'une page d'article (EXG-079) :
+ * og:image, puis twitter:image, puis <link rel="image_src">.
+ */
+export function pageImage(html: string | undefined | null, base?: string): string | undefined {
+  if (!html) return undefined;
+  const end = html.search(/<\/head\s*>|<body[\s>]/i);
+  const head = end >= 0 ? html.slice(0, end) : html.slice(0, 200_000);
+  const metas = (head.match(/<meta\b[^>]*>/gi) ?? []).map((tag) => ({
+    key: (attrValue(tag, 'property') ?? attrValue(tag, 'name') ?? '').trim().toLowerCase(),
+    content: attrValue(tag, 'content'),
+  }));
+  for (const key of SHARE_IMAGE_KEYS) {
+    for (const m of metas) {
+      if (m.key !== key) continue;
+      const url = safeHttpUrl(m.content, base);
+      if (url) return url;
+    }
+  }
+  for (const tag of head.match(/<link\b[^>]*>/gi) ?? []) {
+    if ((attrValue(tag, 'rel') ?? '').toLowerCase().split(/\s+/).includes('image_src')) {
+      const url = safeHttpUrl(attrValue(tag, 'href'), base);
+      if (url) return url;
+    }
+  }
+  return undefined;
+}
+
 /** Première image <img src> trouvée dans un fragment HTML. */
 export function firstImage(html: string | undefined | null, base?: string): string | undefined {
   if (!html) return undefined;

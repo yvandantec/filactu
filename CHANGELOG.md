@@ -2,6 +2,11 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [0.4.1] — 2026-11-05 — Vignettes
+
+### Ajouté
+- Quand un nouvel article n'a pas d'image dans son fil, le collecteur va chercher l'image de partage de sa page (`og:image`, sinon `twitter:image`) : au plus 20 pages par fil et par collecte, 10 s par page, sans mettre le fil en erreur si la page ne répond pas (EXG-079).
+
 ## [0.4.0] — 2026-11-05 — Appli Android
 
 ### Ajouté

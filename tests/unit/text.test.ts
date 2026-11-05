@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { decodeEntities, firstImage, htmlToText, makeSummary, safeHttpUrl, truncate } from '../../src/core/text';
+import { decodeEntities, firstImage, htmlToText, makeSummary, pageImage, safeHttpUrl, truncate } from '../../src/core/text';
 import { feedIdFor, hash, normalizeUrl, slug } from '../../src/core/hash';
 
 describe('texte et résumés', () => {
@@ -47,5 +47,35 @@ describe('texte et résumés', () => {
     expect(normalizeUrl(' pas une url ')).toBe('pas une url');
     expect(slug('Actualités & Tech')).toBe('actualites-tech');
     expect(slug('!!!')).toMatch(/^c-/);
+  });
+});
+
+describe('image de partage d’une page (EXG-079)', () => {
+  const page = (head: string, body = '') => `<!doctype html><html><head><title>t</title>${head}</head><body>${body}</body></html>`;
+  const base = 'https://site.example.test/2026/article/';
+
+  test('EXG-079 · lit og:image, quel que soit l’ordre des attributs', () => {
+    expect(pageImage(page('<meta property="og:image" content="https://img.example.test/a.jpg" />'), base)).toBe('https://img.example.test/a.jpg');
+    expect(pageImage(page("<meta content='https://img.example.test/b.jpg' property='og:image'>"), base)).toBe('https://img.example.test/b.jpg');
+  });
+
+  test('EXG-079 · résout les adresses relatives et décode les entités', () => {
+    expect(pageImage(page('<meta property="og:image" content="/img/a.jpg?w=800&amp;h=600">'), base)).toBe('https://site.example.test/img/a.jpg?w=800&h=600');
+  });
+
+  test('EXG-079 · préfère og:image, puis twitter:image, puis link image_src', () => {
+    const all = '<link rel="image_src" href="https://img.example.test/l.jpg">' +
+      '<meta name="twitter:image" content="https://img.example.test/t.jpg">' +
+      '<meta property="og:image" content="https://img.example.test/o.jpg">';
+    expect(pageImage(page(all), base)).toBe('https://img.example.test/o.jpg');
+    expect(pageImage(page('<link rel="image_src" href="https://img.example.test/l.jpg"><meta name="twitter:image" content="https://img.example.test/t.jpg">'), base))
+      .toBe('https://img.example.test/t.jpg');
+    expect(pageImage(page('<link href="https://img.example.test/l.jpg" rel="image_src">'), base)).toBe('https://img.example.test/l.jpg');
+  });
+
+  test('EXG-079 · refuse les adresses non http(s) et ignore le corps de la page', () => {
+    expect(pageImage(page('<meta property="og:image" content="javascript:alert(1)">'), base)).toBeUndefined();
+    expect(pageImage(page('', '<meta property="og:image" content="https://img.example.test/corps.jpg">'), base)).toBeUndefined();
+    expect(pageImage('', base)).toBeUndefined();
   });
 });

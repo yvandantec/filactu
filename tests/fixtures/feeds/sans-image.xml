@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Journal sans images</title>
+    <description>Fil dont les articles n'ont pas d'image : elles sont seulement sur les pages</description>
+    <item>
+      <title>Article avec og:image</title>
+      <link>/pages/og</link>
+      <pubDate>Wed, 04 Nov 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[<p>Pas d'image ici.</p>]]></description>
+    </item>
+    <item>
+      <title>Article avec twitter:image</title>
+      <link>/pages/twitter</link>
+      <pubDate>Wed, 04 Nov 2026 08:00:00 GMT</pubDate>
+      <description>Pas d'image non plus.</description>
+    </item>
+    <item>
+      <title>Article dont la page est introuvable</title>
+      <link>/pages/absente</link>
+      <pubDate>Wed, 04 Nov 2026 07:00:00 GMT</pubDate>
+      <description>Page introuvable.</description>
+    </item>
+    <item>
+      <title>Article dont la page n'a pas d'image</title>
+      <link>/pages/nue</link>
+      <pubDate>Wed, 04 Nov 2026 06:00:00 GMT</pubDate>
+      <description>Page sans image.</description>
+    </item>
+    <item>
+      <title>Article qui a déjà son image</title>
+      <link>/pages/deja</link>
+      <pubDate>Wed, 04 Nov 2026 05:00:00 GMT</pubDate>
+      <description><![CDATA[<p>Image dans le fil.</p><img src="https://img.example.test/fil.jpg">]]></description>
+    </item>
+  </channel>
+</rss>

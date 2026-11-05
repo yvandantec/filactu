@@ -1,6 +1,6 @@
 # Matrice de traçabilité
 
-> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4. Ne pas modifier à la main.
+> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1. Ne pas modifier à la main.
 
 | Exigence | Lot livré | Tests | Statut |
 |---|---|---|---|
@@ -50,6 +50,7 @@
 | **EXG-075** Écritures concurrentes depuis deux appareils. | oui | 3 | ✅ couverte |
 | **EXG-076** Reprise sur un autre appareil. | oui | 1 | ✅ couverte |
 | **EXG-078** À l'ouverture de l'appli (et à chaque actualisation automatique), une collecte est lancée si la dernière date de plus de 20 minutes. | oui | 2 | ✅ couverte |
+| **EXG-079** Quand un nouvel article n'a pas d'image dans le fil, le collecteur va chercher l'image de partage déclarée par la page de l'article (`og:image`, à défaut `twitter:image` ou `link rel="image_src"`). | oui | 8 | ✅ couverte |
 | **EXG-077** Pas de doublon. | oui | 6 | ✅ couverte |
 | **ENF-01** Performance : affichage de la liste en moins de 1,5 s à l'ouverture sur un téléphone de milieu de gamme (articles en cache), défilement fluide avec 2 000 articles chargés. |  | 0 | — à venir |
 | **ENF-02** Accessibilité : navigation complète au clavier, contrastes conformes RGAA/WCAG AA, libellés pour les lecteurs d'écran, zones tactiles d'au moins 44 px. |  | 0 | — à venir |
@@ -302,3 +303,13 @@
 ### EXG-078
 - tests/e2e/fraicheur.spec.ts › EXG-078 · à l’ouverture, une collecte est lancée si la dernière est trop ancienne
 - tests/e2e/fraicheur.spec.ts › EXG-078 · pas de collecte inutile si la dernière est récente
+
+### EXG-079
+- tests/collector/collect.test.ts › EXG-079 · sans image dans le fil, l’image de partage de la page est retenue
+- tests/collector/collect.test.ts › EXG-079 · seuls les articles nouveaux sont concernés
+- tests/collector/collect.test.ts › EXG-079 · au plus 20 pages par fil et par collecte
+- tests/collector/collect.test.ts › EXG-079 · une page trop lente est abandonnée sans bloquer la collecte
+- tests/unit/text.test.ts › EXG-079 · lit og:image, quel que soit l’ordre des attributs
+- tests/unit/text.test.ts › EXG-079 · résout les adresses relatives et décode les entités
+- tests/unit/text.test.ts › EXG-079 · préfère og:image, puis twitter:image, puis link image_src
+- tests/unit/text.test.ts › EXG-079 · refuse les adresses non http(s) et ignore le corps de la page

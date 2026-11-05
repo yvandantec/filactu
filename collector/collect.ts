@@ -1,14 +1,18 @@
-// Collecteur FilActu (EXG-070, EXG-072, EXG-077, EXG-011, EXG-015)
+// Collecteur FilActu (EXG-070, EXG-072, EXG-077, EXG-011, EXG-015, EXG-079)
 // IMPORTANT (DEC-03) : les journaux sont publics ; on n'y écrit QUE des compteurs.
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { discoverFeedUrl, knownFeedUrl, looksLikeFeed, parseFeed } from '../src/core/feed';
 import { dayFromPath, dayKey, expiredDays, newItemsFrom, SeenIndex } from '../src/core/items';
-import { safeHttpUrl } from '../src/core/text';
+import { pageImage, safeHttpUrl } from '../src/core/text';
 import type { DayFile, Feed, FeedRunStatus, FeedsStatus, Item, Subscriptions } from '../src/core/types';
 
 export const USER_AGENT = 'FilActu/0.1 (+https://github.com/yvandantec/filactu)';
 export const ERROR_THRESHOLD = 3;
+/** Pages d'articles consultées au plus, par fil et par collecte, pour trouver une vignette (EXG-079). */
+export const PAGE_IMAGE_LIMIT = 20;
+const PAGE_TIMEOUT_MS = 10_000;
+const PAGE_CONCURRENCY = 4;
 
 export interface CollectOptions {
   dataDir: string;
@@ -27,6 +31,7 @@ export interface CollectStats {
   discovered: number;
   newItems: number;
   purgedDays: number;
+  pageImages: number;
 }
 
 async function readJson<T>(path: string): Promise<T | undefined> {
@@ -80,6 +85,29 @@ async function pool<T>(items: T[], size: number, fn: (t: T) => Promise<void>): P
   await Promise.all(workers);
 }
 
+/**
+ * Pour les nouveaux articles sans image, lit l'image de partage de leur page (EXG-079).
+ * Une page injoignable est simplement ignorée : le fil n'est pas mis en erreur.
+ */
+async function addPageImages(items: Item[], fetchImpl: typeof fetch, timeoutMs: number): Promise<number> {
+  const todo = items.filter((i) => !i.image).slice(0, PAGE_IMAGE_LIMIT);
+  let found = 0;
+  await pool(todo, PAGE_CONCURRENCY, async (item) => {
+    try {
+      const res = await fetchText(item.link, fetchImpl, Math.min(timeoutMs, PAGE_TIMEOUT_MS), { Accept: 'text/html' });
+      if (res.status >= 400) return;
+      const image = pageImage(res.body, res.finalUrl);
+      if (image) {
+        item.image = image;
+        found++;
+      }
+    } catch {
+      // page injoignable ou trop lente : l'article reste sans vignette
+    }
+  });
+  return found;
+}
+
 function shortError(e: unknown): string {
   if (e instanceof Error) return e.name === 'AbortError' ? 'Délai dépassé' : e.message.slice(0, 120);
   return 'Erreur inconnue';
@@ -92,7 +120,7 @@ export async function collect(opts: CollectOptions): Promise<CollectStats> {
   const timeoutMs = opts.timeoutMs ?? 20_000;
   const dir = opts.dataDir;
 
-  const stats: CollectStats = { feeds: 0, ok: 0, notModified: 0, errors: 0, discovered: 0, newItems: 0, purgedDays: 0 };
+  const stats: CollectStats = { feeds: 0, ok: 0, notModified: 0, errors: 0, discovered: 0, newItems: 0, purgedDays: 0, pageImages: 0 };
   const subs = await readJson<Subscriptions>(join(dir, 'state/subscriptions.json'));
   const statusPath = join(dir, 'meta/feeds-status.json');
   const status: FeedsStatus = (await readJson<FeedsStatus>(statusPath)) ?? { feeds: {} };
@@ -154,6 +182,7 @@ export async function collect(opts: CollectOptions): Promise<CollectStats> {
 
       const parsed = parseFeed(res.body, url);
       const items = newItemsFrom(feed.id, parsed.items, seen, now);
+      stats.pageImages += await addPageImages(items, fetchImpl, timeoutMs);
       fresh.push(...items);
       st.failures = 0;
       st.lastSuccess = now.toISOString();
@@ -187,7 +216,7 @@ export async function collect(opts: CollectOptions): Promise<CollectStats> {
 
   log(
     `Collecte : ${stats.feeds} fils, ${stats.ok} lus, ${stats.notModified} inchangés, ${stats.errors} en erreur, ` +
-      `${stats.discovered} découverts, ${stats.newItems} nouveaux articles, ${stats.purgedDays} jours purgés`,
+      `${stats.discovered} découverts, ${stats.newItems} nouveaux articles, ${stats.pageImages} vignettes trouvées sur les pages, ${stats.purgedDays} jours purgés`,
   );
   return stats;
 }

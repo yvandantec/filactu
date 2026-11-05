@@ -70,6 +70,7 @@ Sur téléphone, le volet est caché : touchez ☰ en haut à gauche, ou glissez
   - **Titres** : une ligne par article (fil, titre, fraîcheur), pour parcourir très vite. Sur PC, laissez la souris sur un titre pour voir le résumé ; sur mobile, faites un appui long.
   - **Magazine** (par défaut) : affichage compact façon Feedly — titre, « fil / fraîcheur » et vignette à droite. Une dizaine d'articles tiennent sur un écran de téléphone.
   - **Cartes** : grille avec grandes images.
+  - Les images viennent du fil. Quand un site n'en met pas dans son fil, FilActu va chercher l'image que la page de l'article affiche quand on la partage sur les réseaux sociaux. Cela ne vaut que pour les nouveaux articles.
   - **Afficher le début de l'article** : ajoute deux lignes de résumé sous chaque titre. Ce réglage est distinct selon l'écran : **activé par défaut sur PC** (version riche), **désactivé par défaut sur téléphone** (version compacte). Il vaut pour toutes les vues.
   - **Taille du texte** : *Petit*, *Normal* ou *Grand*, pour les titres, le fil / la fraîcheur et le début de l'article. Réglée séparément pour le PC et le téléphone.
   - **Non lus seulement** : coché par défaut. Un article que vous lisez reste affiché (atténué) jusqu'à ce que vous changiez de vue.
@@ -156,6 +157,8 @@ Dans le volet, à droite de « Catégories », touchez **Gérer** :
 ## 12. Questions fréquentes
 
 **Les nouveaux articles n'arrivent pas, ou le bandeau « La dernière collecte date de plus de 2 heures » s'affiche.** GitHub lance le robot moins souvent que prévu (parfois toutes les quelques heures) ; c'est pourquoi FilActu demande lui-même une collecte à chaque ouverture quand la dernière date de plus de 20 minutes. Si le bandeau reste affiché, la **clé du robot a expiré** : renouvelez-la (§ 2.1) puis mettez-la dans le secret `DATA_REPO_TOKEN` (§ 2.2). Attention : « Regenerate token » sur GitHub rend l'ancienne clé inutilisable partout, il faut donc la remplacer **à la fois** dans le secret et sur chaque appareil.
+
+**Un article n'a pas de vignette.** Ni le fil ni la page de l'article ne proposent d'image, ou le site n'a pas répondu à temps. Les articles collectés avant la version 0.4.1 ne reçoivent pas d'image après coup.
 
 **« Clé refusée » ou « droit manquant ».** La clé a expiré ou il lui manque un droit : refaites les § 2.1 et 2.2, puis Réglages → *Déconnecter cet appareil* et saisissez la nouvelle clé.
 
