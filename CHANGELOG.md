@@ -2,6 +2,23 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [1.0.0] — 2026-11-05 — Version 1
+
+### Ajouté
+- Accessibilité vérifiée à chaque modification sur tous les écrans, en thème clair et sombre (outil axe-core) : contrastes, libellés, zones de toucher d'au moins 44 px sur téléphone et tablette, parcours complet au clavier (ENF-02).
+- Les fenêtres reçoivent le focus à l'ouverture, gardent `Tab` à l'intérieur et le rendent au bouton d'origine à la fermeture (ENF-02).
+- Mesure de vitesse : liste affichée depuis le cache en moins de 1,5 s avec 2 000 articles sur un téléphone simulé de milieu de gamme (environ 0,7 s mesuré), défilement à 60 images par seconde (ENF-01).
+- Audit Lighthouse à chaque modification (performance, accessibilité, bonnes pratiques : 100/100 en local) ; la mise en ligne attend qu'il soit vert.
+- Tests ciblés des fenêtres et de la palette d'icônes ; tests de compatibilité (ENF-06), de langue (ENF-07), de coût nul (ENF-05) et de confidentialité (ENF-04).
+- Guide utilisateur illustré de captures d'écran ; fiche de recette manuelle (`docs/RECETTE.md`).
+
+### Modifié
+- Boutons verts plus contrastés (vert plus foncé en thème clair, texte foncé en thème sombre) ; texte secondaire et rouge d'alerte du thème sombre éclaircis pour la lisibilité.
+- Sur téléphone et tablette, les boutons des articles, de l'en-tête, du volet et des fenêtres sont plus grands (44 px).
+
+### Retiré
+- Firefox sur PC ne fait plus partie des navigateurs visés (ENF-06).
+
 ## [0.4.2] — 2026-11-05 — Grands volumes
 
 ### Ajouté

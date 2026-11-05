@@ -185,7 +185,7 @@ describe('collecteur', () => {
     expect(stats.feeds).toBe(0);
   });
 
-  test('DEC-03 · les journaux ne contiennent ni adresse ni titre', async () => {
+  test('DEC-03 · ENF-04 · les journaux ne contiennent ni adresse ni titre', async () => {
     await writeSubs([['/rss2.xml', 'Titre secret'], ['/404', 'Autre secret']]);
     const lines: string[] = [];
     await collect({ dataDir: dir, now, fetchImpl: localFetch, log: (l) => lines.push(l) });

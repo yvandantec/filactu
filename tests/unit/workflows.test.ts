@@ -25,7 +25,18 @@ describe('workflows GitHub Actions', () => {
     expect(data.on).toHaveProperty('workflow_dispatch');
   });
 
-  test('DEC-03 · la collecte écrit uniquement dans le dépôt de données', () => {
+  test('ENF-05 · tout tourne sur les machines gratuites de GitHub', () => {
+    for (const name of files) {
+      const { data } = load(name);
+      for (const job of Object.values<Record<string, any>>(data.jobs)) expect(job['runs-on']).toBe('ubuntu-latest');
+    }
+    // aucune autre plateforme payante : l'appli ne parle qu'à GitHub (politique de sécurité de la page)
+    const html = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
+    const connect = /connect-src ([^;]+);/.exec(html)?.[1].trim().split(/\s+/);
+    expect(connect).toEqual(["'self'", 'https://api.github.com', 'ws:']);
+  });
+
+  test('DEC-03 · ENF-04 · la collecte écrit uniquement dans le dépôt de données', () => {
     const text = readFileSync(new URL('collect.yml', dir), 'utf8');
     expect(text).toContain('filactu-data');
     expect(text).toMatch(/git add -A items meta/);

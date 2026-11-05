@@ -47,3 +47,41 @@ export async function openNav(page: Page) {
   if (await menu.isVisible()) await menu.click();
   await expect(page.locator('.sidebar')).toBeInViewport();
 }
+
+/** Écrans principaux de l'appli, parcourus un par un (le rappel `visit` est appelé sur chacun). */
+export async function eachScreen(page: Page, visit: (name: string) => Promise<void>) {
+  await visit('liste');
+  await page.getByRole('button', { name: 'Options d’affichage' }).click();
+  await expect(page.getByRole('dialog', { name: 'Options d’affichage' })).toBeVisible();
+  await visit('options d’affichage');
+  await page.getByRole('dialog', { name: 'Options d’affichage' }).getByRole('button', { name: 'Fermer' }).click();
+  for (const mode of ['Titres', 'Cartes', 'Magazine'] as const) {
+    await displayMode(page, mode);
+    await expect(page.locator('.articles')).toHaveClass(new RegExp(mode === 'Titres' ? 'titles' : mode === 'Cartes' ? 'cards' : 'magazine'));
+    if (mode !== 'Magazine') await visit(`affichage ${mode}`);
+  }
+  await openNav(page);
+  await visit('volet');
+  await page.locator('.sidebar').getByRole('button', { name: 'Réglages' }).click();
+  await expect(page.getByRole('dialog', { name: 'Réglages' })).toBeVisible();
+  await visit('réglages');
+  await page.getByRole('dialog', { name: 'Réglages' }).getByRole('button', { name: 'Fermer' }).click();
+  await openNav(page);
+  await page.locator('.sidebar').getByRole('button', { name: 'Ajouter un fil' }).click();
+  await expect(page.getByRole('dialog', { name: 'Ajouter un fil' })).toBeVisible();
+  await visit('ajout d’un fil');
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await openNav(page);
+  await page.locator('.sidebar').getByRole('button', { name: 'Gérer' }).click();
+  await expect(page.getByRole('dialog', { name: 'Gérer les catégories' })).toBeVisible();
+  await visit('gestion des catégories');
+  await page.keyboard.press('Escape');
+  await openNav(page);
+  await page.locator('.sidebar').getByRole('button', { name: 'Déplier Tech' }).click();
+  await page.locator('.sidebar').getByRole('button', { name: /^Modifier le fil/ }).first().click();
+  await expect(page.getByRole('dialog', { name: 'Modifier le fil' })).toBeVisible();
+  await visit('modification d’un fil');
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+}

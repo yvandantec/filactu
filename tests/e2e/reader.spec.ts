@@ -47,7 +47,7 @@ test('EXG-022 · en-tête : nom de la vue, non-lus, actions', async ({ page }) =
   await expect(page.getByRole('button', { name: 'Actualiser' })).toBeVisible();
 });
 
-test('EXG-030 · affichage Magazine : titre, fil / fraîcheur, début de l’article en option', async ({ page }) => {
+test('EXG-030 · EXG-035 · affichage Magazine : titre, fil / fraîcheur, début de l’article en option', async ({ page }) => {
   await startWithData(page);
   const first = page.locator('.article').first();
   await expect(page.locator('.articles')).toHaveClass(/magazine/);

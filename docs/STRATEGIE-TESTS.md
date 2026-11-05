@@ -1,6 +1,6 @@
 # FilActu — Stratégie de tests et processus d'évolution
 
-> Version 0.1 — 2026-11-04
+> Version 1.0 — 2026-11-05
 
 Objectif : **aucune évolution n'entre dans `main` sans exigence écrite, sans test qui la prouve et sans documentation à jour.**
 
@@ -12,8 +12,9 @@ Objectif : **aucune évolution n'entre dans `main` sans exigence écrite, sans t
 | **Collecteur** | Vitest + serveur HTTP local | Le collecteur de bout en bout sur des **fils d'exemple** (RSS 2.0, Atom, RDF, encodages, flux malformé, 404, délai dépassé, `304 Not Modified`, découverte depuis une page HTML). Vérifie les fichiers produits et l'absence d'URL dans les journaux (DEC-03). | `tests/collector/` + `tests/fixtures/feeds/` |
 | **Composants** | Vitest + Testing Library | Volet de navigation, compteurs, 3 affichages, menus, boîte « Tout marquer lu », réglages. | `tests/components/` |
 | **Bout en bout** | Playwright | Parcours utilisateur réels dans un navigateur, avec un **faux GitHub** (API simulée en mémoire) : premier lancement, import OPML, lecture, synchro entre deux « appareils », hors connexion. Trois formats d'écran : téléphone (390×844), tablette (820×1180), PC (1440×900). | `tests/e2e/` |
-| **Accessibilité** | axe-core (dans Playwright) | Aucune violation « serious » ou « critical » sur chaque écran. | `tests/e2e/a11y.spec.ts` |
-| **Qualité PWA** | Lighthouse CI | Installabilité, performance ≥ 90 sur mobile, bonnes pratiques. | CI |
+| **Accessibilité** | axe-core (dans Playwright) | Aucune violation « serious » ou « critical » sur chaque écran, thèmes clair et sombre ; zones tactiles ≥ 44 px ; parcours complet au clavier. | `tests/e2e/a11y.spec.ts` |
+| **Performance** | Playwright, processeur ralenti ×4 | Liste affichée depuis le cache en moins de 1,5 s avec 2 000 articles ; défilement fluide (ENF-01). Charge du collecteur : 300 fils (ENF-08). | `tests/e2e/perf.spec.ts`, `tests/collector/` |
+| **Qualité** | Lighthouse CI (`npm run quality`) | Performance ≥ 90 sur mobile, accessibilité ≥ 95, bonnes pratiques ≥ 90 (seuils dans `lighthouserc.json`). L'installabilité est vérifiée par EXG-003. | CI (travail « qualite ») |
 
 ### Le faux GitHub
 
@@ -42,6 +43,8 @@ Le script `npm run trace` produit `docs/TRACABILITE.md` : pour chaque exigence d
 | `npm run test:e2e` | Parcours Playwright sur les 3 formats d'écran |
 | `npm run check` | Typage TypeScript + lint + formatage |
 | `npm run trace` | Matrice de traçabilité |
+| `npm run quality` | Audit Lighthouse de la version construite (`npm run build` avant) |
+| `npm run captures` | Refait les captures d'écran du guide (`docs/images/`) avec les données d'exemple |
 | `npm run verify` | **Tout ce qui précède** : à lancer avant chaque commit |
 
 ## 4. Intégration continue (GitHub Actions, dépôt `filactu`)
@@ -76,7 +79,7 @@ Le script `npm run trace` produit `docs/TRACABILITE.md` : pour chaque exigence d
 
 ## 6. Recette manuelle avant chaque version
 
-Courte vérification sur les vrais appareils, notée dans la *release* GitHub :
+Courte vérification sur les vrais appareils, notée dans `docs/RECETTE.md` (une section par version) puis reprise dans la *release* GitHub :
 - installation et ouverture sur téléphone Android, tablette Android et PC ;
 - lecture d'un article sur le téléphone → l'article apparaît lu sur le PC après ⟳ ;
 - import d'un vrai OPML Feedly ;

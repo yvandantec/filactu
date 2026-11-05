@@ -1,6 +1,6 @@
 # FilActu — Spécifications
 
-> Version 0.1 — 2026-11-04 — validée ; lots **V0.1 à V0.3.1 livrés** (voir [TRACABILITE.md](TRACABILITE.md))
+> Version 1.0 — 2026-11-05 — lots **V0.1 à V1.0 livrés** (voir [TRACABILITE.md](TRACABILITE.md))
 > Chaque exigence porte un identifiant (`EXG-…`). Les tests y font référence : voir [STRATEGIE-TESTS.md](STRATEGIE-TESTS.md).
 
 ## 1. Vision
@@ -217,7 +217,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | ENF-03 | **Sécurité** : CSP stricte, aucun script tiers, contenu des fils toujours réduit à du texte brut, clé envoyée uniquement à `api.github.com`. |
 | ENF-04 | **Confidentialité** : aucune donnée personnelle (URL de fil, titre, lecture) dans le dépôt public ni dans ses journaux. |
 | ENF-05 | **Coût** : 0 € (GitHub gratuit). |
-| ENF-06 | **Compatibilité** : Chrome et Edge récents sur PC ; Chrome Android récent ; Firefox PC (sans installation). |
+| ENF-06 | **Compatibilité** : Chrome et Edge récents sur PC ; Chrome Android récent ; ~~Firefox PC (sans installation)~~ (retiré le 2026-11-05 : Firefox n'est pas utilisé). |
 | ENF-07 | **Langue** : interface en français. |
 | ENF-08 | **Volume cible** : jusqu'à 300 fils et 1 000 nouveaux articles par jour. |
 
@@ -265,4 +265,4 @@ Le workflow du collecteur lit la clé dans le **secret** `DATA_REPO_TOKEN` du d�
 | **V0.4.1 — Vignettes** | Image de l'article cherchée sur sa page quand le fil n'en donne pas | EXG-079 |
 | **V0.4.2 — Grands volumes** | Collecte toujours terminée à temps, tenue de charge vérifiée | EXG-080, ENF-08 |
 | **V0.3 — Confort** | Recherche, thème sombre, raccourcis, hors connexion, actualisation à la demande, robustesse de la synchro | EXG-060→062, 071, 074→076 |
-| **V1.0** | Finitions, accessibilité, performance, documentation complète | ENF-01→08 |
+| **V1.0** | Finitions, accessibilité, performance, documentation complète | EXG-035, ENF-01→08 |

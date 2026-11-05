@@ -1,6 +1,6 @@
 {
   "name": "filactu",
-  "version": "0.4.2",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "FilActu - lecteur de fils RSS personnel, inspiré de Feedly, synchronisé via GitHub",
@@ -16,7 +16,9 @@
     "test:e2e": "playwright test",
     "check": "tsc --noEmit",
     "trace": "node scripts/trace.mjs",
-    "verify": "npm run check && npm run test:coverage && npm run build && npm run test:e2e && npm run trace"
+    "verify": "npm run check && npm run test:coverage && npm run build && npm run test:e2e && npm run trace",
+    "quality": "lhci autorun",
+    "captures": "playwright test --config playwright.captures.config.ts"
   },
   "dependencies": {
     "fast-xml-parser": "^4.5.0",
@@ -24,6 +26,8 @@
     "preact": "^10.24.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.10.1",
+    "@lhci/cli": "^0.14.0",
     "@playwright/test": "^1.48.0",
     "@preact/preset-vite": "^2.9.0",
     "@testing-library/preact": "^3.2.4",

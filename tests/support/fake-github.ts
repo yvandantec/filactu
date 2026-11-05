@@ -19,6 +19,8 @@ export class FakeGitHub {
   offline = false;
   /** Prochaines écritures à faire échouer en conflit (simulation d'un autre appareil). */
   forceConflicts = 0;
+  /** Délai de réponse simulé (réseau lent), en millisecondes. */
+  delayMs = 0;
 
   constructor(public owner = 'yvandantec', public repo = 'filactu-data') {}
 
@@ -50,6 +52,7 @@ export class FakeGitHub {
   }
 
   private async handle(route: Route) {
+    if (this.delayMs) await new Promise((r) => setTimeout(r, this.delayMs));
     if (this.offline) return route.abort('internetdisconnected');
     const req = route.request();
     const auth = req.headers()['authorization'] ?? '';

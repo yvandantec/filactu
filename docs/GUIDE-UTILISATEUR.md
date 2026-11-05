@@ -1,7 +1,6 @@
 # FilActu — Guide utilisateur
 
-> Version 0.3 — à jour de FilActu 0.3.0 ; elle sera complétée de captures d'écran à chaque livraison.
-> Les sections marquées *(V0.x)* décrivent des fonctions qui arrivent avec cette version.
+> Version 1.0 — à jour de FilActu 1.0.0. Les captures d'écran montrent des articles d'exemple.
 
 ## 1. Ce qu'est FilActu
 
@@ -55,6 +54,8 @@ Répétez l'étape 2.3 sur chaque appareil : la clé est saisie une fois par app
 
 ## 3. L'écran principal
 
+![FilActu sur PC : volet de gauche, liste des articles en affichage Magazine](images/pc-magazine.png)
+
 | Zone | Rôle |
 |---|---|
 | **Volet de gauche** | *Aujourd'hui*, *Tous les articles*, *À lire plus tard*, puis vos catégories avec leur icône. Touchez le chevron d'une catégorie pour voir ses fils. Le chiffre indique le nombre d'articles non lus. |
@@ -62,6 +63,11 @@ Répétez l'étape 2.3 sur chaque appareil : la clé est saisie une fois par app
 | **Liste d'articles** | Par défaut, seuls les articles **non lus** sont affichés, du plus récent au plus ancien. |
 
 Sur téléphone, le volet est caché : touchez ☰ en haut à gauche, ou glissez depuis le bord gauche.
+
+<p>
+  <img src="images/telephone-magazine.png" alt="FilActu sur téléphone : liste des articles" width="260">
+  <img src="images/telephone-volet.png" alt="FilActu sur téléphone : volet de navigation ouvert" width="260">
+</p>
 
 ## 4. Lire
 
@@ -75,6 +81,14 @@ Sur téléphone, le volet est caché : touchez ☰ en haut à gauche, ou glissez
   - **Taille du texte** : *Petit*, *Normal* ou *Grand*, pour les titres, le fil / la fraîcheur et le début de l'article. Réglée séparément pour le PC et le téléphone.
   - **Non lus seulement** : coché par défaut. Un article que vous lisez reste affiché (atténué) jusqu'à ce que vous changiez de vue.
   - **Plus anciens d'abord** : inverse l'ordre.
+
+<p>
+  <img src="images/telephone-options.png" alt="Options d'affichage sur téléphone" width="260">
+</p>
+
+| Titres | Cartes |
+|---|---|
+| ![Affichage Titres](images/pc-titres.png) | ![Affichage Cartes](images/pc-cartes.png) |
 
 ## 5. Lu / non lu
 
@@ -134,6 +148,10 @@ Dans le volet, à droite de « Catégories », touchez **Gérer** :
 | `/` | Rechercher |
 | `g` puis `t` / `a` / `s` | Aller à Aujourd'hui / Tous / À lire plus tard |
 | `?` | Afficher l'aide des raccourcis |
+
+### Sans souris
+
+Tout se fait au clavier : `Tab` passe d'un bouton à l'autre (un contour vert montre où vous êtes), `Entrée` active, `Échap` ferme une fenêtre et vous ramène là où vous étiez. Sur téléphone et tablette, chaque bouton offre une zone de toucher d'au moins 44 pixels. Les contrastes et les libellés suivent les règles d'accessibilité (WCAG AA) pour les lecteurs d'écran.
 
 ## 10. Plusieurs appareils et hors connexion
 

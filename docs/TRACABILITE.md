@@ -1,6 +1,6 @@
 # Matrice de traçabilité
 
-> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2. Ne pas modifier à la main.
+> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2, V1.0. Ne pas modifier à la main.
 
 | Exigence | Lot livré | Tests | Statut |
 |---|---|---|---|
@@ -14,7 +14,7 @@
 | **EXG-013** Créer, renommer, réordonner, supprimer une catégorie. | oui | 12 | ✅ couverte |
 | **EXG-017** Accepter les adresses de pages YouTube (playlist, chaîne) comme abonnements. | oui | 5 | ✅ couverte |
 | **EXG-018** Proposer automatiquement une icône d'après le nom de la catégorie. | oui | 5 | ✅ couverte |
-| **EXG-016** Associer une icône à une catégorie. | oui | 3 | ✅ couverte |
+| **EXG-016** Associer une icône à une catégorie. | oui | 4 | ✅ couverte |
 | **EXG-014** Exporter les abonnements en OPML. | oui | 1 | ✅ couverte |
 | **EXG-015** Signaler les fils en erreur. | oui | 2 | ✅ couverte |
 | **EXG-020** Volet de navigation avec : Aujourd'hui, Tous les articles, À lire plus tard, puis les catégories dépliables contenant leurs fils. | oui | 3 | ✅ couverte |
@@ -30,7 +30,7 @@
 | **EXG-032** En affichage Titres, un appui long (mobile) ou le survol (PC) montre le résumé. | oui | 1 | ✅ couverte |
 | **EXG-033** Un clic sur un article l'ouvre dans le navigateur par défaut (nouvel onglet sur PC). | oui | 1 | ✅ couverte |
 | **EXG-034** Les articles lus sont affichés atténués. | oui | 1 | ✅ couverte |
-| **EXG-035** Les images distantes sont chargées en différé (*lazy loading*), sans transmettre de référent. |  | 0 | — à venir |
+| **EXG-035** Les images distantes sont chargées en différé (*lazy loading*), sans transmettre de référent. | oui | 1 | ✅ couverte |
 | **EXG-040** Marquer lu à l'ouverture d'un article. | oui | 2 | ✅ couverte |
 | **EXG-041** Marquer lu en défilant (réglable, activé par défaut). | oui | 2 | ✅ couverte |
 | **EXG-042** Basculer lu/non lu manuellement sur un article. | oui | 2 | ✅ couverte |
@@ -53,19 +53,44 @@
 | **EXG-079** Quand un nouvel article n'a pas d'image dans le fil, le collecteur va chercher l'image de partage déclarée par la page de l'article (`og:image`, à défaut `twitter:image` ou `link rel="image_src"`). | oui | 8 | ✅ couverte |
 | **EXG-080** Une collecte se termine toujours avant la limite de 10 minutes imposée par GitHub, même après un gros import ou si des sites sont lents. | oui | 3 | ✅ couverte |
 | **EXG-077** Pas de doublon. | oui | 6 | ✅ couverte |
-| **ENF-01** Performance : affichage de la liste en moins de 1,5 s à l'ouverture sur un téléphone de milieu de gamme (articles en cache), défilement fluide avec 2 000 articles chargés. |  | 0 | — à venir |
-| **ENF-02** Accessibilité : navigation complète au clavier, contrastes conformes RGAA/WCAG AA, libellés pour les lecteurs d'écran, zones tactiles d'au moins 44 px. |  | 0 | — à venir |
-| **ENF-03** Sécurité : CSP stricte, aucun script tiers, contenu des fils toujours réduit à du texte brut, clé envoyée uniquement à `api.github.com`. |  | 1 | ✅ couverte |
-| **ENF-04** Confidentialité : aucune donnée personnelle (URL de fil, titre, lecture) dans le dépôt public ni dans ses journaux. |  | 0 | — à venir |
-| **ENF-05** Coût : 0 € (GitHub gratuit). |  | 0 | — à venir |
-| **ENF-06** Compatibilité : Chrome et Edge récents sur PC ; Chrome Android récent ; Firefox PC (sans installation). |  | 0 | — à venir |
-| **ENF-07** Langue : interface en français. |  | 0 | — à venir |
+| **ENF-01** Performance : affichage de la liste en moins de 1,5 s à l'ouverture sur un téléphone de milieu de gamme (articles en cache), défilement fluide avec 2 000 articles chargés. | oui | 2 | ✅ couverte |
+| **ENF-02** Accessibilité : navigation complète au clavier, contrastes conformes RGAA/WCAG AA, libellés pour les lecteurs d'écran, zones tactiles d'au moins 44 px. | oui | 6 | ✅ couverte |
+| **ENF-03** Sécurité : CSP stricte, aucun script tiers, contenu des fils toujours réduit à du texte brut, clé envoyée uniquement à `api.github.com`. | oui | 1 | ✅ couverte |
+| **ENF-04** Confidentialité : aucune donnée personnelle (URL de fil, titre, lecture) dans le dépôt public ni dans ses journaux. | oui | 2 | ✅ couverte |
+| **ENF-05** Coût : 0 € (GitHub gratuit). | oui | 1 | ✅ couverte |
+| **ENF-06** Compatibilité : Chrome et Edge récents sur PC ; Chrome Android récent ; ~~Firefox PC (sans installation)~~ (retiré le 2026-11-05 : Firefox n'est pas utilisé). | oui | 1 | ✅ couverte |
+| **ENF-07** Langue : interface en français. | oui | 1 | ✅ couverte |
 | **ENF-08** Volume cible : jusqu'à 300 fils et 1 000 nouveaux articles par jour. | oui | 1 | ✅ couverte |
 
 ## Détail des tests
 
+### ENF-01
+- tests/e2e/perf.spec.ts › ENF-01 · avec 2 000 articles en cache, la liste s’affiche en moins de 1,5 s
+- tests/e2e/perf.spec.ts › ENF-01 · le défilement reste fluide avec 2 000 articles chargés
+
+### ENF-02
+- tests/components/dialogs.test.tsx › ENF-02 · la fenêtre reçoit le focus à l’ouverture et le rend au bouton à la fermeture
+- tests/components/dialogs.test.tsx › ENF-02 · Échap ferme la fenêtre
+- tests/components/dialogs.test.tsx › ENF-02 · Tab ne sort pas de la fenêtre
+- tests/e2e/a11y.spec.ts › ENF-02 · aucun problème d’accessibilité sérieux, thème ${scheme === 
+- tests/e2e/a11y.spec.ts › ENF-02 · zones tactiles d’au moins 44 px sur écran tactile
+- tests/e2e/a11y.spec.ts › ENF-02 · tout se fait au clavier, avec un repère de focus visible
+
 ### ENF-03
 - tests/unit/text.test.ts › ENF-03 · seules les URL http(s) sont acceptées
+
+### ENF-04
+- tests/collector/collect.test.ts › DEC-03 · ENF-04 · les journaux ne contiennent ni adresse ni titre
+- tests/unit/workflows.test.ts › DEC-03 · ENF-04 · la collecte écrit uniquement dans le dépôt de données
+
+### ENF-05
+- tests/unit/workflows.test.ts › ENF-05 · tout tourne sur les machines gratuites de GitHub
+
+### ENF-06
+- tests/e2e/v1.spec.ts › ENF-06 · l’appli démarre et s’utilise sans erreur sur l’écran testé
+
+### ENF-07
+- tests/e2e/v1.spec.ts › ENF-07 · l’interface est en français
 
 ### ENF-08
 - tests/collector/collect.test.ts › ENF-08 · 300 fils et 6 000 articles sans image sont collectés en une fois
@@ -135,6 +160,7 @@
 - tests/e2e/reader.spec.ts › EXG-020 · EXG-015 · volet : vues fixes, catégories dépliables, compteurs, fils en erreur
 
 ### EXG-016
+- tests/components/dialogs.test.tsx › EXG-016 · choisir ou retirer une icône, le choix en cours est annoncé
 - tests/e2e/manage.spec.ts › EXG-011 · EXG-016 · ajouter un abonnement dans une nouvelle catégorie avec icône
 - tests/e2e/manage.spec.ts › EXG-013 · EXG-016 · créer une catégorie avec icône, la renommer, changer son icône, la réordonner
 - tests/unit/subscriptions.test.ts › EXG-016 · associer, changer et retirer une icône
@@ -172,7 +198,7 @@
 - tests/e2e/v03.spec.ts › EXG-024 · non lus seulement : l’article lu reste affiché jusqu’au changement de vue
 
 ### EXG-030
-- tests/e2e/reader.spec.ts › EXG-030 · affichage Magazine : titre, fil / fraîcheur, début de l’article en option
+- tests/e2e/reader.spec.ts › EXG-030 · EXG-035 · affichage Magazine : titre, fil / fraîcheur, début de l’article en option
 - tests/e2e/v03.spec.ts › EXG-030 · trois affichages, mémorisés par vue et synchronisés
 - tests/unit/reading.test.ts › EXG-030 · âge lisible
 - tests/unit/text.test.ts › EXG-030 · trouve la première image, en ignorant les pixels de suivi
@@ -193,6 +219,9 @@
 
 ### EXG-034
 - tests/e2e/reader.spec.ts › EXG-033 · EXG-034 · EXG-040 · EXG-044 · un clic ouvre l’article dans le navigateur et le marque lu
+
+### EXG-035
+- tests/e2e/reader.spec.ts › EXG-030 · EXG-035 · affichage Magazine : titre, fil / fraîcheur, début de l’article en option
 
 ### EXG-036
 - tests/e2e/v03.spec.ts › EXG-036 · affichage compact : au moins 5 articles visibles sur un téléphone

@@ -10,7 +10,7 @@ import {
 import type { Feed, FeedsStatus, Item, Subscriptions } from '../core/types';
 import { feedLabel } from '../core/subscriptions';
 import { ANDROID_BROWSERS, articleHref, fontScale, FONT_SIZES, canChooseBrowser, type FontSize } from '../core/links';
-import { AddFeedDialog, CategoriesDialog, Dialog, FeedDialog } from './dialogs';
+import { AddFeedDialog, CategoriesDialog, Dialog, FeedDialog, useFocusInside } from './dialogs';
 import {
   IconAlert, IconAll, IconBookmark, IconBookmarkFilled, IconCheckAll, IconChevron, IconClose, IconDot, IconMenu,
   IconMore, IconRefresh, IconSearch, IconSettings, IconToday, IconView, Logo,
@@ -365,8 +365,10 @@ function ViewMenu({ store, view, mode, unreadOnly, oldestFirst, showSummary, sum
   store: Store; view: ViewId; mode: DisplayMode; unreadOnly: boolean; oldestFirst: boolean; showSummary: boolean;
   summaryKey: string; fontKey: string; fontSize: FontSize; onClose: () => void;
 }) {
+  const box = useRef<HTMLDivElement>(null);
+  useFocusInside(box);
   return (
-    <div class="popover view-menu" role="dialog" aria-label="Options d’affichage">
+    <div ref={box} tabIndex={-1} class="popover view-menu" role="dialog" aria-label="Options d’affichage">
       <div class="seg" role="radiogroup" aria-label="Affichage">
         {DISPLAY_MODES.map((m) => (
           <button key={m} role="radio" aria-checked={mode === m} class={`seg-btn ${mode === m ? 'on' : ''}`}

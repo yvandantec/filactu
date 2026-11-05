@@ -5,10 +5,43 @@ import { CATEGORY_ICONS, exclusiveFeeds, feedLabel, suggestIcon } from '../core/
 import type { Category } from '../core/types';
 import { IconChevron, IconClose } from './icons';
 
+const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+/**
+ * Accessibilité au clavier d'une fenêtre (ENF-02) : à l'ouverture, le focus entre dans la fenêtre ;
+ * avec `trap`, Tab y reste ; à la fermeture, le focus revient à l'élément qui l'avait ouverte.
+ */
+export function useFocusInside(ref: { current: HTMLElement | null }, trap = false) {
+  useEffect(() => {
+    const box = ref.current;
+    if (!box) return;
+    const previous = document.activeElement as HTMLElement | null;
+    // un champ peut déjà avoir pris le focus (saisie directe) : on ne le lui vole pas
+    const settle = setTimeout(() => { if (!box.contains(document.activeElement)) box.focus(); }, 0);
+    const onKey = (e: KeyboardEvent) => {
+      if (!trap || e.key !== 'Tab') return;
+      const items = [...box.querySelectorAll<HTMLElement>(FOCUSABLE)].filter((el) => el.offsetParent !== null);
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && (document.activeElement === first || document.activeElement === box)) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+    box.addEventListener('keydown', onKey);
+    return () => {
+      clearTimeout(settle);
+      box.removeEventListener('keydown', onKey);
+      if (previous && previous.isConnected && previous !== document.body) previous.focus();
+    };
+  }, []);
+}
+
 export function Dialog({ title, onClose, children, wide }: {
   title: string; onClose: () => void; children: ComponentChildren; wide?: boolean;
 }) {
   const id = 'dlg-' + title.replace(/\W+/g, '-');
+  const box = useRef<HTMLDivElement>(null);
+  useFocusInside(box, true);
   useEffect(() => {
     const esc = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     window.addEventListener('keydown', esc);
@@ -16,7 +49,7 @@ export function Dialog({ title, onClose, children, wide }: {
   }, [onClose]);
   return (
     <div class="dialog-backdrop" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div class={`dialog ${wide ? 'dialog-wide' : ''}`} role="dialog" aria-modal="true" aria-labelledby={id}>
+      <div ref={box} tabIndex={-1} class={`dialog ${wide ? 'dialog-wide' : ''}`} role="dialog" aria-modal="true" aria-labelledby={id}>
         <header class="dialog-head">
           <h2 id={id}>{title}</h2>
           <button class="icon-btn" aria-label="Fermer" onClick={onClose}><IconClose /></button>
