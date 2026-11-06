@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.FilActu" parent="android:Theme.Material.NoActionBar">
-        <item name="android:colorPrimary">@color/filactu_green</item>
-        <item name="android:colorAccent">@color/filactu_green</item>
-        <item name="android:statusBarColor">@color/filactu_green</item>
-        <item name="android:navigationBarColor">@color/filactu_dark</item>
-        <item name="android:windowBackground">@color/filactu_dark</item>
+    <!-- Thème clair : la WebView annonce « clair » au site (EXG-084). Le thème sombre est dans values-night. -->
+    <style name="Theme.FilActu" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/filactu_ink</item>
+        <item name="android:colorAccent">@color/filactu_ink</item>
+        <item name="android:windowBackground">@color/filactu_bg</item>
+        <item name="android:statusBarColor">@color/filactu_bg</item>
+        <item name="android:navigationBarColor">@color/filactu_bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 </resources>

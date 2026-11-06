@@ -1,6 +1,6 @@
 # Matrice de traçabilité
 
-> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2, V1.0, V1.0.1, V1.1, V1.2. Ne pas modifier à la main.
+> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2, V1.0, V1.0.1, V1.1, V1.2, V1.3. Ne pas modifier à la main.
 
 | Exigence | Lot livré | Tests | Statut |
 |---|---|---|---|
@@ -8,6 +8,7 @@
 | **EXG-002** La clé est mémorisée sur l'appareil et peut être effacée depuis les réglages (« Déconnecter cet appareil »). | oui | 1 | ✅ couverte |
 | **EXG-004** Appli Android à installer (APK) qui affiche FilActu et ouvre chaque article directement dans le navigateur par défaut du téléphone (Brave…), sans onglet intégré ni menu de choix. | oui | 2 | ✅ couverte |
 | **EXG-003** L'appli s'installe sur Android (téléphone et tablette) et sur PC (Chrome/Edge). | oui | 1 | ✅ couverte |
+| **EXG-083** L'icône de l'appli reprend l'identité « tableau » (DESIGN.md) : fond encre, fil clair, ondes en jaune signal ; plus aucune trace de l'ancien vert. | oui | 2 | ✅ couverte |
 | **EXG-010** Importer un fichier OPML (export Feedly). | oui | 5 | ✅ couverte |
 | **EXG-011** Ajouter un abonnement par URL de fil ou de site, avec un nom facultatif, et le ranger dans une catégorie existante ou nouvelle. | oui | 9 | ✅ couverte |
 | **EXG-012** Renommer, déplacer (changer de catégorie), désabonner un fil. | oui | 6 | ✅ couverte |
@@ -45,6 +46,7 @@
 | **EXG-051** Les articles mis de côté sont conservés sans limite de durée, même après la purge des 30 jours. | oui | 2 | ✅ couverte |
 | **EXG-060** Rechercher dans les titres et résumés des articles conservés (30 jours + à lire plus tard), dans la vue courante ou partout. | oui | 3 | ✅ couverte |
 | **EXG-061** Thème clair, sombre ou automatique (suit le système). | oui | 2 | ✅ couverte |
+| **EXG-084** Dans l'appli Android, le thème « Automatique » suit le réglage clair ou sombre du téléphone. | oui | 1 | ✅ couverte |
 | **EXG-062** Raccourcis clavier sur PC : `j`/`k` article suivant/précédent, `o` ou `Entrée` ouvrir, `m` lu/non lu, `s` à lire plus tard, `Maj+A` tout marquer lu, `r` actualiser, `/` rechercher, `v` changer d'affichage, `g a` Tous, `g t` Aujourd'hui, `?` aide. | oui | 1 | ✅ couverte |
 | **EXG-063** Une recherche porte aussi sur les articles déjà lus. | oui | 2 | ✅ couverte |
 | **EXG-070** Le collecteur récupère tous les fils actifs toutes les 15 minutes. | oui | 10 | ✅ couverte |
@@ -382,3 +384,10 @@
 
 ### EXG-082
 - tests/e2e/v11.spec.ts › EXG-082 · le bandeau « articles pas à jour » est en langage courant et se ferme
+
+### EXG-083
+- tests/e2e/v13.spec.ts › EXG-083 · icône « tableau » et barre du navigateur aux couleurs du thème affiché
+- tests/unit/v13.test.ts › EXG-083 · le logo et les couleurs de l’appli reprennent l’identité « tableau », sans l’ancien vert
+
+### EXG-084
+- tests/unit/v13.test.ts › EXG-084 · l’appli Android annonce au site le thème du téléphone et bascule avec lui

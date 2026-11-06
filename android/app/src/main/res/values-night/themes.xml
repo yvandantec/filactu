@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Téléphone en sombre : la WebView annonce « sombre » au site (EXG-084) -->
+    <style name="Theme.FilActu" parent="android:Theme.Material.NoActionBar">
+        <item name="android:colorPrimary">@color/filactu_bg</item>
+        <item name="android:colorAccent">@color/filactu_bg</item>
+        <item name="android:windowBackground">@color/filactu_bg</item>
+        <item name="android:statusBarColor">@color/filactu_bg</item>
+        <item name="android:navigationBarColor">@color/filactu_bg</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+</resources>

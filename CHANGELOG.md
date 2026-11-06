@@ -2,6 +2,15 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [1.3.0] — 2026-11-06 — Icône et thème sur Android
+
+### Modifié
+- Nouvelle icône aux couleurs « tableau » : carré encre, fil clair, ondes et point en jaune signal. Elle remplace l'ancien carré vert partout : écran d'accueil, onglet du navigateur, logo du volet et de l'écran de connexion (EXG-083).
+- La barre du navigateur prend la couleur du fond affiché (clair ou encre), y compris quand le thème est forcé dans Réglages (EXG-083).
+
+### Corrigé
+- Appli Android 1.1.0 : le thème « Automatique » suit enfin le téléphone. L'appli annonçait toujours un thème sombre au site ; elle annonce désormais le thème du téléphone et bascule dès qu'il change. Les barres du haut et du bas prennent la couleur du fond, avec des icônes lisibles (EXG-084). **Installer la nouvelle APK** (`FilActu-1.1.0.apk`).
+
 ## [1.2.2] — 2026-11-06
 
 ### Corrigé

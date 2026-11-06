@@ -6,7 +6,9 @@
     <meta http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; connect-src 'self' https://api.github.com ws:; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'" />
     <meta name="referrer" content="no-referrer" />
-    <meta name="theme-color" content="#1E9E5F" />
+    <!-- Barre du navigateur aux couleurs du fond affiché (EXG-083) ; App.tsx les ajuste si le thème est forcé -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f8fa" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#12161c" />
     <meta name="description" content="FilActu, lecteur de fils RSS personnel" />
     <title>FilActu</title>
     <link rel="manifest" href="manifest.webmanifest" />

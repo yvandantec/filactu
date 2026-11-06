@@ -62,6 +62,11 @@ export function App({ store }: { store: Store }) {
   useEffect(() => {
     if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
     else delete document.documentElement.dataset.theme;
+    // Barre du navigateur : couleur du fond affiché, y compris quand le thème est forcé (EXG-083)
+    for (const meta of document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"][media]')) {
+      const dark = theme === 'auto' ? meta.media.includes('dark') : theme === 'dark';
+      meta.content = dark ? '#12161c' : '#f7f8fa';
+    }
   }, [theme]);
   if (s.phase === 'boot') return <div class="boot" aria-busy="true"><Logo size={56} /></div>;
   if (s.phase === 'setup') return <Setup store={store} state={s} />;

@@ -40,8 +40,8 @@ Tant que ce secret n'existe pas, le robot ne fait rien (sans erreur).
 
 ### 2.4 Installer l'appli
 
-- **Android (recommandé) : l'appli FilActu.** Téléchargez le fichier **FilActu-x.y.z.apk** depuis la page <https://github.com/yvandantec/filactu/releases> (rubrique *Assets*), ouvrez-le et acceptez l'installation (Android demande d'autoriser une fois l'installation depuis le navigateur ou l'application Fichiers). Avec cette appli, **chaque article s'ouvre directement dans votre navigateur par défaut** (Brave, Firefox…), dans un nouvel onglet, sans onglet intégré ni menu de choix. Le contenu de FilActu se met à jour tout seul ; l'APK ne se réinstalle que si une nouvelle version d'appli est annoncée. Si vous aviez installé FilActu via Chrome, supprimez cette ancienne icône.
-- **Android, autre possibilité** : ouvrez l'adresse dans Chrome → menu ⋮ → **Installer l'application** (ou « Ajouter à l'écran d'accueil »). L'icône verte FilActu apparaît avec vos autres applis.
+- **Android (recommandé) : l'appli FilActu.** Téléchargez le fichier **FilActu-x.y.z.apk** depuis la page <https://github.com/yvandantec/filactu/releases> (rubrique *Assets*), ouvrez-le et acceptez l'installation (Android demande d'autoriser une fois l'installation depuis le navigateur ou l'application Fichiers). Avec cette appli, **chaque article s'ouvre directement dans votre navigateur par défaut** (Brave, Firefox…), dans un nouvel onglet, sans onglet intégré ni menu de choix. Le contenu de FilActu se met à jour tout seul ; l'APK ne se réinstalle que si une nouvelle version d'appli est annoncée. Pour la mettre à jour, téléchargez la nouvelle APK et ouvrez-la : elle s'installe par-dessus l'ancienne, sans perdre vos réglages. La version 1.1.0 de l'appli apporte la nouvelle icône et le thème qui suit le téléphone. Si vous aviez installé FilActu via Chrome, supprimez cette ancienne icône.
+- **Android, autre possibilité** : ouvrez l'adresse dans Chrome → menu ⋮ → **Installer l'application** (ou « Ajouter à l'écran d'accueil »). L'icône FilActu (carré noir, ondes jaunes) apparaît avec vos autres applis.
 - **PC** : dans Chrome ou Edge, cliquez l'icône d'installation à droite de la barre d'adresse. Vous pouvez aussi simplement garder l'onglet ouvert.
 
 Répétez l'étape 2.3 sur chaque appareil : la clé est saisie une fois par appareil.
@@ -163,7 +163,7 @@ Tout se fait au clavier : `Tab` passe d'un bouton à l'autre (un contour vert mo
 
 | Réglage | Effet |
 |---|---|
-| Thème | Automatique (comme le téléphone ou le PC), clair ou sombre. Le thème sombre est le « tableau » : fond noir, sources en jaune. |
+| Thème | Automatique (comme le téléphone ou le PC), clair ou sombre. Le thème sombre est le « tableau » : fond noir, sources en jaune. Quand le téléphone passe du clair au sombre, FilActu suit aussitôt. |
 | Taille du texte des articles | Petit, Normal ou Grand (réglée séparément pour le PC et le téléphone) |
 | Ouvrir les articles avec *(Android seulement)* | Navigateur qui ouvre les articles : Brave, Firefox, Edge, Samsung Internet ou Chrome. *Automatique* garde l'onglet intégré de Chrome. |
 | Marquer comme lu en défilant | Activé par défaut |
@@ -183,6 +183,8 @@ Tout se fait au clavier : `Tab` passe d'un bouton à l'autre (un contour vert mo
 **« Clé refusée » ou « droit manquant ».** La clé a expiré ou il lui manque un droit : refaites les § 2.1 et 2.2, puis Réglages → *Déconnecter cet appareil* et saisissez la nouvelle clé.
 
 **Les articles s'ouvrent dans un onglet intégré de Chrome au lieu de mon navigateur (Brave…).** C'est le comportement normal d'une appli installée par Chrome. Dans Réglages → *Ouvrir les articles avec*, choisissez votre navigateur : les articles s'y ouvriront directement. Si Android affiche à chaque fois un menu « Ouverture avec », choisissez plutôt **Brave — méthode 2 (sans menu de choix)**. Si ce menu persiste encore, c'est Chrome qui l'impose : il suffit alors de toucher Brave.
+
+**Dans l'appli Android, FilActu reste en sombre alors que le téléphone est en clair (ou l'icône est encore verte).** Vous avez l'ancienne version de l'appli (1.0.0). Installez la version 1.1.0 ou plus récente (voir *Installer l'appli*) : elle suit le thème du téléphone et porte la nouvelle icône. En attendant, Réglages → *Thème* → *Clair* force le thème clair.
 
 **Android dit « appli déjà installée » puis « impossible de lancer l'application ».** Une installation précédente a échoué à moitié. Le plus efficace est de **vider le cache de Chrome** (Paramètres du téléphone → Applications → Chrome → Stockage → *Vider le cache*), puis de réinstaller. Sinon, dans l'ordre :
 1. Paramètres du téléphone → Applications : si « FilActu » apparaît, désinstallez-la. Supprimez aussi toute icône FilActu de l'écran d'accueil.

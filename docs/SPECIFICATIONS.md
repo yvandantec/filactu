@@ -127,6 +127,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | EXG-002 | La clé est mémorisée sur l'appareil et peut être effacée depuis les réglages (« Déconnecter cet appareil »). | Après déconnexion, l'appli ne contient plus aucune donnée en cache. |
 | EXG-004 | Appli Android à installer (APK) qui affiche FilActu et ouvre chaque article **directement dans le navigateur par défaut** du téléphone (Brave…), sans onglet intégré ni menu de choix. | Les pages de FilActu restent dans l'appli ; tout autre lien est confié à Android (ACTION_VIEW). Retour arrière, import OPML (choix de fichier) et données hors connexion fonctionnent. Le site détecte l'appli et masque le réglage « Ouvrir les articles avec ». Les mises à jour du site arrivent sans réinstaller l'APK. |
 | EXG-003 | L'appli s'installe sur Android (téléphone et tablette) et sur PC (Chrome/Edge). | Le manifeste (avec un identifiant `id` stable) et le service worker sont valides ; l'icône FilActu apparaît sur l'écran d'accueil ; l'appli s'ouvre en plein écran. |
+| EXG-083 | L'icône de l'appli reprend l'identité « tableau » (DESIGN.md) : fond encre, fil clair, ondes en jaune signal ; plus aucune trace de l'ancien vert. | Même dessin partout : écran d'accueil (site installé et appli Android), onglet du navigateur, logo du volet. La couleur de la barre du navigateur suit le thème affiché (clair ou sombre). |
 
 ### 4.2 Abonnements et catégories
 
@@ -194,6 +195,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 |---|---|---|
 | EXG-060 | Rechercher dans les titres et résumés des articles conservés (30 jours + à lire plus tard), dans la vue courante ou partout. | Résultats en moins d'une seconde pour 20 000 articles ; recherche insensible aux accents et à la casse. |
 | EXG-061 | Thème clair, sombre ou automatique (suit le système). | — |
+| EXG-084 | Dans l'appli Android, le thème « Automatique » suit le réglage clair ou sombre du téléphone. | L'appli Android annonce au site le thème du téléphone (et non un thème sombre fixe) ; quand le téléphone change de thème, l'appli bascule sans être relancée. Les barres du haut et du bas du téléphone prennent la couleur du fond de l'appli, avec des icônes lisibles. Nécessite d'installer la nouvelle APK (1.1.0). |
 | EXG-062 | Raccourcis clavier sur PC : `j`/`k` article suivant/précédent, `o` ou `Entrée` ouvrir, `m` lu/non lu, `s` à lire plus tard, `Maj+A` tout marquer lu, `r` actualiser, `/` rechercher, `v` changer d'affichage, `g a` Tous, `g t` Aujourd'hui, `?` aide. | La touche `?` affiche la liste des raccourcis. |
 | EXG-063 | Une recherche porte aussi sur les articles déjà lus. | Pendant une recherche, le filtre « non lus seulement » ne s'applique pas ; « Partout » élargit à tous les articles conservés. Sur téléphone, le champ de recherche occupe la barre du haut (les autres boutons sont masqués pendant la recherche). |
 
@@ -279,3 +281,4 @@ Le workflow du collecteur lit la clé dans le **secret** `DATA_REPO_TOKEN` du d�
 | **V1.0.1 — Robustesse de l'enregistrement** | Le robot patiente pendant une panne passagère de GitHub | EXG-081 |
 | **V1.1 — Lisibilité** | Recherche, ligne d'article, messages clairs, notification Annuler (analyse d'interface du 2026-11-06) | EXG-019, 046, 047, 063, 082 |
 | **V1.2 — Identité visuelle** | Thème « tableau » sombre et clair, titre en entier, source mise en avant | EXG-039 |
+| **V1.3 — Icône et thème sur Android** | Icône aux couleurs « tableau », thème du téléphone suivi dans l'appli Android | EXG-083, 084 |
