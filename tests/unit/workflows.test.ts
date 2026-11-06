@@ -25,6 +25,22 @@ describe('workflows GitHub Actions', () => {
     expect(data.on).toHaveProperty('workflow_dispatch');
   });
 
+  test('EXG-081 · l’enregistrement réessaie assez longtemps pendant une panne de GitHub', () => {
+    const { data } = load('collect.yml');
+    const save = data.jobs.collect.steps.find((st: Record<string, string>) => st.name === 'Enregistrer');
+    const run: string = save.run;
+    const waits = /for wait in ([^;\n]+)/.exec(run)?.[1].trim().split(/\s+/) ?? [];
+    const delays = waits.filter((w) => w !== '-').map(Number);
+    expect(waits.length, 'nombre d’essais').toBeGreaterThanOrEqual(6);
+    expect(delays.every((d, i) => i === 0 || d >= delays[i - 1]), 'attentes croissantes').toBe(true);
+    const total = delays.reduce((a, b) => a + b, 0);
+    expect(total).toBeGreaterThanOrEqual(90);
+    expect(total).toBeLessThanOrEqual(180);
+    expect(run).toMatch(/git rebase --abort/);
+    // budget de collecte (6 min) + attentes : sous la limite du travail
+    expect(data.jobs.collect['timeout-minutes']).toBeGreaterThanOrEqual(6 + Math.ceil(total / 60) + 1);
+  });
+
   test('ENF-05 · tout tourne sur les machines gratuites de GitHub', () => {
     for (const name of files) {
       const { data } = load(name);

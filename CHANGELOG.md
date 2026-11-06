@@ -2,6 +2,11 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [1.0.1] — 2026-11-06
+
+### Modifié
+- Quand GitHub refuse passagèrement l'enregistrement d'une collecte (erreur de ses serveurs), le robot réessaie 6 fois avec des attentes croissantes, pendant près de 2 minutes, au lieu d'abandonner après 18 secondes (EXG-081).
+
 ## [1.0.0] — 2026-11-05 — Version 1
 
 ### Ajouté

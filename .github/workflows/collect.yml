@@ -54,8 +54,12 @@ jobs:
           git add -A items meta
           if git diff --cached --quiet; then echo "Rien de nouveau"; exit 0; fi
           git commit -q -m "Collecte"
-          for i in 1 2 3; do
-            git pull -q --rebase && git push -q && exit 0
-            sleep 5
+          # Pannes passagères de GitHub (EXG-081) : 6 essais, attentes croissantes (1 min 50 au total)
+          for wait in 5 10 20 30 45 -; do
+            if git pull -q --rebase && git push -q; then exit 0; fi
+            git rebase --abort 2>/dev/null || true
+            if [ "$wait" = - ]; then break; fi
+            echo "Envoi refusé, nouvel essai dans $wait s"
+            sleep "$wait"
           done
           echo "Échec de l'envoi" && exit 1

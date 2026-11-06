@@ -1,6 +1,6 @@
 # Matrice de traçabilité
 
-> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2, V1.0. Ne pas modifier à la main.
+> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2, V1.0, V1.0.1. Ne pas modifier à la main.
 
 | Exigence | Lot livré | Tests | Statut |
 |---|---|---|---|
@@ -52,6 +52,7 @@
 | **EXG-078** À l'ouverture de l'appli (et à chaque actualisation automatique), une collecte est lancée si la dernière date de plus de 20 minutes. | oui | 2 | ✅ couverte |
 | **EXG-079** Quand un nouvel article n'a pas d'image dans le fil, le collecteur va chercher l'image de partage déclarée par la page de l'article (`og:image`, à défaut `twitter:image` ou `link rel="image_src"`). | oui | 8 | ✅ couverte |
 | **EXG-080** Une collecte se termine toujours avant la limite de 10 minutes imposée par GitHub, même après un gros import ou si des sites sont lents. | oui | 3 | ✅ couverte |
+| **EXG-081** L'enregistrement d'une collecte résiste aux pannes passagères de GitHub. | oui | 1 | ✅ couverte |
 | **EXG-077** Pas de doublon. | oui | 6 | ✅ couverte |
 | **ENF-01** Performance : affichage de la liste en moins de 1,5 s à l'ouverture sur un téléphone de milieu de gamme (articles en cache), défilement fluide avec 2 000 articles chargés. | oui | 2 | ✅ couverte |
 | **ENF-02** Accessibilité : navigation complète au clavier, contrastes conformes RGAA/WCAG AA, libellés pour les lecteurs d'écran, zones tactiles d'au moins 44 px. | oui | 6 | ✅ couverte |
@@ -351,3 +352,6 @@
 - tests/collector/collect.test.ts › EXG-080 · passé le budget, les fils restants sont reportés sans erreur et ce qui est collecté est enregistré
 - tests/collector/collect.test.ts › EXG-080 · les fils reportés passent en priorité à la collecte suivante
 - tests/collector/collect.test.ts › EXG-080 · passé le budget, plus aucune page d’article n’est ouverte
+
+### EXG-081
+- tests/unit/workflows.test.ts › EXG-081 · l’enregistrement réessaie assez longtemps pendant une panne de GitHub
