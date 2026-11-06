@@ -2,6 +2,11 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [1.3.1] — 2026-11-06
+
+### Corrigé
+- L'onglet du navigateur gardait l'ancienne icône verte : les adresses des icônes changent pour que les navigateurs chargent la nouvelle (EXG-083).
+
 ## [1.3.0] — 2026-11-06 — Icône et thème sur Android
 
 ### Modifié

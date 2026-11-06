@@ -30,6 +30,11 @@ describe('V1.3 — icône et thème sur Android', () => {
     }
     expect(read('assets/logo.svg')).toBe(read('public/icons/logo.svg'));
     expect(JSON.parse(read('public/manifest.webmanifest')).theme_color).toBe('#12161c');
+    // Adresses des icônes changées : les navigateurs gardent sinon l'ancienne icône d'onglet en mémoire
+    const links = [...read('index.html').matchAll(/<link rel="(?:icon|apple-touch-icon)"[^>]*href="([^"]+)"/g)].map((m) => m[1]);
+    expect(links.length).toBeGreaterThanOrEqual(3);
+    for (const href of links) expect(href, href).toMatch(/\?v=tableau$/);
+    for (const icon of JSON.parse(read('public/manifest.webmanifest')).icons) expect(icon.src).toMatch(/\?v=tableau$/);
     // Fond de l'icône adaptative Android : encre
     expect(read(`${res}/mipmap-anydpi-v26/ic_launcher.xml`)).toMatch(/@color\/filactu_ink/);
     expect(read(`${res}/values/colors.xml`)).toMatch(/name="filactu_ink">#12161C</i);
