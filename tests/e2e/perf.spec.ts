@@ -16,9 +16,20 @@ test.describe('performance (ENF-01)', () => {
     gh.delayMs = 10_000;
     const cdp = await page.context().newCDPSession(page);
     await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+    // l'instant d'affichage est relevé dans la page elle-même (première image peinte avec un article),
+    // sans compter les allers-retours entre le test et le navigateur
+    await page.addInitScript(() => {
+      const w = window as unknown as { __shownAt?: number };
+      const check = () => {
+        if (w.__shownAt) return;
+        if (document.querySelector('.article')) requestAnimationFrame(() => { w.__shownAt ??= performance.now(); });
+        else requestAnimationFrame(check);
+      };
+      requestAnimationFrame(check);
+    });
     await page.reload();
     await page.locator('.article').first().waitFor({ state: 'visible', timeout: 8000 });
-    const shownAt = await page.evaluate(() => performance.now());
+    const shownAt = await page.waitForFunction(() => (window as unknown as { __shownAt?: number }).__shownAt).then((h) => h.jsonValue() as Promise<number>);
     console.log(`ENF-01 mesure : liste affichée en ${Math.round(shownAt)} ms`);
     expect(shownAt).toBeLessThan(1500);
   });

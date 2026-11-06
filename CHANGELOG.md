@@ -2,6 +2,12 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [1.2.2] — 2026-11-06
+
+### Corrigé
+- Le lien « Guide » des Réglages offre toujours une zone de toucher d'au moins 44 px, quelle que soit la largeur de la police (ENF-02).
+- Mesure de vitesse (ENF-01) : l'instant d'affichage est relevé dans la page elle-même, sans compter les échanges entre le test et le navigateur, très lents sur les machines de GitHub. Les versions 1.2.0 et 1.2.1 n'avaient pas été mises en ligne à cause de ces deux tests.
+
 ## [1.2.1] — 2026-11-06
 
 ### Corrigé

@@ -420,5 +420,5 @@ button:disabled { opacity: .5; cursor: default; }
   .link-btn { min-width: 44px; min-height: 44px; margin-block: -9px; }
   .icon-picker { grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); }
   .icon-choice { height: 44px; }
-  .version a, .setup-help a { display: inline-block; padding: 14px 7px; margin: -14px -7px; }
+  .version a, .setup-help a { display: inline-block; min-width: 44px; text-align: center; padding: 14px 7px; margin: -14px -7px; }
 }
