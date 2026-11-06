@@ -87,3 +87,26 @@ export function ageLabel(iso: string, now = new Date()): string {
   if (s < 86400) return `${Math.floor(s / 3600)} h`;
   return `${Math.floor(s / 86400)} j`;
 }
+
+/** Raison d'erreur d'un fil en mots simples, sans code technique (EXG-019). */
+export function feedErrorReason(raw?: string): string {
+  if (!raw) return 'raison inconnue';
+  const http = /^HTTP (\d{3})/.exec(raw);
+  if (http) {
+    const code = Number(http[1]);
+    if (code === 404 || code === 410) return 'la page du fil est introuvable';
+    if (code === 401 || code === 403) return 'le site refuse l’accès au robot';
+    if (code >= 500) return 'le site est en panne';
+    return 'le site a répondu par une erreur';
+  }
+  if (/délai/i.test(raw)) return 'le site met trop de temps à répondre';
+  if (/aucun fil/i.test(raw)) return 'aucun fil n’a été trouvé à cette adresse';
+  return 'le site est injoignable';
+}
+
+/** « depuis le 5 nov. » ou « depuis son ajout » pour un fil en erreur. */
+export function failingSince(lastSuccess?: string): string {
+  return lastSuccess
+    ? `depuis le ${new Date(lastSuccess).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}`
+    : 'depuis son ajout';
+}

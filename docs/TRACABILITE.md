@@ -1,6 +1,6 @@
 # Matrice de traçabilité
 
-> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2, V1.0, V1.0.1. Ne pas modifier à la main.
+> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2, V1.0, V1.0.1, V1.1. Ne pas modifier à la main.
 
 | Exigence | Lot livré | Tests | Statut |
 |---|---|---|---|
@@ -17,6 +17,7 @@
 | **EXG-016** Associer une icône à une catégorie. | oui | 4 | ✅ couverte |
 | **EXG-014** Exporter les abonnements en OPML. | oui | 1 | ✅ couverte |
 | **EXG-015** Signaler les fils en erreur. | oui | 2 | ✅ couverte |
+| **EXG-019** Un fil en erreur s'explique en mots simples. | oui | 1 | ✅ couverte |
 | **EXG-020** Volet de navigation avec : Aujourd'hui, Tous les articles, À lire plus tard, puis les catégories dépliables contenant leurs fils. | oui | 3 | ✅ couverte |
 | **EXG-021** Disposition adaptée à l'écran. | oui | 1 | ✅ couverte |
 | **EXG-022** En-tête de liste : nom de la vue, nombre de non-lus, boutons *Tout marquer comme lu*, *Changer d'affichage*, *Actualiser*, *Rechercher*. | oui | 1 | ✅ couverte |
@@ -37,11 +38,14 @@
 | **EXG-043** *Tout marquer comme lu* sur la vue en cours (fil, catégorie, Aujourd'hui, Tous) avec le choix : tout, plus vieux qu'un jour, plus vieux qu'une semaine. | oui | 4 | ✅ couverte |
 | **EXG-044** Les compteurs de non-lus se mettent à jour immédiatement. | oui | 1 | ✅ couverte |
 | **EXG-045** En bas de la liste, un bouton marque comme lus tous les articles affichés sur la page. | oui | 2 | ✅ couverte |
+| **EXG-046** Les boutons d'un article restent toujours à la même place, et le bouton lu / non lu se lit clairement. | oui | 1 | ✅ couverte |
+| **EXG-047** La notification « Annuler » ne cache jamais une fenêtre ouverte. | oui | 1 | ✅ couverte |
 | **EXG-050** Ajouter ou retirer un article de « À lire plus tard ». | oui | 3 | ✅ couverte |
 | **EXG-051** Les articles mis de côté sont conservés sans limite de durée, même après la purge des 30 jours. | oui | 2 | ✅ couverte |
 | **EXG-060** Rechercher dans les titres et résumés des articles conservés (30 jours + à lire plus tard), dans la vue courante ou partout. | oui | 3 | ✅ couverte |
 | **EXG-061** Thème clair, sombre ou automatique (suit le système). | oui | 1 | ✅ couverte |
 | **EXG-062** Raccourcis clavier sur PC : `j`/`k` article suivant/précédent, `o` ou `Entrée` ouvrir, `m` lu/non lu, `s` à lire plus tard, `Maj+A` tout marquer lu, `r` actualiser, `/` rechercher, `v` changer d'affichage, `g a` Tous, `g t` Aujourd'hui, `?` aide. | oui | 1 | ✅ couverte |
+| **EXG-063** Une recherche porte aussi sur les articles déjà lus. | oui | 2 | ✅ couverte |
 | **EXG-070** Le collecteur récupère tous les fils actifs toutes les 15 minutes. | oui | 10 | ✅ couverte |
 | **EXG-071** Le bouton *Actualiser* déclenche une collecte immédiate puis recharge les articles. | oui | 2 | ✅ couverte |
 | **EXG-072** Les articles de plus de 30 jours sont purgés (hors « À lire plus tard »). | oui | 4 | ✅ couverte |
@@ -53,6 +57,7 @@
 | **EXG-079** Quand un nouvel article n'a pas d'image dans le fil, le collecteur va chercher l'image de partage déclarée par la page de l'article (`og:image`, à défaut `twitter:image` ou `link rel="image_src"`). | oui | 8 | ✅ couverte |
 | **EXG-080** Une collecte se termine toujours avant la limite de 10 minutes imposée par GitHub, même après un gros import ou si des sites sont lents. | oui | 3 | ✅ couverte |
 | **EXG-081** L'enregistrement d'une collecte résiste aux pannes passagères de GitHub. | oui | 1 | ✅ couverte |
+| **EXG-082** Le bandeau « articles pas à jour » est écrit en langage courant et peut se fermer. | oui | 1 | ✅ couverte |
 | **EXG-077** Pas de doublon. | oui | 6 | ✅ couverte |
 | **ENF-01** Performance : affichage de la liste en moins de 1,5 s à l'ouverture sur un téléphone de milieu de gamme (articles en cache), défilement fluide avec 2 000 articles chargés. | oui | 2 | ✅ couverte |
 | **ENF-02** Accessibilité : navigation complète au clavier, contrastes conformes RGAA/WCAG AA, libellés pour les lecteurs d'écran, zones tactiles d'au moins 44 px. | oui | 6 | ✅ couverte |
@@ -180,6 +185,9 @@
 - tests/unit/v03.test.ts › EXG-018 · les catégories importées reçoivent une icône suggérée
 - tests/unit/v03.test.ts › EXG-018 · compléter les icônes manquantes sans toucher aux autres
 
+### EXG-019
+- tests/e2e/v11.spec.ts › EXG-019 · un fil en erreur s’explique en mots simples
+
 ### EXG-020
 - tests/e2e/reader.spec.ts › EXG-020 · EXG-015 · volet : vues fixes, catégories dépliables, compteurs, fils en erreur
 - tests/unit/reading.test.ts › EXG-020 · vues Aujourd’hui, Tous, catégorie, fil, à lire plus tard
@@ -268,6 +276,12 @@
 - tests/e2e/manage.spec.ts › EXG-045 · le bouton de bas de page marque lus les articles affichés
 - tests/unit/reading.test.ts › EXG-045 · marquer lus plusieurs articles d’un coup, sans toucher aux autres
 
+### EXG-046
+- tests/e2e/v11.spec.ts › EXG-046 · boutons d’article alignés, bouton lu / non lu lisible (thème ${scheme === 
+
+### EXG-047
+- tests/e2e/v11.spec.ts › EXG-047 · la notification « Annuler » ne cache pas les boutons d’une fenêtre
+
 ### EXG-050
 - tests/e2e/v03.spec.ts › EXG-042 · EXG-050 · balayage : gauche = lu, droite = à lire plus tard
 - tests/e2e/v03.spec.ts › EXG-050 · EXG-051 · à lire plus tard : ajout, liste dédiée, retrait
@@ -287,6 +301,10 @@
 
 ### EXG-062
 - tests/e2e/v03.spec.ts › EXG-062 · raccourcis clavier
+
+### EXG-063
+- tests/e2e/v11.spec.ts › EXG-063 · la recherche trouve aussi les articles déjà lus
+- tests/e2e/v11.spec.ts › EXG-063 · sur téléphone, le champ de recherche occupe la barre du haut
 
 ### EXG-070
 - tests/collector/collect.test.ts › EXG-070 · collecte RSS, Atom et RDF dans le fichier du jour
@@ -355,3 +373,6 @@
 
 ### EXG-081
 - tests/unit/workflows.test.ts › EXG-081 · l’enregistrement réessaie assez longtemps pendant une panne de GitHub
+
+### EXG-082
+- tests/e2e/v11.spec.ts › EXG-082 · le bandeau « articles pas à jour » est en langage courant et se ferme

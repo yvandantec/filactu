@@ -141,6 +141,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | EXG-016 | Associer une icône à une catégorie. | Choix parmi une palette d'icônes (ou aucune) à la création et ensuite ; l'icône s'affiche devant le nom de la catégorie dans le volet et est synchronisée. |
 | EXG-014 | Exporter les abonnements en OPML. | Le fichier se réimporte dans Feedly ou dans FilActu sans perte. |
 | EXG-015 | Signaler les fils en erreur. | Une icône d'alerte apparaît sur un fil après 3 échecs consécutifs, avec la date du dernier succès. |
+| EXG-019 | Un fil en erreur s'explique en mots simples. | Dans le volet, le nom du fil lu par un lecteur d'écran indique « en erreur ». La fenêtre du fil dit depuis quand il ne répond plus et pourquoi, sans code technique : page introuvable, accès refusé au robot, panne du site, site trop lent, aucun fil à cette adresse. |
 
 ### 4.3 Navigation (inspirée de Feedly)
 
@@ -176,6 +177,8 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | EXG-043 | *Tout marquer comme lu* sur la vue en cours (fil, catégorie, Aujourd'hui, Tous) avec le choix : tout, plus vieux qu'un jour, plus vieux qu'une semaine. | Une notification « Annuler » est proposée pendant 10 secondes. |
 | EXG-044 | Les compteurs de non-lus se mettent à jour immédiatement. | — |
 | EXG-045 | En bas de la liste, un bouton marque comme lus tous les articles affichés sur la page. | Le bouton indique le nombre d'articles non lus concernés et n'apparaît que s'il y en a ; les articles non encore chargés plus bas ne sont pas touchés. |
+| EXG-046 | Les boutons d'un article restent toujours à la même place, et le bouton lu / non lu se lit clairement. | En affichage Magazine, « Lire plus tard » et « Marquer comme lu » sont alignés d'un article à l'autre, avec ou sans image. Le bouton lu / non lu est un cercle vide (non lu) ou un cercle coché (lu), avec un contraste d'au moins 3:1 sur le fond dans les deux états et les deux thèmes. |
+| EXG-047 | La notification « Annuler » ne cache jamais une fenêtre ouverte. | Quand une fenêtre s'ouvre pendant que la notification est affichée, tous les boutons de la fenêtre restent utilisables ; la notification reste disponible une fois la fenêtre fermée, dans son délai. |
 
 ### 4.6 À lire plus tard
 
@@ -191,6 +194,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | EXG-060 | Rechercher dans les titres et résumés des articles conservés (30 jours + à lire plus tard), dans la vue courante ou partout. | Résultats en moins d'une seconde pour 20 000 articles ; recherche insensible aux accents et à la casse. |
 | EXG-061 | Thème clair, sombre ou automatique (suit le système). | — |
 | EXG-062 | Raccourcis clavier sur PC : `j`/`k` article suivant/précédent, `o` ou `Entrée` ouvrir, `m` lu/non lu, `s` à lire plus tard, `Maj+A` tout marquer lu, `r` actualiser, `/` rechercher, `v` changer d'affichage, `g a` Tous, `g t` Aujourd'hui, `?` aide. | La touche `?` affiche la liste des raccourcis. |
+| EXG-063 | Une recherche porte aussi sur les articles déjà lus. | Pendant une recherche, le filtre « non lus seulement » ne s'applique pas ; « Partout » élargit à tous les articles conservés. Sur téléphone, le champ de recherche occupe la barre du haut (les autres boutons sont masqués pendant la recherche). |
 
 ### 4.8 Synchronisation et collecte
 
@@ -207,6 +211,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | EXG-079 | Quand un nouvel article n'a pas d'image dans le fil, le collecteur va chercher l'image de partage déclarée par la page de l'article (`og:image`, à défaut `twitter:image` ou `link rel="image_src"`). | Seulement pour les articles nouveaux sans image ; au plus 20 pages par fil et par collecte ; délai de 10 s par page ; une page injoignable ou sans image laisse l'article sans vignette, sans mettre le fil en erreur ; seule une adresse http(s) est retenue ; les journaux n'indiquent qu'un nombre de vignettes trouvées (DEC-03). |
 | EXG-080 | Une collecte se termine toujours avant la limite de 10 minutes imposée par GitHub, même après un gros import ou si des sites sont lents. | Le collecteur dispose d'un budget de 6 minutes : passé ce délai, il ne commence plus de nouveau fil ni de nouvelle page d'article, enregistre ce qu'il a déjà collecté et reporte les fils restants au passage suivant, sans les compter en erreur. Les fils sont traités du plus anciennement interrogé au plus récent, pour qu'aucun ne soit oublié durablement. Les journaux n'indiquent que le nombre de fils reportés (DEC-03). |
 | EXG-081 | L'enregistrement d'une collecte résiste aux pannes passagères de GitHub. | Si l'envoi vers le dépôt de données est refusé, le robot réessaie au moins 6 fois, avec des attentes croissantes totalisant entre 1 min 30 et 3 min ; un rebasage interrompu est annulé avant l'essai suivant ; le travail reste sous la limite de 10 minutes (budget de collecte de 6 minutes compris, EXG-080). |
+| EXG-082 | Le bandeau « articles pas à jour » est écrit en langage courant et peut se fermer. | Il indique depuis combien de temps les articles n'ont pas été mis à jour, sans mot technique (ni « secret », ni nom de variable, ni numéro de paragraphe) ; il propose un lien « Comment réparer » vers le guide et un bouton pour le fermer. Réglages indiquent « Dernière mise à jour : il y a … ». |
 | EXG-077 | Pas de doublon. | Un même article (même fil, même guid ou même lien) n'apparaît qu'une fois, même s'il est republié avec une nouvelle date. |
 
 ## 5. Exigences non fonctionnelles
@@ -268,3 +273,4 @@ Le workflow du collecteur lit la clé dans le **secret** `DATA_REPO_TOKEN` du d�
 | **V0.3 — Confort** | Recherche, thème sombre, raccourcis, hors connexion, actualisation à la demande, robustesse de la synchro | EXG-060→062, 071, 074→076 |
 | **V1.0** | Finitions, accessibilité, performance, documentation complète | EXG-035, ENF-01→08 |
 | **V1.0.1 — Robustesse de l'enregistrement** | Le robot patiente pendant une panne passagère de GitHub | EXG-081 |
+| **V1.1 — Lisibilité** | Recherche, ligne d'article, messages clairs, notification Annuler (analyse d'interface du 2026-11-06) | EXG-019, 046, 047, 063, 082 |

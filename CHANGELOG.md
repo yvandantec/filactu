@@ -2,6 +2,20 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [1.1.0] — 2026-11-06 — Lisibilité
+
+Suite de l'analyse d'interface du 2026-11-06.
+
+### Modifié
+- La recherche trouve aussi les articles déjà lus ; sur téléphone, le champ de recherche prend toute la barre du haut (EXG-063).
+- Les boutons « Lire plus tard » et « lu / non lu » restent alignés d'un article à l'autre, avec ou sans image ; le bouton lu / non lu devient un cercle vide (non lu) ou un cercle vert coché (lu), lisible dans les deux thèmes (EXG-046).
+- Le bandeau « articles pas à jour » est écrit en langage courant, avec un lien « Comment réparer » et un bouton pour le fermer ; Réglages indiquent « Dernière mise à jour : il y a … » (EXG-082).
+- Un fil en erreur explique depuis quand et pourquoi il ne répond plus, en mots simples ; les lecteurs d'écran annoncent « en erreur » (EXG-019).
+
+### Corrigé
+- La notification « Annuler » cachait les boutons des fenêtres et, sur téléphone, le bouton « Réglages » du volet (EXG-047).
+- Capture d'écran du guide « options d'affichage » prise pendant la fermeture du volet.
+
 ## [1.0.1] — 2026-11-06
 
 ### Modifié

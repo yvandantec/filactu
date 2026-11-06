@@ -17,7 +17,7 @@ test('EXG-020 · EXG-015 · volet : vues fixes, catégories dépliables, compteu
   await expect(side.getByRole('button', { name: /Blog Exemple\s*2/ })).toBeVisible();
   await side.getByRole('button', { name: 'Déplier Actualités' }).click();
   // EXG-015 : fil en erreur signalé
-  await expect(side.locator('.feed-row', { hasText: 'Nouvelles' }).locator('.warn')).toHaveAttribute('title', /Fil en erreur/);
+  await expect(side.locator('.feed-row', { hasText: 'Nouvelles' }).locator('.warn')).toHaveAttribute('title', /ne répond plus/);
   // Navigation vers un fil
   await side.getByRole('button', { name: /^Blog Exemple/ }).click();
   await expect(page.locator('.view-title')).toHaveText('Blog Exemple');

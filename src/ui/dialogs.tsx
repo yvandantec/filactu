@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import type { AppState, Store } from '../app/store';
 import { CATEGORY_ICONS, exclusiveFeeds, feedLabel, suggestIcon } from '../core/subscriptions';
 import type { Category } from '../core/types';
+import { failingSince, feedErrorReason } from '../core/views';
 import { IconChevron, IconClose } from './icons';
 
 const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -270,7 +271,12 @@ export function FeedDialog({ store, state, feedId, onClose }: { store: Store; st
             </label>
           ))}
         </fieldset>
-        <p class="muted feed-url">Adresse : {feed.url}{st?.lastError ? ` — dernière erreur : ${st.lastError}` : ''}</p>
+        <p class="muted feed-url">Adresse : {feed.url}</p>
+        {(st?.failures ?? 0) >= 3 && (
+          <p class="feed-error">
+            Ce site ne répond plus {failingSince(st?.lastSuccess)} : {feedErrorReason(st?.lastError)}. FilActu réessaie à chaque mise à jour.
+          </p>
+        )}
         {state.error && <p class="form-error" role="alert">{state.error}</p>}
         <div class="row spread">
           <button type="button" class="btn btn-danger" onClick={() => void unsubscribe()}>Se désabonner</button>

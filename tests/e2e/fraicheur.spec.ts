@@ -19,7 +19,7 @@ test('EXG-078 · à l’ouverture, une collecte est lancée si la dernière est 
   await expect(page.locator('.article').first()).toBeVisible();
   await expect.poll(() => gh.dispatches).toBe(1);
   // Bandeau explicite si la collecte reste ancienne
-  await expect(page.getByText('DATA_REPO_TOKEN')).toBeVisible();
+  await expect(page.getByTestId('stale')).toBeVisible();
   // Pas de nouvelle demande au rechargement (au plus une toutes les 15 minutes)
   await page.reload();
   await expect(page.locator('.article').first()).toBeVisible();

@@ -24,6 +24,9 @@ export const IconView = (p: P) => base([<rect x="4" y="4" width="16" height="5" 
 export const IconMore = (p: P) => base([<circle cx="5" cy="12" r="1.2" fill="currentColor" />, <circle cx="12" cy="12" r="1.2" fill="currentColor" />, <circle cx="19" cy="12" r="1.2" fill="currentColor" />], p);
 export const IconBookmarkFilled = (p: P) => base(<path d="M6 4h12v16l-6-4-6 4z" fill="currentColor" />, p);
 export const IconDot =(p: P) => base(<circle cx="12" cy="12" r="4" fill="currentColor" />, p);
+/** Bouton lu / non lu (EXG-046) : cercle vide = non lu, cercle coché = lu. */
+export const IconCircle = (p: P) => base(<circle cx="12" cy="12" r="8" />, { class: 'ic-circle', ...p });
+export const IconCheckCircle = (p: P) => base([<circle cx="12" cy="12" r="8" />, <path d="M8.5 12.2l2.4 2.4 4.6-4.9" />], { class: 'ic-check-circle', ...p });
 
 export const Logo = ({ size = 28 }: { size?: number }) => (
   <svg viewBox="0 0 512 512" width={size} height={size} aria-hidden="true">

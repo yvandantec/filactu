@@ -31,6 +31,7 @@ test('Téléphone', async ({ browser }) => {
   await page.waitForTimeout(300);
   await shot(page, 'telephone-volet');
   await page.locator('.sidebar').getByRole('button', { name: /Tous les articles/ }).click();
+  await expect(page.locator('.sidebar')).not.toBeInViewport();
   await page.getByRole('button', { name: 'Options d’affichage' }).click();
   await expect(page.getByRole('dialog', { name: 'Options d’affichage' })).toBeVisible();
   await shot(page, 'telephone-options');

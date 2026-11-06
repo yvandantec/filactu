@@ -93,7 +93,7 @@ Sur téléphone, le volet est caché : touchez ☰ en haut à gauche, ou glissez
 ## 5. Lu / non lu
 
 - Un article devient **lu** quand vous l'ouvrez, ou quand vous le faites **défiler au-delà du haut de l'écran**. Ce second comportement se désactive dans **Réglages → Marquer comme lu en défilant**.
-- Bouton ● à droite de chaque article : vert = non lu ; touchez-le pour basculer lu / non lu. Sur mobile, **balayez l'article vers la gauche** ; sur PC, touche `m`.
+- Bouton rond à droite de chaque article, toujours au même endroit : cercle vide = non lu, cercle vert coché = lu ; touchez-le pour basculer. Sur mobile, **balayez l'article vers la gauche** ; sur PC, touche `m`.
 - **Tout marquer comme lu** (✓✓) : choisissez *Tout*, *Plus vieux qu'un jour* ou *Plus vieux qu'une semaine*. Une notification **Annuler** reste affichée 10 secondes.
 - **Marquer la page comme lue** : en bas de la liste, le bouton *Marquer les N articles affichés comme lus* marque d'un coup les articles que vous venez de parcourir.
 
@@ -127,12 +127,12 @@ Dans le volet, à droite de « Catégories », touchez **Gérer** :
 - **Supprimer** : si certains fils ne sont rangés que dans cette catégorie, FilActu vous demande de les **déplacer** vers une autre catégorie ou de vous **désabonner**. Un fil rangé aussi ailleurs y reste simplement.
 
 ### Et aussi
-- **Fil en erreur** ⚠ : le site n'a pas répondu lors des 3 dernières collectes. Survolez l'icône pour voir depuis quand. Certains sites refusent les lecteurs automatiques : FilActu ne contourne pas ce refus.
+- **Fil en erreur** ⚠ : le site n'a pas répondu lors des 3 dernières collectes. Ouvrez le menu ⋯ du fil : FilActu indique depuis quand et pourquoi (page introuvable, site en panne, site trop lent…). Certains sites refusent les lecteurs automatiques : FilActu ne contourne pas ce refus.
 - **Exporter** : Réglages → *Exporter en OPML* (sauvegarde, ou retour vers un autre lecteur).
 
 ## 8. Rechercher
 
-🔍 ou touche `/`. La recherche porte sur les titres et résumés, sans tenir compte des accents ni des majuscules (« entree » trouve « Entrée »). Elle cherche dans la vue affichée ; cochez **Partout** pour chercher dans tous les articles des 30 derniers jours et dans vos articles à lire plus tard. Fermez avec ✕ ou `Échap`.
+🔍 ou touche `/`. La recherche porte sur les titres et résumés, sans tenir compte des accents ni des majuscules (« entree » trouve « Entrée »). Elle cherche dans la vue affichée, **y compris les articles déjà lus** ; cochez **Partout** pour chercher dans tous les articles des 30 derniers jours et dans vos articles à lire plus tard. Fermez avec ✕ ou `Échap`.
 
 ## 9. Raccourcis clavier (PC)
 
@@ -174,7 +174,7 @@ Tout se fait au clavier : `Tab` passe d'un bouton à l'autre (un contour vert mo
 
 ## 12. Questions fréquentes
 
-**Les nouveaux articles n'arrivent pas, ou le bandeau « La dernière collecte date de plus de 2 heures » s'affiche.** GitHub lance le robot moins souvent que prévu (parfois toutes les quelques heures) ; c'est pourquoi FilActu demande lui-même une collecte à chaque ouverture quand la dernière date de plus de 20 minutes. Si le bandeau reste affiché, la **clé du robot a expiré** : renouvelez-la (§ 2.1) puis mettez-la dans le secret `DATA_REPO_TOKEN` (§ 2.2). Attention : « Regenerate token » sur GitHub rend l'ancienne clé inutilisable partout, il faut donc la remplacer **à la fois** dans le secret et sur chaque appareil.
+**Les nouveaux articles n'arrivent pas, ou le bandeau « Les articles n'ont pas été mis à jour depuis… » s'affiche.** GitHub lance le robot moins souvent que prévu (parfois toutes les quelques heures) ; c'est pourquoi FilActu demande lui-même une collecte à chaque ouverture quand la dernière date de plus de 20 minutes. Si le bandeau reste affiché, la **clé du robot a expiré** : renouvelez-la (§ 2.1) puis mettez-la dans le secret `DATA_REPO_TOKEN` (§ 2.2). Attention : « Regenerate token » sur GitHub rend l'ancienne clé inutilisable partout, il faut donc la remplacer **à la fois** dans le secret et sur chaque appareil.
 
 **Après un gros import, certains fils n'ont pas encore d'articles.** Pour ne jamais dépasser le temps que GitHub lui accorde, le robot s'arrête au bout de 6 minutes et garde ce qu'il a déjà récupéré. Les fils qu'il n'a pas eu le temps de lire passent en premier à la collecte suivante. Ils ne sont pas signalés en erreur ; patientez une ou deux collectes.
 

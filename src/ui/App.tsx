@@ -4,7 +4,7 @@ import type { Store, AppState } from '../app/store';
 import { DEFAULT_DATA_REPO, STALE_COLLECT_MS } from '../app/store';
 import { getPref, isRead, isSaved } from '../core/reading';
 import {
-  ageLabel, DISPLAY_MODES, itemsForView, prefKey, searchItems, sortItems, unreadCounts,
+  ageLabel, DISPLAY_MODES, failingSince, itemsForView, prefKey, searchItems, sortItems, unreadCounts,
   type DisplayMode, type UnreadCounts, type ViewId,
 } from '../core/views';
 import type { Feed, FeedsStatus, Item, Subscriptions } from '../core/types';
@@ -12,7 +12,7 @@ import { feedLabel } from '../core/subscriptions';
 import { ANDROID_BROWSERS, articleHref, fontScale, FONT_SIZES, canChooseBrowser, type FontSize } from '../core/links';
 import { AddFeedDialog, CategoriesDialog, Dialog, FeedDialog, useFocusInside } from './dialogs';
 import {
-  IconAlert, IconAll, IconBookmark, IconBookmarkFilled, IconCheckAll, IconChevron, IconClose, IconDot, IconMenu,
+  IconAlert, IconAll, IconBookmark, IconBookmarkFilled, IconCheckAll, IconChevron, IconClose, IconCheckCircle, IconCircle, IconMenu,
   IconMore, IconRefresh, IconSearch, IconSettings, IconToday, IconView, Logo,
 } from './icons';
 
@@ -135,6 +135,7 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
   const [query, setQuery] = useState('');
   const [searchAll, setSearchAll] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
+  const [staleClosed, setStaleClosed] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const now = new Date();
   const { view, reading, subs } = state;
@@ -161,7 +162,8 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
       ? [...state.items, ...itemsForView('saved', [], subs, reading).filter((s) => !state.items.some((i) => i.id === s.id))]
       : itemsForView(view, state.items, subs, reading);
     let out = sortItems(searchItems(base, activeQuery), oldestFirst);
-    if (unreadOnly && !(activeQuery && searchAll)) out = out.filter((i) => !isRead(reading, i, subs) || shown.current.ids.has(i.id));
+    // Pendant une recherche, les articles lus sont aussi trouvés (EXG-063)
+    if (unreadOnly && !activeQuery) out = out.filter((i) => !isRead(reading, i, subs) || shown.current.ids.has(i.id));
     for (const i of out) shown.current.ids.add(i.id);
     return out;
   }, [view, state.items, subs, reading, unreadOnly, oldestFirst, activeQuery, searchAll]);
@@ -266,7 +268,7 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
         onEditFeed={(id) => { setDialog({ feed: id }); setDrawer(false); }} />
       <div class="scrim" onClick={() => setDrawer(false)} aria-hidden="true" />
       <main class="main">
-        <header class="topbar">
+        <header class={`topbar ${searchOpen ? 'searching' : ''}`}>
           <button class="icon-btn menu-btn" aria-label="Ouvrir le menu" onClick={() => setDrawer(true)}><IconMenu /></button>
           {searchOpen ? (
             <div class="search-bar" role="search">
@@ -327,8 +329,14 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
         {state.offline && !state.error && (
           <div class="banner" data-testid="offline">Hors connexion : vous lisez les articles déjà chargés. Vos actions seront envoyées au retour du réseau.</div>
         )}
-        {stale && !state.error && !state.offline && (
-          <div class="banner">La dernière collecte date de plus de 2 heures. Une nouvelle collecte vient d’être demandée ; si ce message reste affiché, la clé du robot (secret DATA_REPO_TOKEN) a sans doute expiré : voir le guide, § 2.2.</div>
+        {stale && !staleClosed && !state.error && !state.offline && (
+          <div class="banner" data-testid="stale">
+            <span>
+              Les articles n’ont pas été mis à jour depuis {ageLabel(lastRun!, now)}. Une mise à jour vient d’être demandée.{' '}
+              <a href={`${GUIDE_URL}#12-questions-fr%C3%A9quentes`} target="_blank" rel="noopener noreferrer">Comment réparer</a>
+            </span>
+            <button class="icon-btn" aria-label="Fermer" onClick={() => setStaleClosed(true)}><IconClose /></button>
+          </div>
         )}
         <section class="content" aria-live="polite">
           <ArticleList store={store} state={state} items={list} mode={mode} showSummary={showSummary} feedsById={feedsById}
@@ -467,14 +475,18 @@ function FeedRow({ feed, state, n, onGo, onEdit }: {
 }) {
   const st = state.status.feeds[feed.id];
   const failing = (st?.failures ?? 0) >= 3;
-  const since = st?.lastSuccess ? `depuis le ${new Date(st.lastSuccess).toLocaleDateString('fr-FR')}` : 'jamais récupéré';
+  const since = failingSince(st?.lastSuccess);
   const label = feedLabel(feed, state.status);
   return (
     <div class="feed-row-wrap">
       <button class={`nav-item feed-row ${state.view === `feed:${feed.id}` ? 'active' : ''}`} onClick={() => onGo(`feed:${feed.id}`)}>
         <FeedIcon feed={feed} status={state.status} />
         <span class="nav-label">{label}</span>
-        {failing && <span class="warn" title={`Fil en erreur ${since}`}><IconAlert width={16} height={16} /></span>}
+        {failing && (
+          <span class="warn" title={`Ce site ne répond plus ${since}`}>
+            <IconAlert width={16} height={16} /><span class="sr-only">en erreur</span>
+          </span>
+        )}
         <Count n={n} />
       </button>
       <button class="feed-more" aria-label={`Modifier le fil ${label}`} onClick={onEdit}><IconMore width={18} height={18} /></button>
@@ -635,7 +647,7 @@ function ArticleRow({ item, feed, status, mode, showSummary, read, saved, select
       </button>
       <button class="icon-btn read-toggle" aria-label={read ? 'Marquer comme non lu' : 'Marquer comme lu'}
         title={read ? 'Marquer comme non lu (m)' : 'Marquer comme lu (m)'} onClick={() => store.setRead(item, !read)}>
-        <IconDot width={14} height={14} />
+        {read ? <IconCheckCircle width={19} height={19} /> : <IconCircle width={19} height={19} />}
       </button>
     </span>
   );
@@ -654,7 +666,7 @@ function ArticleRow({ item, feed, status, mode, showSummary, read, saved, select
       data-id={item.id} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
       <div class="swipe-bg left" aria-hidden="true">{read ? 'Non lu' : 'Lu'}</div>
       <div class="swipe-bg right" aria-hidden="true">{saved ? 'Retirer' : 'Plus tard'}</div>
-      <div class="article-inner" style={dx ? { transform: `translateX(${dx}px)` } : undefined}>
+      <div class={`article-inner ${thumb ? 'has-thumb' : ''}`} style={dx ? { transform: `translateX(${dx}px)` } : undefined}>
         {mode === 'titles' ? (
           <>
             <a class="article-link" href={href} target={target} rel="noopener noreferrer" onClick={onClick}
@@ -714,7 +726,8 @@ function Settings({ store, state, onClose }: { store: Store; state: AppState; on
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   };
-  const lastRun = state.status.lastRun ? new Date(state.status.lastRun).toLocaleString('fr-FR') : 'jamais';
+  const runAge = state.status.lastRun ? ageLabel(state.status.lastRun, new Date()) : '';
+  const lastRun = !runAge ? 'jamais' : runAge === "à l'instant" ? runAge : `il y a ${runAge}`;
   const r = state.reading;
   const wide = useWideScreen();
   const [summaryKey, summaryDefault] = summaryPref(wide);
@@ -766,7 +779,7 @@ function Settings({ store, state, onClose }: { store: Store; state: AppState; on
       </section>
       <section class="dialog-section">
         <h3>Synchronisation</h3>
-        <p class="muted">Dépôt : {state.config?.owner}/{state.config?.repo}<br />Dernière collecte : {lastRun}</p>
+        <p class="muted">Dernière mise à jour : {lastRun}<br />Vos données : {state.config?.owner}/{state.config?.repo}</p>
       </section>
       <section class="dialog-section">
         <h3>Cet appareil</h3>
