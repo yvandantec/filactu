@@ -1,5 +1,5 @@
 import type { ComponentChildren } from 'preact';
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useEffect, useLayoutEffect, useRef, useState } from 'preact/hooks';
 import type { AppState, Store } from '../app/store';
 import { CATEGORY_ICONS, exclusiveFeeds, feedLabel, suggestIcon } from '../core/subscriptions';
 import type { Category } from '../core/types';
@@ -43,11 +43,14 @@ export function Dialog({ title, onClose, children, wide }: {
   const id = 'dlg-' + title.replace(/\W+/g, '-');
   const box = useRef<HTMLDivElement>(null);
   useFocusInside(box, true);
-  useEffect(() => {
-    const esc = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+  // Échap ferme la fenêtre dès qu'elle est affichée (ENF-02) : écouteur posé avant l'affichage, une seule fois
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
+  useLayoutEffect(() => {
+    const esc = (e: KeyboardEvent) => e.key === 'Escape' && closeRef.current();
     window.addEventListener('keydown', esc);
     return () => window.removeEventListener('keydown', esc);
-  }, [onClose]);
+  }, []);
   return (
     <div class="dialog-backdrop" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div ref={box} tabIndex={-1} class={`dialog ${wide ? 'dialog-wide' : ''}`} role="dialog" aria-modal="true" aria-labelledby={id}>

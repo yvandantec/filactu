@@ -2,6 +2,11 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [1.2.1] — 2026-11-06
+
+### Corrigé
+- La touche Échap ferme une fenêtre dès qu'elle s'affiche (auparavant, un appui très rapide juste après l'ouverture pouvait être ignoré). La version 1.2.0 n'avait pas été mise en ligne à cause de ce défaut, détecté par les tests de GitHub.
+
 ## [1.2.0] — 2026-11-06 — Identité visuelle
 
 Nouvelle identité choisie par le propriétaire (piste « tableau », sans l'analogie de la gare).
