@@ -9,3 +9,13 @@ test-results/
 .DS_Store
 Thumbs.db
 .lighthouseci/
+
+# Fichiers de travail du design (locaux) ; PRODUCT.md décrit les habitudes de lecture du propriétaire : jamais dans le dépôt public
+PRODUCT.md
+.impeccable/critique/
+.impeccable/mocks/
+.impeccable/review/
+.impeccable/surfaces/
+.impeccable/questions/
+.impeccable/live/
+.impeccable/hook.cache.json

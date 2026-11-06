@@ -2,6 +2,17 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [1.2.0] — 2026-11-06 — Identité visuelle
+
+Nouvelle identité choisie par le propriétaire (piste « tableau », sans l'analogie de la gare).
+
+### Modifié
+- Thème sombre « tableau » : fond encre, titres presque blancs, sources en jaune signal, actions en bleu ; thème clair avec la même mise en page (sources en ambre). Le thème suit le téléphone et peut être forcé dans Réglages.
+- Affichage Magazine : la source (icône ronde et nom complet) et la fraîcheur, discrète, sur une ligne, avec les boutons alignés à droite ; le titre dessous, plus grand et **jamais coupé** ; l'image à droite, plus grande (112 × 84 sur téléphone) et aux coins arrondis (EXG-039).
+- Polices Barlow et Barlow Condensed, hébergées avec l'appli.
+- Formes adoucies : boutons ronds, pastilles rondes, images aux coins arrondis ; bouton de fin de page plein, en bleu.
+- Cartes sans image : plus de grand bloc vide.
+
 ## [1.1.0] — 2026-11-06 — Lisibilité
 
 Suite de l'analyse d'interface du 2026-11-06.

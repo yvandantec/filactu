@@ -654,10 +654,14 @@ function ArticleRow({ item, feed, status, mode, showSummary, read, saved, select
   const thumb = item.image && imgOk && (
     <img class="thumb" src={item.image} alt="" loading="lazy" referrerpolicy="no-referrer" onError={() => setImgOk(false)} />
   );
-  const meta = (
-    <p class="article-meta">
-      <span class="source">{source}</span> / <time dateTime={item.published}>{age}</time>
-    </p>
+  // Ligne de la source : icône, nom complet, fraîcheur discrète, boutons alignés à droite (EXG-039, EXG-046)
+  const top = (
+    <div class="article-top">
+      {feed ? <FeedIcon feed={feed} status={status} /> : <span class="favicon letter" aria-hidden="true">?</span>}
+      <span class="source">{source}</span>
+      <time class="age" dateTime={item.published}>{age}</time>
+      {actions}
+    </div>
   );
   const summary = item.summary && (showSummary || (mode === 'titles' && expanded)) && <p class="summary">{item.summary}</p>;
 
@@ -680,27 +684,33 @@ function ArticleRow({ item, feed, status, mode, showSummary, read, saved, select
           </>
         ) : mode === 'cards' ? (
           <>
-            <a class="article-link" href={href} target={target} rel="noopener noreferrer" onClick={onClick}>
-              {thumb || <div class="thumb thumb-empty" aria-hidden="true" />}
-              <h3 class="article-title">{item.title}</h3>
-            </a>
-            {summary}
-            <div class="meta-row">{meta}{actions}</div>
-          </>
-        ) : (
-          <>
-            <div class="article-body">
-              <a class="article-link" href={href} target={target} rel="noopener noreferrer" onClick={onClick}>
-                <h3 class="article-title">{item.title}</h3>
-              </a>
-              <div class="meta-row">{meta}{actions}</div>
-              {summary}
-            </div>
             {thumb && (
               <a class="thumb-link" href={href} target={target} rel="noopener noreferrer" onClick={onClick} tabIndex={-1} aria-hidden="true">
                 {thumb}
               </a>
             )}
+            {top}
+            <a class="article-link" href={href} target={target} rel="noopener noreferrer" onClick={onClick}>
+              <h3 class="article-title">{item.title}</h3>
+            </a>
+            {summary}
+          </>
+        ) : (
+          <>
+            {top}
+            <div class="article-main">
+              <div class="article-body">
+                <a class="article-link" href={href} target={target} rel="noopener noreferrer" onClick={onClick}>
+                  <h3 class="article-title">{item.title}</h3>
+                </a>
+                {summary}
+              </div>
+              {thumb && (
+                <a class="thumb-link" href={href} target={target} rel="noopener noreferrer" onClick={onClick} tabIndex={-1} aria-hidden="true">
+                  {thumb}
+                </a>
+              )}
+            </div>
           </>
         )}
       </div>

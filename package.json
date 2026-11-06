@@ -1,6 +1,6 @@
 {
   "name": "filactu",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "type": "module",
   "description": "FilActu - lecteur de fils RSS personnel, inspiré de Feedly, synchronisé via GitHub",
@@ -21,6 +21,8 @@
     "captures": "playwright test --config playwright.captures.config.ts"
   },
   "dependencies": {
+    "@fontsource/barlow": "^5.1.0",
+    "@fontsource/barlow-condensed": "^5.1.0",
     "fast-xml-parser": "^4.5.0",
     "idb-keyval": "^6.2.1",
     "preact": "^10.24.0"

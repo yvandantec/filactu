@@ -52,7 +52,8 @@ test('EXG-030 · EXG-035 · affichage Magazine : titre, fil / fraîcheur, début
   const first = page.locator('.article').first();
   await expect(page.locator('.articles')).toHaveClass(/magazine/);
   await expect(first.locator('.article-title')).toHaveText('Premier article du blog');
-  await expect(first.locator('.article-meta')).toHaveText('Blog Exemple / 10 min');
+  await expect(first.locator('.article-top .source')).toHaveText('Blog Exemple');
+  await expect(first.locator('.article-top .age')).toHaveText('10 min');
   await viewOption(page, 'Afficher le début de l’article', false);
   await expect(page.locator('.summary')).toHaveCount(0);
   await viewOption(page, 'Afficher le début de l’article', true);

@@ -74,8 +74,8 @@ Sur téléphone, le volet est caché : touchez ☰ en haut à gauche, ou glissez
 - **Toucher ou cliquer un article** ouvre l'article complet dans votre navigateur. Il est alors marqué comme lu.
 - **Options d'affichage** (▦), retenues pour chaque vue et synchronisées entre vos appareils :
   - **Titres** : une ligne par article (fil, titre, fraîcheur), pour parcourir très vite. Sur PC, laissez la souris sur un titre pour voir le résumé ; sur mobile, faites un appui long.
-  - **Magazine** (par défaut) : affichage compact façon Feedly — titre, « fil / fraîcheur » et vignette à droite. Une dizaine d'articles tiennent sur un écran de téléphone.
-  - **Cartes** : grille avec grandes images.
+  - **Magazine** (par défaut) : pour chaque article, la source (icône et nom en couleur) et sa fraîcheur sur une ligne, puis le titre **en entier**, jamais coupé, avec l'image à droite quand le site en fournit une. Les boutons « Lire plus tard » et lu / non lu sont sur la ligne de la source.
+  - **Cartes** : grille avec grandes images (les articles sans image n'affichent que leur titre).
   - Les images viennent du fil. Quand un site n'en met pas dans son fil, FilActu va chercher l'image que la page de l'article affiche quand on la partage sur les réseaux sociaux. Cela ne vaut que pour les nouveaux articles.
   - **Afficher le début de l'article** : ajoute deux lignes de résumé sous chaque titre. Ce réglage est distinct selon l'écran : **activé par défaut sur PC** (version riche), **désactivé par défaut sur téléphone** (version compacte). Il vaut pour toutes les vues.
   - **Taille du texte** : *Petit*, *Normal* ou *Grand*, pour les titres, le fil / la fraîcheur et le début de l'article. Réglée séparément pour le PC et le téléphone.
@@ -93,7 +93,7 @@ Sur téléphone, le volet est caché : touchez ☰ en haut à gauche, ou glissez
 ## 5. Lu / non lu
 
 - Un article devient **lu** quand vous l'ouvrez, ou quand vous le faites **défiler au-delà du haut de l'écran**. Ce second comportement se désactive dans **Réglages → Marquer comme lu en défilant**.
-- Bouton rond à droite de chaque article, toujours au même endroit : cercle vide = non lu, cercle vert coché = lu ; touchez-le pour basculer. Sur mobile, **balayez l'article vers la gauche** ; sur PC, touche `m`.
+- Bouton rond à droite de chaque article, toujours au même endroit : cercle vide = non lu, cercle coché (jaune en thème sombre, ambre en thème clair) = lu ; touchez-le pour basculer. Sur mobile, **balayez l'article vers la gauche** ; sur PC, touche `m`.
 - **Tout marquer comme lu** (✓✓) : choisissez *Tout*, *Plus vieux qu'un jour* ou *Plus vieux qu'une semaine*. Une notification **Annuler** reste affichée 10 secondes.
 - **Marquer la page comme lue** : en bas de la liste, le bouton *Marquer les N articles affichés comme lus* marque d'un coup les articles que vous venez de parcourir.
 
@@ -163,7 +163,7 @@ Tout se fait au clavier : `Tab` passe d'un bouton à l'autre (un contour vert mo
 
 | Réglage | Effet |
 |---|---|
-| Thème | Automatique (comme le téléphone ou le PC), clair ou sombre |
+| Thème | Automatique (comme le téléphone ou le PC), clair ou sombre. Le thème sombre est le « tableau » : fond noir, sources en jaune. |
 | Taille du texte des articles | Petit, Normal ou Grand (réglée séparément pour le PC et le téléphone) |
 | Ouvrir les articles avec *(Android seulement)* | Navigateur qui ouvre les articles : Brave, Firefox, Edge, Samsung Internet ou Chrome. *Automatique* garde l'onglet intégré de Chrome. |
 | Marquer comme lu en défilant | Activé par défaut |

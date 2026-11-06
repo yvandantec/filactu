@@ -1,0 +1,770 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-06T07:05:13+00:00",
+  "title": "Design System: FilActu",
+  "extensions": {
+    "colorMeta": {
+      "platform-blue": {
+        "role": "primary",
+        "displayName": "Bleu quai",
+        "canonical": "#2c6bed",
+        "tonalRamp": [
+          "#061b46",
+          "#0a2d75",
+          "#0e3fa4",
+          "#1251d3",
+          "#3a75ee",
+          "#729cf3",
+          "#afc7f8",
+          "#e8effd"
+        ]
+      },
+      "platform-blue-deep": {
+        "role": "primary",
+        "displayName": "Bleu quai profond",
+        "canonical": "#1f56c9",
+        "tonalRamp": [
+          "#0a1c42",
+          "#112f6e",
+          "#18429b",
+          "#1f55c7",
+          "#4578e2",
+          "#7a9feb",
+          "#b4c8f3",
+          "#e9effc"
+        ]
+      },
+      "platform-blue-soft": {
+        "role": "primary",
+        "displayName": "Bleu pâle",
+        "canonical": "#e7eefc",
+        "tonalRamp": [
+          "#081c44",
+          "#0e2f71",
+          "#14429f",
+          "#1955cc",
+          "#4178e7",
+          "#779fee",
+          "#b2c8f5",
+          "#e8effc"
+        ]
+      },
+      "platform-blue-dark": {
+        "role": "primary",
+        "displayName": "Bleu quai (sombre)",
+        "canonical": "#5b8cff",
+        "tonalRamp": [
+          "#00174c",
+          "#002680",
+          "#0035b2",
+          "#0045e6",
+          "#2969ff",
+          "#6694ff",
+          "#a8c2ff",
+          "#e5edff"
+        ]
+      },
+      "platform-blue-strong-dark": {
+        "role": "primary",
+        "displayName": "Bleu lien (sombre)",
+        "canonical": "#8aaeff",
+        "tonalRamp": [
+          "#00184c",
+          "#002780",
+          "#0037b2",
+          "#0047e6",
+          "#296bff",
+          "#6695ff",
+          "#a8c3ff",
+          "#e5edff"
+        ]
+      },
+      "platform-blue-hover-dark": {
+        "role": "primary",
+        "displayName": "Bleu survol (sombre)",
+        "canonical": "#3d7bff",
+        "tonalRamp": [
+          "#00184c",
+          "#002980",
+          "#0039b2",
+          "#0049e6",
+          "#296dff",
+          "#6697ff",
+          "#a8c4ff",
+          "#e5eeff"
+        ]
+      },
+      "platform-blue-soft-dark": {
+        "role": "primary",
+        "displayName": "Bleu pâle (sombre)",
+        "canonical": "#1a2540",
+        "tonalRamp": [
+          "#161f36",
+          "#25345b",
+          "#34497f",
+          "#425ea3",
+          "#6781c1",
+          "#92a5d3",
+          "#c1cce6",
+          "#edf0f8"
+        ]
+      },
+      "on-accent": {
+        "role": "neutral",
+        "displayName": "Blanc sur bleu",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#949494",
+          "#b2b2b2",
+          "#d4d4d4",
+          "#f2f2f2"
+        ]
+      },
+      "signal-amber": {
+        "role": "secondary",
+        "displayName": "Ambre profond",
+        "canonical": "#8a5a00",
+        "tonalRamp": [
+          "#4c3200",
+          "#805300",
+          "#b27400",
+          "#e69600",
+          "#ffb429",
+          "#ffca66",
+          "#ffe1a8",
+          "#fff6e5"
+        ]
+      },
+      "signal-amber-chip": {
+        "role": "secondary",
+        "displayName": "Pastille ambre",
+        "canonical": "#fff1c4",
+        "tonalRamp": [
+          "#4c3a00",
+          "#806100",
+          "#b28800",
+          "#e6af00",
+          "#ffcc29",
+          "#ffdb66",
+          "#ffeaa8",
+          "#fff9e5"
+        ]
+      },
+      "signal-yellow": {
+        "role": "secondary",
+        "displayName": "Jaune signal",
+        "canonical": "#ffcf3a",
+        "tonalRamp": [
+          "#4c3a00",
+          "#806000",
+          "#b28700",
+          "#e6ae00",
+          "#ffcb29",
+          "#ffda66",
+          "#ffeaa8",
+          "#fff9e5"
+        ]
+      },
+      "signal-yellow-chip": {
+        "role": "secondary",
+        "displayName": "Pastille jaune (sombre)",
+        "canonical": "#2a2a1f",
+        "tonalRamp": [
+          "#2c2c20",
+          "#494936",
+          "#67674c",
+          "#848461",
+          "#a4a484",
+          "#bebea7",
+          "#dadacd",
+          "#f4f4f0"
+        ]
+      },
+      "ground-light": {
+        "role": "neutral",
+        "displayName": "Gris quai",
+        "canonical": "#f7f8fa",
+        "tonalRamp": [
+          "#1d232f",
+          "#313b4e",
+          "#45526e",
+          "#586a8d",
+          "#7b8cad",
+          "#a1adc4",
+          "#cad0de",
+          "#eff1f5"
+        ]
+      },
+      "side-light": {
+        "role": "neutral",
+        "displayName": "Gris volet",
+        "canonical": "#eef0f3",
+        "tonalRamp": [
+          "#20252d",
+          "#353e4b",
+          "#4a5669",
+          "#5f6f87",
+          "#8190a6",
+          "#a5b0c0",
+          "#ccd2db",
+          "#f0f2f4"
+        ]
+      },
+      "hover-light": {
+        "role": "neutral",
+        "displayName": "Gris survol",
+        "canonical": "#e6e9ee",
+        "tonalRamp": [
+          "#1f242e",
+          "#343d4c",
+          "#48556a",
+          "#5d6d89",
+          "#7f8fa8",
+          "#a4afc1",
+          "#cbd2dc",
+          "#f0f2f5"
+        ]
+      },
+      "active-light": {
+        "role": "neutral",
+        "displayName": "Gris actif",
+        "canonical": "#dde1e7",
+        "tonalRamp": [
+          "#20252d",
+          "#353e4b",
+          "#4a5669",
+          "#5f6f87",
+          "#8190a6",
+          "#a5b0c0",
+          "#ccd2db",
+          "#f0f2f4"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Encre",
+        "canonical": "#11151b",
+        "tonalRamp": [
+          "#1e252f",
+          "#313d4e",
+          "#45556e",
+          "#596e8d",
+          "#7c8fac",
+          "#a1afc4",
+          "#cad2de",
+          "#eff2f5"
+        ]
+      },
+      "text-2-light": {
+        "role": "neutral",
+        "displayName": "Texte secondaire",
+        "canonical": "#4a535f",
+        "tonalRamp": [
+          "#21262b",
+          "#383f48",
+          "#4e5864",
+          "#647181",
+          "#8792a1",
+          "#a9b1bc",
+          "#ced3d9",
+          "#f1f2f4"
+        ]
+      },
+      "text-3-light": {
+        "role": "neutral",
+        "displayName": "Texte discret",
+        "canonical": "#5b6470",
+        "tonalRamp": [
+          "#22262a",
+          "#393f46",
+          "#505862",
+          "#67717f",
+          "#89929f",
+          "#abb1ba",
+          "#cfd3d8",
+          "#f1f2f4"
+        ]
+      },
+      "hairline-light": {
+        "role": "neutral",
+        "displayName": "Filet",
+        "canonical": "#e3e6eb",
+        "tonalRamp": [
+          "#20252d",
+          "#353d4a",
+          "#4a5668",
+          "#606e86",
+          "#828fa6",
+          "#a6afbf",
+          "#ccd2db",
+          "#f0f2f4"
+        ]
+      },
+      "board-ink": {
+        "role": "neutral",
+        "displayName": "Encre du tableau",
+        "canonical": "#12161c",
+        "tonalRamp": [
+          "#1e252f",
+          "#323d4e",
+          "#46556d",
+          "#5a6e8c",
+          "#7d8fab",
+          "#a2afc3",
+          "#cad2dd",
+          "#eff2f5"
+        ]
+      },
+      "side-dark": {
+        "role": "neutral",
+        "displayName": "Volet (sombre)",
+        "canonical": "#171b22",
+        "tonalRamp": [
+          "#1f242e",
+          "#333c4c",
+          "#48556a",
+          "#5d6d89",
+          "#7f8ea9",
+          "#a4aec1",
+          "#cbd1dc",
+          "#f0f2f5"
+        ]
+      },
+      "hover-dark": {
+        "role": "neutral",
+        "displayName": "Survol (sombre)",
+        "canonical": "#222831",
+        "tonalRamp": [
+          "#1f252d",
+          "#343d4b",
+          "#495669",
+          "#5e6f87",
+          "#8190a7",
+          "#a5b0c0",
+          "#ccd2db",
+          "#f0f2f5"
+        ]
+      },
+      "active-dark": {
+        "role": "neutral",
+        "displayName": "Actif (sombre)",
+        "canonical": "#2a313b",
+        "tonalRamp": [
+          "#20252d",
+          "#353e4a",
+          "#4a5768",
+          "#5f6f86",
+          "#8291a6",
+          "#a6b0bf",
+          "#ccd2db",
+          "#f0f2f4"
+        ]
+      },
+      "text-dark": {
+        "role": "neutral",
+        "displayName": "Blanc tableau",
+        "canonical": "#f4f5f7",
+        "tonalRamp": [
+          "#20242c",
+          "#363c4a",
+          "#4b5567",
+          "#616d85",
+          "#838ea5",
+          "#a6aebf",
+          "#cdd1da",
+          "#f0f2f4"
+        ]
+      },
+      "text-2-dark": {
+        "role": "neutral",
+        "displayName": "Texte secondaire (sombre)",
+        "canonical": "#b8c0cb",
+        "tonalRamp": [
+          "#20252c",
+          "#363e4a",
+          "#4b5767",
+          "#617084",
+          "#8391a4",
+          "#a7b1be",
+          "#cdd3da",
+          "#f0f2f4"
+        ]
+      },
+      "text-3-dark": {
+        "role": "neutral",
+        "displayName": "Texte discret (sombre)",
+        "canonical": "#9aa3af",
+        "tonalRamp": [
+          "#22262b",
+          "#383f47",
+          "#4f5864",
+          "#657180",
+          "#8792a0",
+          "#aab1bb",
+          "#cfd3d9",
+          "#f1f2f4"
+        ]
+      },
+      "hairline-dark": {
+        "role": "neutral",
+        "displayName": "Filet (sombre)",
+        "canonical": "#232931",
+        "tonalRamp": [
+          "#20252d",
+          "#353e4a",
+          "#4a5768",
+          "#607086",
+          "#8291a6",
+          "#a6b1bf",
+          "#ccd3db",
+          "#f0f2f4"
+        ]
+      },
+      "danger": {
+        "role": "error",
+        "displayName": "Rouge danger",
+        "canonical": "#c0392b",
+        "tonalRamp": [
+          "#3f130e",
+          "#681f17",
+          "#922b21",
+          "#bc382a",
+          "#d85d50",
+          "#e38b82",
+          "#efbdb8",
+          "#faecea"
+        ]
+      },
+      "danger-dark": {
+        "role": "error",
+        "displayName": "Rouge danger (sombre)",
+        "canonical": "#f0857a",
+        "tonalRamp": [
+          "#450d08",
+          "#73160d",
+          "#a01f12",
+          "#ce2817",
+          "#e94e3f",
+          "#ef8176",
+          "#f6b8b1",
+          "#fceae8"
+        ]
+      },
+      "warn": {
+        "role": "warning",
+        "displayName": "Ambre avertissement",
+        "canonical": "#b26b00",
+        "tonalRamp": [
+          "#4c2e00",
+          "#804d00",
+          "#b26b00",
+          "#e68a00",
+          "#ffaa29",
+          "#ffc266",
+          "#ffdca8",
+          "#fff5e5"
+        ]
+      },
+      "banner-bg": {
+        "role": "warning",
+        "displayName": "Fond de bandeau",
+        "canonical": "#fff4d6",
+        "tonalRamp": [
+          "#4c3800",
+          "#805d00",
+          "#b28300",
+          "#e6a800",
+          "#ffc629",
+          "#ffd666",
+          "#ffe8a8",
+          "#fff8e5"
+        ]
+      },
+      "banner-fg": {
+        "role": "warning",
+        "displayName": "Texte de bandeau",
+        "canonical": "#6b4500",
+        "tonalRamp": [
+          "#4c3100",
+          "#805200",
+          "#b27300",
+          "#e69400",
+          "#ffb329",
+          "#ffc966",
+          "#ffe0a8",
+          "#fff6e5"
+        ]
+      },
+      "error-bg": {
+        "role": "error",
+        "displayName": "Fond d'erreur",
+        "canonical": "#fdecea",
+        "tonalRamp": [
+          "#460d07",
+          "#74160b",
+          "#a31f10",
+          "#d22814",
+          "#ec4e3b",
+          "#f28173",
+          "#f7b7b0",
+          "#fdeae8"
+        ]
+      },
+      "error-fg": {
+        "role": "error",
+        "displayName": "Texte d'erreur",
+        "canonical": "#8a1f14",
+        "tonalRamp": [
+          "#430f0a",
+          "#6f1910",
+          "#9c2317",
+          "#c82d1d",
+          "#e45344",
+          "#ec8479",
+          "#f4b9b3",
+          "#fcebe9"
+        ]
+      },
+      "toast-bg-dark": {
+        "role": "neutral",
+        "displayName": "Fond de notification (sombre)",
+        "canonical": "#262c35",
+        "tonalRamp": [
+          "#20252d",
+          "#353e4a",
+          "#4b5668",
+          "#606f86",
+          "#8290a6",
+          "#a6b0bf",
+          "#cdd2db",
+          "#f0f2f4"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Titre de vue",
+        "purpose": "Titre de la vue dans la barre du haut ; 24 px sur téléphone."
+      },
+      "headline": {
+        "displayName": "Titre de fenêtre",
+        "purpose": "Titre des fenêtres."
+      },
+      "title": {
+        "displayName": "Titre d'article",
+        "purpose": "Titre d'article, jamais tronqué ; 18 px sur téléphone, 16 px en mode Titres."
+      },
+      "body": {
+        "displayName": "Texte",
+        "purpose": "Texte courant, champs et boutons."
+      },
+      "summary": {
+        "displayName": "Résumé",
+        "purpose": "Résumé sous le titre, 2 à 4 lignes selon le mode."
+      },
+      "label-source": {
+        "displayName": "Source",
+        "purpose": "Nom de la source, capitales, couleur signal."
+      },
+      "label-section": {
+        "displayName": "Intitulé de section",
+        "purpose": "Intitulés de groupe du volet, capitales, texte discret."
+      },
+      "meta": {
+        "displayName": "Âge",
+        "purpose": "Âge de l'article, précédé de « · »."
+      },
+      "action-large": {
+        "displayName": "Action principale",
+        "purpose": "Libellé du bouton de fin de page."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-float",
+        "value": "0 10px 30px rgba(17, 21, 27, 0.18)",
+        "purpose": "Menus, fenêtres, tiroir ouvert, notification (thème clair)."
+      },
+      {
+        "name": "shadow-float-dark",
+        "value": "0 10px 30px rgba(0, 0, 0, 0.55)",
+        "purpose": "Même rôle en thème sombre."
+      },
+      {
+        "name": "segment-on",
+        "value": "0 1px 3px rgba(0,0,0,.12)",
+        "purpose": "Option choisie du sélecteur segmenté du menu Affichage."
+      },
+      {
+        "name": "selected-ring",
+        "value": "inset 0 0 0 1px var(--accent)",
+        "purpose": "Article sélectionné au clavier : contour, pas élévation."
+      }
+    ],
+    "motion": [
+      {
+        "name": "drawer",
+        "value": "transform .2s ease, visibility .2s",
+        "purpose": "Ouverture du tiroir sur téléphone."
+      },
+      {
+        "name": "row-swipe",
+        "value": "transform .15s ease",
+        "purpose": "Retour d'une ligne après balayage."
+      },
+      {
+        "name": "chevron",
+        "value": "transform .15s",
+        "purpose": "Rotation du chevron de catégorie."
+      },
+      {
+        "name": "spin",
+        "value": "spin 1s linear infinite",
+        "purpose": "Bouton Actualiser pendant la collecte."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone-tablet",
+        "value": "(max-width: 899px)"
+      },
+      {
+        "name": "touch",
+        "value": "(pointer: coarse)"
+      },
+      {
+        "name": "mouse-hover",
+        "value": "(hover: hover)"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Bouton principal",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Action principale d'une fenêtre ou d'un écran.",
+      "html": "<button class=\"ds-btn-primary\">Ajouter</button>",
+      "css": ".ds-btn-primary { font-family: 'Barlow', 'Segoe UI', Roboto, Arial, sans-serif; background: var(--accent-btn, #2c6bed); color: var(--on-accent, #fff); border: 1px solid var(--accent-btn, #2c6bed); border-radius: 8px; padding: 10px 16px; min-height: 44px; font-size: 16px; font-weight: 600; cursor: pointer; } .ds-btn-primary:hover { background: var(--accent-btn-hover, #1f56c9); border-color: var(--accent-btn-hover, #1f56c9); } .ds-btn-primary:focus-visible { outline: 2px solid var(--accent, #2c6bed); outline-offset: 2px; }"
+    },
+    {
+      "name": "Bouton secondaire",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Action secondaire, à côté du bouton principal.",
+      "html": "<button class=\"ds-btn\">Annuler</button>",
+      "css": ".ds-btn { font-family: 'Barlow', 'Segoe UI', Roboto, Arial, sans-serif; background: var(--bg, #f7f8fa); color: var(--text, #11151b); border: 1px solid var(--border, #e3e6eb); border-radius: 8px; padding: 10px 16px; min-height: 44px; font-size: 16px; font-weight: 600; cursor: pointer; } .ds-btn:hover { background: var(--bg-hover, #e6e9ee); } .ds-btn:focus-visible { outline: 2px solid var(--accent, #2c6bed); outline-offset: 2px; }"
+    },
+    {
+      "name": "Bouton de fin de page",
+      "kind": "custom",
+      "refersTo": "mark-page-button",
+      "description": "Geste principal : déclarer lus les articles affichés.",
+      "html": "<button class=\"ds-mark-page\">Marquer les 9 articles affichés comme lus</button>",
+      "css": ".ds-mark-page { font-family: 'Barlow Condensed', 'Barlow', 'Arial Narrow', sans-serif; display: inline-flex; align-items: center; justify-content: center; width: 100%; min-height: 52px; border-radius: 10px; border: 1px solid var(--accent-btn, #2c6bed); background: var(--accent-btn, #2c6bed); color: var(--on-accent, #fff); font-size: 19px; font-weight: 600; line-height: 1.1; letter-spacing: .02em; cursor: pointer; } .ds-mark-page:hover { background: var(--accent-btn-hover, #1f56c9); border-color: var(--accent-btn-hover, #1f56c9); } .ds-mark-page:focus-visible { outline: 2px solid var(--accent, #2c6bed); outline-offset: 2px; }"
+    },
+    {
+      "name": "Ligne d'article (Magazine)",
+      "kind": "card",
+      "refersTo": "source-name",
+      "description": "Ligne 1 : pastille, source en capitales signal, âge, boutons ; ligne 2 : titre entier.",
+      "html": "<article class=\"ds-row\"><div class=\"ds-row-top\"><span class=\"ds-chip\">B</span><span class=\"ds-source\">Blog Exemple</span><span class=\"ds-age\">10 min</span><span class=\"ds-row-actions\"><button class=\"ds-icon-btn\" aria-label=\"Lire plus tard\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 4h12v16l-6-4-6 4z\"/></svg></button><button class=\"ds-icon-btn\" aria-label=\"Marquer comme lu\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"8\"/><path d=\"M8.5 12.2l2.4 2.4 4.6-4.9\"/></svg></button></span></div><a class=\"ds-row-title\" href=\"#\">Premier article du blog</a></article>",
+      "css": ".ds-row { font-family: 'Barlow', 'Segoe UI', Roboto, Arial, sans-serif; border-bottom: 1px solid var(--border, #e3e6eb); padding: 12px 0 16px; max-width: 760px; background: var(--bg, #f7f8fa); } .ds-row-top { display: flex; align-items: center; gap: 8px; min-height: 32px; } .ds-chip { font-family: 'Barlow Condensed', 'Barlow', 'Arial Narrow', sans-serif; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 700; background: var(--signal-chip, #fff1c4); color: var(--signal, #8a5a00); } .ds-source { font-family: 'Barlow Condensed', 'Barlow', 'Arial Narrow', sans-serif; font-size: 15px; font-weight: 600; line-height: 1.1; letter-spacing: .05em; text-transform: uppercase; color: var(--signal, #8a5a00); } .ds-age { font-size: 13px; color: var(--text-3, #5b6470); } .ds-age::before { content: '·'; margin-right: 6px; } .ds-row-actions { margin-left: auto; display: flex; } .ds-icon-btn { border: 0; background: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: var(--text-3, #5b6470); cursor: pointer; } .ds-icon-btn:hover { background: var(--bg-hover, #e6e9ee); color: var(--text, #11151b); } .ds-icon-btn:focus-visible { outline: 2px solid var(--accent, #2c6bed); outline-offset: 2px; } .ds-row-title { display: block; margin-top: 4px; font-size: 19px; font-weight: 600; line-height: 1.3; color: var(--text, #11151b); text-decoration: none; } .ds-row-title:hover { color: var(--accent-strong, #1f56c9); } .ds-row-title:focus-visible { outline: 2px solid var(--accent, #2c6bed); outline-offset: 2px; }"
+    },
+    {
+      "name": "Bouton d'icône",
+      "kind": "button",
+      "refersTo": "icon-button",
+      "description": "Actions de la barre du haut, en cercle, sans fond au repos.",
+      "html": "<button class=\"ds-icon-round\" aria-label=\"Rechercher\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"6.5\"/><path d=\"M20 20l-4.2-4.2\"/></svg></button>",
+      "css": ".ds-icon-round { border: 0; background: none; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: var(--text-2, #4a535f); cursor: pointer; } .ds-icon-round:hover { background: var(--bg-hover, #e6e9ee); color: var(--text, #11151b); } .ds-icon-round:focus-visible { outline: 2px solid var(--accent, #2c6bed); outline-offset: 2px; }"
+    },
+    {
+      "name": "Champ de saisie",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Champ des fenêtres et formulaires.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Adresse du site ou du fil\">",
+      "css": ".ds-input { font-family: 'Barlow', 'Segoe UI', Roboto, Arial, sans-serif; font-size: 16px; padding: 10px 12px; min-height: 44px; border: 1px solid var(--border, #e3e6eb); border-radius: 8px; background: var(--bg, #f7f8fa); color: var(--text, #11151b); caret-color: var(--accent, #2c6bed); } .ds-input:focus-visible { outline: 2px solid var(--accent, #2c6bed); outline-offset: 2px; }"
+    },
+    {
+      "name": "Élément de navigation",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Entrées du volet latéral, avec compteur tabulaire.",
+      "html": "<nav class=\"ds-nav\"><button class=\"ds-nav-item ds-active\"><span>Aujourd’hui</span><span class=\"ds-count\">10</span></button><button class=\"ds-nav-item\"><span>Tous les articles</span><span class=\"ds-count\">10</span></button><span class=\"ds-nav-heading\">Catégories</span><button class=\"ds-nav-item\"><span>Tech</span><span class=\"ds-count\">3</span></button></nav>",
+      "css": ".ds-nav { font-family: 'Barlow', 'Segoe UI', Roboto, Arial, sans-serif; background: var(--bg-side, #eef0f3); padding: 12px 10px; width: 272px; display: flex; flex-direction: column; } .ds-nav-heading { font-family: 'Barlow Condensed', 'Barlow', 'Arial Narrow', sans-serif; font-size: 13px; font-weight: 600; line-height: 1; text-transform: uppercase; letter-spacing: .1em; color: var(--text-3, #5b6470); margin: 18px 10px 6px; } .ds-nav-item { display: flex; align-items: center; justify-content: space-between; width: 100%; border: 0; background: none; text-align: left; padding: 7px 10px; border-radius: 8px; min-height: 44px; font-family: inherit; font-size: 16px; color: var(--text-2, #4a535f); cursor: pointer; } .ds-nav-item:hover { background: var(--bg-hover, #e6e9ee); color: var(--text, #11151b); } .ds-nav-item.ds-active { background: var(--bg-active, #dde1e7); color: var(--text, #11151b); font-weight: 600; } .ds-nav-item:focus-visible { outline: 2px solid var(--accent, #2c6bed); outline-offset: 2px; } .ds-count { font-size: 12px; color: var(--text-3, #5b6470); font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Notification",
+      "kind": "custom",
+      "refersTo": "toast",
+      "description": "Confirmation en bas d'écran, action Annuler en jaune signal sur fond encre.",
+      "html": "<div class=\"ds-toast\">9 articles marqués comme lus<button class=\"ds-toast-action\">Annuler</button></div>",
+      "css": ".ds-toast { font-family: 'Barlow', 'Segoe UI', Roboto, Arial, sans-serif; display: inline-flex; align-items: center; gap: 14px; background: var(--toast-bg, #11151b); color: #fff; padding: 10px 10px 10px 18px; border-radius: 10px; box-shadow: var(--shadow, 0 10px 30px rgba(17,21,27,.18)); font-size: 14px; } .ds-toast-action { border: 0; background: none; color: #ffcf3a; font-family: inherit; font-size: 14px; font-weight: 600; padding: 8px 10px; border-radius: 6px; min-height: 36px; cursor: pointer; } .ds-toast-action:hover { background: rgba(255,255,255,.1); } .ds-toast-action:focus-visible { outline: 2px solid #5b8cff; outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Le tableau des départs",
+    "overview": "FilActu emprunte la discipline d'un tableau des départs, sans en reprendre le décor : des lignes strictes, une seule couleur signal, des étiquettes condensées en capitales, pour que l'œil descende la colonne des titres sans s'arrêter. Le thème sombre est le tableau lui-même (fond encre, titres presque blancs, sources en jaune signal) ; le thème clair garde exactement la même mise en page sur un fond gris très clair, avec les sources en ambre foncé. Le thème suit le téléphone et peut être forcé dans les Réglages.\n\nL'interface est un outil de tri, pas une surface de lecture. Chaque ligne se lit dans l'ordre : la source d'abord (on la reconnaît d'un coup d'œil), le titre ensuite, en entier et jamais coupé, la fraîcheur en dernier, en gris. Le bleu « quai » ne sert qu'aux actions principales et au focus ; tout le reste est neutre. La densité est celle d'un téléphone tenu d'une main : six à huit articles par écran, zones de toucher d'au moins 44 px.\n\nL'analogie s'arrête à la discipline : pas de lamelles qui basculent, pas de mots de gare, pas d'horloge. La géométrie est douce (pastille ronde, images à coins de 12 px, boutons d'icône ronds, filets fins), ce qui distingue FilActu d'un vrai panneau d'affichage.",
+    "keyCharacteristics": [
+      "Une seule couleur signal par thème, réservée au nom des sources et aux états « lu » / « enregistré ».",
+      "Un seul bleu, réservé aux actions principales, aux liens et au focus.",
+      "Barlow pour les titres et le texte, Barlow Condensed en capitales pour les sources, les titres de vue et les intitulés de section.",
+      "Lignes séparées par des filets d'un pixel ; aucune ombre au repos.",
+      "Même mise en page en clair et en sombre ; seules les couleurs changent."
+    ],
+    "rules": [
+      {
+        "name": "La règle du signal unique",
+        "body": "Le jaune (ou l'ambre en clair) ne marque que l'identité de la source, les états de l'article (lu, enregistré), les avertissements et l'action « Annuler » de la notification sur fond encre. Jamais un fond de bouton, jamais un fond de zone, jamais un titre.",
+        "section": "colors"
+      },
+      {
+        "name": "La règle du bleu d'action",
+        "body": "Le bleu désigne ce qu'on peut faire : bouton principal, lien, focus. Un élément bleu qui ne réagit pas au toucher est une erreur.",
+        "section": "colors"
+      },
+      {
+        "name": "La règle des deux thèmes jumeaux",
+        "body": "Toute couleur passe par une variable de `:root` redéfinie pour le thème sombre (système et réglage). Une couleur écrite en dur ne suit pas le thème.",
+        "section": "colors"
+      },
+      {
+        "name": "La règle du titre entier",
+        "body": "Un titre d'article n'est jamais tronqué ni coupé par des points de suspension ; seuls le nom de la source et les résumés peuvent l'être.",
+        "section": "typography"
+      },
+      {
+        "name": "La règle des capitales condensées",
+        "body": "Les capitales ne s'emploient qu'en Barlow Condensed avec un interlettrage ouvert (0,05 à 0,1 em), et seulement pour les sources et les intitulés de section du volet.",
+        "section": "typography"
+      },
+      {
+        "name": "La règle du plat au repos",
+        "body": "Les articles, la barre du haut et le volet n'ont jamais d'ombre. L'article sélectionné au clavier se signale par un contour intérieur d'un pixel bleu et un fond de palier, pas par une ombre.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** afficher chaque titre d'article en entier, sur autant de lignes qu'il le faut.",
+      "**Do** ouvrir chaque ligne d'article par la pastille, le nom de la source en capitales signal, puis l'âge discret précédé de « · ».",
+      "**Do** passer toute couleur par une variable de `:root` qui a sa valeur sombre.",
+      "**Do** garder 44 px au moins pour toute cible sur écran tactile.",
+      "**Do** dessiner les icônes en SVG au trait (1,8 px, extrémités rondes) dans `src/ui/icons.tsx`.",
+      "**Do** réserver l'ombre `--shadow` à ce qui flotte (menus, fenêtres, tiroir, notification)."
+    ],
+    "donts": [
+      "**Don't** utiliser le jaune ou l'ambre signal comme fond de bouton ou de zone, ni pour un titre.",
+      "**Don't** utiliser le bleu sur un élément qui ne réagit pas.",
+      "**Don't** reprendre le décor du tableau des départs : pas de lamelles, pas de vocabulaire de gare, pas d'horloge.",
+      "**Don't** poser une ombre sur les articles, la barre du haut ou le volet.",
+      "**Don't** écrire de capitales en Barlow normale, ni de capitales hors des sources et intitulés de section.",
+      "**Don't** charger une police depuis un service externe : la politique de sécurité l'interdit, les polices sont hébergées avec l'appli."
+    ]
+  }
+}

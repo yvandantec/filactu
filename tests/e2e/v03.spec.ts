@@ -165,9 +165,9 @@ test.describe('recherche, thème, raccourcis', () => {
     await page.getByRole('button', { name: 'Réglages' }).click();
     await page.getByLabel('Thème').selectOption('dark');
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(22, 24, 29)');
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(18, 22, 28)');
     await page.getByLabel('Thème').selectOption('light');
-    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(247, 248, 250)');
     await expect.poll(() => reading(gh)?.prefs.theme, { timeout: 5000 }).toBe('light');
   });
 

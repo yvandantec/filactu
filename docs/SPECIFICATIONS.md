@@ -157,9 +157,10 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 
 | ID | Exigence | Critères d'acceptation |
 |---|---|---|
-| EXG-030 | Trois affichages : **Titres** (une ligne : source, titre, âge), **Magazine** compact façon Feedly (titre de taille modérée sur 3 lignes au plus, vignette à droite, « fil / fraîcheur » sur une ligne), **Cartes** (grille, grande image, titre, fil, fraîcheur). | Le choix est mémorisé par fil ou catégorie et synchronisé. Par défaut : Magazine. |
+| EXG-030 | Trois affichages : **Titres** (une ligne par article : source, titre — renvoyé à la ligne s'il est long, jamais coupé —, âge), **Magazine** (source et fraîcheur sur une ligne, titre en entier dessous, vignette à droite — voir EXG-039), **Cartes** (grille, grande image, titre, fil, fraîcheur). | Le choix est mémorisé par fil ou catégorie et synchronisé. Par défaut : Magazine. |
 | EXG-037 | Taille du texte des articles réglable sur 3 niveaux : Petit, Normal, Grand. | Réglage dans « Options d'affichage » et « Réglages », distinct pour grand et petit écran, synchronisé ; il agrandit ou réduit titres, fil / fraîcheur et début de l'article dans les 3 affichages. |
 | EXG-038 | Sur Android, choisir le navigateur qui ouvre les articles (Brave, Firefox, Edge, Samsung Internet, Chrome), au lieu de l'onglet intégré de Chrome. | Réglage visible seulement sur Android ; le lien de l'article devient un lien `intent://` vers l'application choisie, avec retour à l'adresse normale si elle n'est pas installée. « Automatique » garde le comportement standard. Pour Brave, une « méthode 2 » vise directement l'écran de Brave, au cas où Chrome affiche un menu de choix. |
+| EXG-039 | En affichage Magazine, le titre est l'élément le plus lisible de chaque article et la source se reconnaît d'un coup d'œil. | Le titre n'est jamais coupé, même long, et s'écrit plus grand que tout le reste de la ligne. La ligne du dessus montre l'icône (ou l'initiale) de la source, son nom complet et la fraîcheur, plus discrète. L'image, quand il y en a une, mesure au moins 112 × 84 px sur téléphone. Les boutons « Lire plus tard » et lu / non lu sont sur la ligne de la source, alignés à droite. Sur un téléphone, au moins 5 articles illustrés tiennent à l'écran (davantage sans image ou avec des titres courts). Polices Barlow et Barlow Condensed hébergées avec l'appli. |
 | EXG-036 | Option « Afficher le début de l'article », réglée séparément pour les grands écrans (PC, tablette paysage : activée par défaut, version riche) et les petits écrans (téléphone, tablette portrait : désactivée par défaut, version compacte). | En Magazine sans début d'article, au moins 5 articles sont visibles sur un écran de téléphone (390 × 844). Chaque réglage est synchronisé entre les appareils du même type d'écran. |
 | EXG-031 | Résumé de chaque article : texte brut sans HTML, environ 400 caractères maximum, coupé au mot. | Pas de script, pas de style ni de traqueur hérité du fil. |
 | EXG-032 | En affichage Titres, un appui long (mobile) ou le survol (PC) montre le résumé. | — |
@@ -227,13 +228,16 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | ENF-07 | **Langue** : interface en français. |
 | ENF-08 | **Volume cible** : jusqu'à 300 fils et 1 000 nouveaux articles par jour. |
 
-## 6. Design (repris de Feedly, à l'identité FilActu)
+## 6. Design (identité FilActu, 2026-11-06)
 
-- **Couleurs** : vert FilActu `#1E9E5F` (accent), gris neutres, fond blanc / fond sombre `#16181D`.
-- **Typographie** : police système (Segoe UI, Roboto…), titres d'articles en gras, résumé en gris.
+Choisi par le propriétaire le 2026-11-06 après l'analyse d'interface (piste « tableau », sans l'analogie de la gare). Le détail est consigné dans `DESIGN.md`.
+
+- **Couleurs** : thème sombre « tableau » (fond encre `#12161C`, titres presque blancs, sources en jaune signal `#FFCF3A`, actions principales en bleu `#2C6BED`) ; thème clair avec la même mise en page (fond `#F7F8FA`, sources en ambre `#8A5A00`). Le thème suit le téléphone, et peut être forcé dans Réglages.
+- **Typographie** : Barlow pour les titres et le texte, Barlow Condensed en capitales pour les noms de sources et les titres de vue ; polices hébergées avec l'appli.
+- **Formes** : pastille de source ronde, images aux coins arrondis, boutons ronds, filets de séparation fins.
 - **Volet gauche** : logo, entrées fixes (Aujourd'hui, Tous, À lire plus tard), catégories avec chevron et compteur, bouton « + Ajouter un fil » en bas, accès Réglages.
-- **Zone principale** : en-tête de vue (titre, compteur, actions à droite), liste d'articles centrée (largeur de lecture ~720 px en Magazine), grille en Cartes.
-- **Mobile** : barre supérieure avec menu, titre de vue et actions ; bouton flottant « Tout marquer lu » en bas de liste ; balayages sur les articles.
+- **Zone principale** : en-tête de vue (titre, compteur, actions à droite), liste d'articles centrée, grille en Cartes.
+- **Mobile** : barre supérieure avec menu, titre de vue et actions ; bouton « Marquer les N articles affichés comme lus » en bas de liste ; balayages sur les articles.
 
 ## 7. Sécurité de la clé GitHub
 
@@ -274,3 +278,4 @@ Le workflow du collecteur lit la clé dans le **secret** `DATA_REPO_TOKEN` du d�
 | **V1.0** | Finitions, accessibilité, performance, documentation complète | EXG-035, ENF-01→08 |
 | **V1.0.1 — Robustesse de l'enregistrement** | Le robot patiente pendant une panne passagère de GitHub | EXG-081 |
 | **V1.1 — Lisibilité** | Recherche, ligne d'article, messages clairs, notification Annuler (analyse d'interface du 2026-11-06) | EXG-019, 046, 047, 063, 082 |
+| **V1.2 — Identité visuelle** | Thème « tableau » sombre et clair, titre en entier, source mise en avant | EXG-039 |
