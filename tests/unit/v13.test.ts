@@ -23,21 +23,8 @@ describe('V1.3 — icône et thème sur Android', () => {
     ];
     for (const f of sources) expect(read(f), f).not.toMatch(OLD_GREEN);
 
-    // Même dessin partout : fond encre, ondes en jaune signal
-    for (const f of ['assets/logo.svg', 'public/icons/logo.svg', 'assets/logo-maskable.svg', 'src/ui/icons.tsx']) {
-      expect(read(f), f).toMatch(/#12161c/i);
-      expect(read(f), f).toMatch(/#ffcf3a/i);
-    }
-    expect(read('assets/logo.svg')).toBe(read('public/icons/logo.svg'));
+    // Les couleurs de l'icône relèvent désormais d'EXG-085 (tests/unit/v14.test.ts)
     expect(JSON.parse(read('public/manifest.webmanifest')).theme_color).toBe('#12161c');
-    // Adresses des icônes changées : les navigateurs gardent sinon l'ancienne icône d'onglet en mémoire
-    const links = [...read('index.html').matchAll(/<link rel="(?:icon|apple-touch-icon)"[^>]*href="([^"]+)"/g)].map((m) => m[1]);
-    expect(links.length).toBeGreaterThanOrEqual(3);
-    for (const href of links) expect(href, href).toMatch(/\?v=tableau$/);
-    for (const icon of JSON.parse(read('public/manifest.webmanifest')).icons) expect(icon.src).toMatch(/\?v=tableau$/);
-    // Fond de l'icône adaptative Android : encre
-    expect(read(`${res}/mipmap-anydpi-v26/ic_launcher.xml`)).toMatch(/@color\/filactu_ink/);
-    expect(read(`${res}/values/colors.xml`)).toMatch(/name="filactu_ink">#12161C</i);
   });
 
   test('EXG-084 · l’appli Android annonce au site le thème du téléphone et bascule avec lui', () => {
@@ -60,6 +47,5 @@ describe('V1.3 — icône et thème sur Android', () => {
     // Nouvelle version de l'APK à installer
     const gradle = read('android/app/build.gradle.kts');
     expect(Number(/versionCode = (\d+)/.exec(gradle)![1])).toBeGreaterThanOrEqual(2);
-    expect(gradle).toMatch(/versionName = "1\.1\.0"/);
   });
 });

@@ -2,6 +2,12 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [1.4.0] — 2026-11-08 — Icône jaune et bleue
+
+### Modifié
+- L'icône n'est plus noire : fond jaune, ondes bleues, fil et point foncés. Même dessin qu'avant, plus visible sur l'écran d'accueil. Elle change partout : écran d'accueil, onglet du navigateur, logo du volet et de l'écran de connexion (EXG-085).
+- Appli Android 1.2.0 : nouvelle icône. **Installer la nouvelle APK** (`FilActu-1.2.0.apk`).
+
 ## [1.3.1] — 2026-11-06
 
 ### Corrigé

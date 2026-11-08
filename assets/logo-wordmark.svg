@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 300" role="img" aria-labelledby="t">
   <title id="t">FilActu</title>
   <g transform="translate(22 22) scale(.5)">
-    <rect width="512" height="512" rx="112" fill="#12161c"/>
+    <rect width="512" height="512" rx="112" fill="#ffcf3a"/>
     <g fill="none" stroke-linecap="round" transform="translate(30 4)">
-      <path d="M62 236 C 112 236 118 352 178 348" stroke="#f4f5f7" stroke-width="22"/>
-      <path d="M178 236 A112 112 0 0 1 290 348" stroke="#ffcf3a" stroke-width="38"/>
-      <path d="M178 150 A198 198 0 0 1 376 348" stroke="#ffcf3a" stroke-width="38"/>
+      <path d="M62 236 C 112 236 118 352 178 348" stroke="#12161c" stroke-width="22"/>
+      <path d="M178 236 A112 112 0 0 1 290 348" stroke="#2c6bed" stroke-width="38"/>
+      <path d="M178 150 A198 198 0 0 1 376 348" stroke="#2c6bed" stroke-width="38"/>
     </g>
-    <circle cx="208" cy="352" r="34" fill="#ffcf3a"/>
+    <circle cx="208" cy="352" r="34" fill="#12161c"/>
   </g>
   <text x="320" y="196" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-size="170" font-weight="700" letter-spacing="1">
     <tspan fill="#8a5a00">Fil</tspan><tspan fill="#11151b">Actu</tspan>

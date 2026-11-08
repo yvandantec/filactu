@@ -1,6 +1,6 @@
 # Matrice de traçabilité
 
-> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2, V1.0, V1.0.1, V1.1, V1.2, V1.3. Ne pas modifier à la main.
+> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2, V1.0, V1.0.1, V1.1, V1.2, V1.3, V1.4. Ne pas modifier à la main.
 
 | Exigence | Lot livré | Tests | Statut |
 |---|---|---|---|
@@ -8,7 +8,8 @@
 | **EXG-002** La clé est mémorisée sur l'appareil et peut être effacée depuis les réglages (« Déconnecter cet appareil »). | oui | 1 | ✅ couverte |
 | **EXG-004** Appli Android à installer (APK) qui affiche FilActu et ouvre chaque article directement dans le navigateur par défaut du téléphone (Brave…), sans onglet intégré ni menu de choix. | oui | 2 | ✅ couverte |
 | **EXG-003** L'appli s'installe sur Android (téléphone et tablette) et sur PC (Chrome/Edge). | oui | 1 | ✅ couverte |
-| **EXG-083** L'icône de l'appli reprend l'identité « tableau » (DESIGN.md) : fond encre, fil clair, ondes en jaune signal ; plus aucune trace de l'ancien vert. | oui | 2 | ✅ couverte |
+| **EXG-083** L'icône de l'appli reprend l'identité « tableau » (DESIGN.md) : ~~fond encre, fil clair, ondes en jaune signal~~ (couleurs remplacées par EXG-085) ; plus aucune trace de l'ancien vert. | oui | 2 | ✅ couverte |
+| **EXG-085** L'icône de l'appli est claire et colorée (demande du 2026-11-08, « trop noire ») : fond jaune signal `#FFCF3A`, ondes en bleu `#2C6BED`, fil et point en encre `#12161C`. | oui | 2 | ✅ couverte |
 | **EXG-010** Importer un fichier OPML (export Feedly). | oui | 5 | ✅ couverte |
 | **EXG-011** Ajouter un abonnement par URL de fil ou de site, avec un nom facultatif, et le ranger dans une catégorie existante ou nouvelle. | oui | 9 | ✅ couverte |
 | **EXG-012** Renommer, déplacer (changer de catégorie), désabonner un fil. | oui | 6 | ✅ couverte |
@@ -386,8 +387,12 @@
 - tests/e2e/v11.spec.ts › EXG-082 · le bandeau « articles pas à jour » est en langage courant et se ferme
 
 ### EXG-083
-- tests/e2e/v13.spec.ts › EXG-083 · icône « tableau » et barre du navigateur aux couleurs du thème affiché
+- tests/e2e/v13.spec.ts › EXG-083 · barre du navigateur aux couleurs du thème affiché
 - tests/unit/v13.test.ts › EXG-083 · le logo et les couleurs de l’appli reprennent l’identité « tableau », sans l’ancien vert
 
 ### EXG-084
 - tests/unit/v13.test.ts › EXG-084 · l’appli Android annonce au site le thème du téléphone et bascule avec lui
+
+### EXG-085
+- tests/e2e/v14.spec.ts › EXG-085 · les icônes installées sont jaunes avec des ondes bleues
+- tests/unit/v14.test.ts › EXG-085 · l’icône a un fond jaune, des ondes bleues, un fil et un point encre, partout

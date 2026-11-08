@@ -1,6 +1,6 @@
 // Service worker FilActu : coquille de l'appli disponible hors connexion (EXG-003, EXG-074).
 // Les données (api.github.com) ne passent jamais par ce cache.
-const CACHE = 'filactu-shell-v3'; // v3 : nouvelle icône (EXG-083)
+const CACHE = 'filactu-shell-v4'; // v4 : icône jaune et bleue (EXG-085)
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/logo.svg'];
 
 self.addEventListener('install', (event) => {

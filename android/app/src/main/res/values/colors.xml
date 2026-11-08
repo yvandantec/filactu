@@ -2,6 +2,8 @@
 <resources>
     <!-- Identité « tableau » (DESIGN.md) -->
     <color name="filactu_ink">#12161C</color>
+    <!-- Fond de l'icône de l'appli : jaune signal (EXG-085) -->
+    <color name="filactu_icon_bg">#FFCF3A</color>
     <!-- Fond de l'appli derrière les barres du téléphone : clair le jour, encre la nuit (values-night) -->
     <color name="filactu_bg">#F7F8FA</color>
 </resources>
