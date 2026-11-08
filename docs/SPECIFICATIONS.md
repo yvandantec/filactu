@@ -129,6 +129,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | EXG-003 | L'appli s'installe sur Android (téléphone et tablette) et sur PC (Chrome/Edge). | Le manifeste (avec un identifiant `id` stable) et le service worker sont valides ; l'icône FilActu apparaît sur l'écran d'accueil ; l'appli s'ouvre en plein écran. |
 | EXG-083 | L'icône de l'appli reprend l'identité « tableau » (DESIGN.md) : ~~fond encre, fil clair, ondes en jaune signal~~ (couleurs remplacées par EXG-085) ; plus aucune trace de l'ancien vert. | Même dessin partout : écran d'accueil (site installé et appli Android), onglet du navigateur, logo du volet. La couleur de la barre du navigateur suit le thème affiché (clair ou sombre). |
 | EXG-085 | L'icône de l'appli est claire et colorée (demande du 2026-11-08, « trop noire ») : fond jaune signal `#FFCF3A`, ondes en bleu `#2C6BED`, fil et point en encre `#12161C`. | Même dessin et mêmes couleurs partout : écran d'accueil (site installé et appli Android), onglet du navigateur, logo du volet et de l'écran de connexion. Les adresses des icônes changent pour que navigateurs et téléphones chargent la nouvelle. Nécessite d'installer la nouvelle APK (1.2.0) pour l'appli Android. |
+| EXG-086 | Le nom « FilActu » affiché à côté du logo reprend les couleurs du logo (demande du 2026-11-08) : « Fil » en bleu, « Actu » dans la couleur normale du texte (blanc sur fond sombre, noir sur fond clair). | Dans le volet et sur l'écran de connexion, en thème clair comme en sombre. Les deux couleurs restent lisibles sur le fond : le nom est un grand texte gras (au moins 18,7 px), donc contraste d'au moins 3:1 (ENF-02). |
 
 ### 4.2 Abonnements et catégories
 
@@ -284,3 +285,4 @@ Le workflow du collecteur lit la clé dans le **secret** `DATA_REPO_TOKEN` du d�
 | **V1.2 — Identité visuelle** | Thème « tableau » sombre et clair, titre en entier, source mise en avant | EXG-039 |
 | **V1.3 — Icône et thème sur Android** | Icône aux couleurs « tableau », thème du téléphone suivi dans l'appli Android | EXG-083, 084 |
 | **V1.4 — Icône jaune et bleue** | Icône moins noire : fond jaune, ondes bleues | EXG-085 |
+| **V1.4.1 — Titre aux couleurs du logo** | « Fil » en bleu, « Actu » en blanc ou noir selon le fond | EXG-086 |

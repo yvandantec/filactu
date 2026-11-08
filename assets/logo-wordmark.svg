@@ -10,6 +10,6 @@
     <circle cx="208" cy="352" r="34" fill="#12161c"/>
   </g>
   <text x="320" y="196" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-size="170" font-weight="700" letter-spacing="1">
-    <tspan fill="#8a5a00">Fil</tspan><tspan fill="#11151b">Actu</tspan>
+    <tspan fill="#2c6bed">Fil</tspan><tspan fill="#11151b">Actu</tspan>
   </text>
 </svg>

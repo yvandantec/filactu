@@ -1,6 +1,6 @@
 # Matrice de traçabilité
 
-> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2, V1.0, V1.0.1, V1.1, V1.2, V1.3, V1.4. Ne pas modifier à la main.
+> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2, V1.0, V1.0.1, V1.1, V1.2, V1.3, V1.4, V1.4.1. Ne pas modifier à la main.
 
 | Exigence | Lot livré | Tests | Statut |
 |---|---|---|---|
@@ -10,6 +10,7 @@
 | **EXG-003** L'appli s'installe sur Android (téléphone et tablette) et sur PC (Chrome/Edge). | oui | 1 | ✅ couverte |
 | **EXG-083** L'icône de l'appli reprend l'identité « tableau » (DESIGN.md) : ~~fond encre, fil clair, ondes en jaune signal~~ (couleurs remplacées par EXG-085) ; plus aucune trace de l'ancien vert. | oui | 2 | ✅ couverte |
 | **EXG-085** L'icône de l'appli est claire et colorée (demande du 2026-11-08, « trop noire ») : fond jaune signal `#FFCF3A`, ondes en bleu `#2C6BED`, fil et point en encre `#12161C`. | oui | 2 | ✅ couverte |
+| **EXG-086** Le nom « FilActu » affiché à côté du logo reprend les couleurs du logo (demande du 2026-11-08) : « Fil » en bleu, « Actu » dans la couleur normale du texte (blanc sur fond sombre, noir sur fond clair). | oui | 1 | ✅ couverte |
 | **EXG-010** Importer un fichier OPML (export Feedly). | oui | 5 | ✅ couverte |
 | **EXG-011** Ajouter un abonnement par URL de fil ou de site, avec un nom facultatif, et le ranger dans une catégorie existante ou nouvelle. | oui | 9 | ✅ couverte |
 | **EXG-012** Renommer, déplacer (changer de catégorie), désabonner un fil. | oui | 6 | ✅ couverte |
@@ -396,3 +397,6 @@
 ### EXG-085
 - tests/e2e/v14.spec.ts › EXG-085 · les icônes installées sont jaunes avec des ondes bleues
 - tests/unit/v14.test.ts › EXG-085 · l’icône a un fond jaune, des ondes bleues, un fil et un point encre, partout
+
+### EXG-086
+- tests/e2e/v141.spec.ts › EXG-086 · le nom FilActu reprend les couleurs du logo (thème ${scheme === 

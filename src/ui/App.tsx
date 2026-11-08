@@ -87,7 +87,7 @@ function Setup({ store, state }: { store: Store; state: AppState }) {
           void store.connect(token, repo);
         }}
       >
-        <div class="setup-brand"><Logo size={48} /><h1>FilActu</h1></div>
+        <div class="setup-brand"><Logo size={48} /><h1 class="wordmark"><span class="wm-fil">Fil</span><span class="wm-actu">Actu</span></h1></div>
         <p class="setup-lead">Vos fils RSS, rangés par catégories, synchronisés sur tous vos appareils.</p>
         <label>
           Clé d’accès GitHub
@@ -426,7 +426,7 @@ function Sidebar({ state, counts, onGo, onSettings, onAddFeed, onCategories, onE
   );
   return (
     <aside class="sidebar" aria-label="Navigation">
-      <div class="brand"><Logo /><span>FilActu</span></div>
+      <div class="brand"><Logo /><span class="wordmark"><span class="wm-fil">Fil</span><span class="wm-actu">Actu</span></span></div>
       <nav class="nav-scroll">
         {nav('today', 'Aujourd’hui', <IconToday />, counts.today)}
         {nav('all', 'Tous les articles', <IconAll />, counts.all)}

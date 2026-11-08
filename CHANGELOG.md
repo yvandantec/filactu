@@ -2,6 +2,11 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [1.4.1] — 2026-11-08
+
+### Modifié
+- Le nom « FilActu » à côté du logo reprend ses couleurs : « Fil » en bleu, « Actu » en blanc sur fond sombre et en noir sur fond clair. Dans le volet et sur l'écran de connexion (EXG-086).
+
 ## [1.4.0] — 2026-11-08 — Icône jaune et bleue
 
 ### Modifié
