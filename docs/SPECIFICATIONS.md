@@ -143,6 +143,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | EXG-018 | Proposer automatiquement une icône d'après le nom de la catégorie. | Pendant la saisie du nom (création, ajout de fil), l'icône suggérée est présélectionnée tant que l'utilisateur n'en a pas choisi une autre ; les catégories importées reçoivent une icône suggérée ; un bouton « Proposer les icônes manquantes » complète les catégories sans icône. |
 | EXG-016 | Associer une icône à une catégorie. | Choix parmi une palette d'icônes (ou aucune) à la création et ensuite ; l'icône s'affiche devant le nom de la catégorie dans le volet et est synchronisée. |
 | EXG-014 | Exporter les abonnements en OPML. | Le fichier se réimporte dans Feedly ou dans FilActu sans perte. |
+| EXG-089 | Dans l'appli Android, *Exporter en OPML* enregistre vraiment le fichier (demande du 2026-11-11 : « je ne retrouve pas le fichier »). | Android ouvre sa fenêtre d'enregistrement, avec le nom `filactu-abonnements.opml` proposé ; l'utilisateur choisit le dossier (Téléchargements par défaut) ; un message confirme l'enregistrement ou signale l'échec. Avec une ancienne version de l'appli, un message demande d'installer la nouvelle APK (1.3.0) au lieu de ne rien faire. Sur PC et dans un navigateur, le fichier part dans les téléchargements comme avant. |
 | EXG-015 | Signaler les fils en erreur. | Une icône d'alerte apparaît sur un fil après 3 échecs consécutifs, avec la date du dernier succès. |
 | EXG-019 | Un fil en erreur s'explique en mots simples. | Dans le volet, le nom du fil lu par un lecteur d'écran indique « en erreur ». La fenêtre du fil dit depuis quand il ne répond plus et pourquoi, sans code technique : page introuvable, accès refusé au robot, panne du site, site trop lent, aucun fil à cette adresse. |
 
@@ -289,3 +290,4 @@ Le workflow du collecteur lit la clé dans le **secret** `DATA_REPO_TOKEN` du d�
 | **V1.4 — Icône jaune et bleue** | Icône moins noire : fond jaune, ondes bleues | EXG-085 |
 | **V1.4.1 — Titre aux couleurs du logo** | « Fil » en bleu, « Actu » en blanc ou noir selon le fond | EXG-086 |
 | **V1.5 — Mise à jour plus fiable** | Robot planifié hors des heures pleines, articles affichés dès la fin de la collecte | EXG-087, 088 |
+| **V1.5.1 — Export sur Android** | L'appli Android enregistre le fichier d'export OPML | EXG-089 |

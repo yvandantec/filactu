@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.WindowInsets;
+import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -17,7 +18,10 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Enveloppe Android de FilActu (EXG-004, DEC-08) : affiche le site dans une WebView
@@ -25,9 +29,12 @@ import java.net.URISyntaxException;
  */
 public class MainActivity extends Activity {
     private static final int PICK_FILE = 1;
+    private static final int SAVE_FILE = 2;
 
     private WebView web;
     private ValueCallback<Uri[]> fileCallback;
+    /** Contenu du fichier à enregistrer, en attente du choix de l'emplacement (EXG-089). */
+    private String pendingContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +64,9 @@ public class MainActivity extends Activity {
         // Le site reconnaît l'appli et n'utilise que des liens normaux
         s.setUserAgentString(s.getUserAgentString() + " FilActuAndroid/" + BuildConfig.VERSION_NAME);
 
+        // La WebView ignore les téléchargements : le site confie ses fichiers (export OPML) à l'appli (EXG-089)
+        web.addJavascriptInterface(new Bridge(), "FilActuAndroid");
+
         web.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -84,6 +94,39 @@ public class MainActivity extends Activity {
 
         if (savedInstanceState != null) web.restoreState(savedInstanceState);
         else web.loadUrl(LinkRouter.HOME);
+    }
+
+    /** Passerelle appelée par le site (window.FilActuAndroid). */
+    private class Bridge {
+        @JavascriptInterface
+        public void saveFile(String name, String mime, String content) {
+            runOnUiThread(() -> askWhereToSave(name, mime, content));
+        }
+    }
+
+    /** Ouvre la fenêtre d'enregistrement d'Android, avec le nom du fichier proposé. */
+    private void askWhereToSave(String name, String mime, String content) {
+        pendingContent = content;
+        Intent save = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        save.addCategory(Intent.CATEGORY_OPENABLE);
+        save.setType(mime);
+        save.putExtra(Intent.EXTRA_TITLE, name);
+        try {
+            startActivityForResult(save, SAVE_FILE);
+        } catch (ActivityNotFoundException e) {
+            pendingContent = null;
+            Toast.makeText(this, R.string.file_not_saved, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void writeFile(Uri target, String content) {
+        try (OutputStream out = getContentResolver().openOutputStream(target, "wt")) {
+            if (out == null) throw new IOException("emplacement indisponible");
+            out.write(content.getBytes(StandardCharsets.UTF_8));
+            Toast.makeText(this, R.string.file_saved, Toast.LENGTH_SHORT).show();
+        } catch (IOException | SecurityException e) {
+            Toast.makeText(this, R.string.file_not_saved, Toast.LENGTH_LONG).show();
+        }
     }
 
     /** Vrai si l'adresse a été confiée à une autre appli (navigateur…). */
@@ -128,6 +171,15 @@ public class MainActivity extends Activity {
         if (requestCode == PICK_FILE && fileCallback != null) {
             fileCallback.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, data));
             fileCallback = null;
+            return;
+        }
+        if (requestCode == SAVE_FILE) {
+            String content = pendingContent;
+            pendingContent = null;
+            // Annulé par l'utilisateur : rien à dire
+            if (resultCode == RESULT_OK && data != null && data.getData() != null && content != null) {
+                writeFile(data.getData(), content);
+            }
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);

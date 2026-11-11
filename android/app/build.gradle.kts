@@ -12,8 +12,8 @@ android {
         applicationId = "fr.yvan.filactu"
         minSdk = 29
         targetSdk = 35
-        versionCode = 3
-        versionName = "1.2.0"
+        versionCode = 4
+        versionName = "1.3.0"
     }
 
     // Clé de signature hors dépôt (DEC-08) : keystore.properties (ignoré par git) pointe vers le fichier .jks.

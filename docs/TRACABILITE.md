@@ -19,6 +19,7 @@
 | **EXG-018** Proposer automatiquement une icône d'après le nom de la catégorie. | oui | 5 | ✅ couverte |
 | **EXG-016** Associer une icône à une catégorie. | oui | 4 | ✅ couverte |
 | **EXG-014** Exporter les abonnements en OPML. | oui | 1 | ✅ couverte |
+| **EXG-089** Dans l'appli Android, *Exporter en OPML* enregistre vraiment le fichier (demande du 2026-11-11 : « je ne retrouve pas le fichier »). |  | 5 | ✅ couverte |
 | **EXG-015** Signaler les fils en erreur. | oui | 2 | ✅ couverte |
 | **EXG-019** Un fil en erreur s'explique en mots simples. | oui | 1 | ✅ couverte |
 | **EXG-020** Volet de navigation avec : Aujourd'hui, Tous les articles, À lire plus tard, puis les catégories dépliables contenant leurs fils. | oui | 3 | ✅ couverte |
@@ -410,3 +411,10 @@
 - tests/e2e/fraicheur.spec.ts › EXG-088 · à l’ouverture, les articles arrivent dès que le robot a fini et le bandeau disparaît
 - tests/e2e/fraicheur.spec.ts › EXG-088 · Actualiser affiche les nouveaux articles dès la fin de la collecte
 - tests/e2e/fraicheur.spec.ts › EXG-088 · une seule demande de collecte à la fois
+
+### EXG-089
+- tests/e2e/export-android.spec.ts › EXG-089 · dans l’appli Android, l’export confie le fichier à l’appli
+- tests/e2e/export-android.spec.ts › EXG-089 · une ancienne appli Android affiche un message au lieu de ne rien faire
+- tests/e2e/export-android.spec.ts › EXG-089 · sur PC, l’export télécharge le fichier
+- tests/unit/v151.test.ts › EXG-089 · le fichier exporté passe par l’appli Android, ou par le navigateur ailleurs
+- tests/unit/v151.test.ts › EXG-089 · l’appli Android ouvre la fenêtre d’enregistrement et confirme

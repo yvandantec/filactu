@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FilActu</string>
+    <string name="file_saved">Fichier enregistré</string>
+    <string name="file_not_saved">Le fichier n\'a pas pu être enregistré.</string>
     <string name="no_browser">Aucun navigateur trouvé pour ouvrir ce lien.</string>
 </resources>

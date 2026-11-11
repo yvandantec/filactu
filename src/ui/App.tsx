@@ -10,6 +10,7 @@ import {
 import type { Feed, FeedsStatus, Item, Subscriptions } from '../core/types';
 import { feedLabel } from '../core/subscriptions';
 import { ANDROID_BROWSERS, articleHref, fontScale, FONT_SIZES, canChooseBrowser, type FontSize } from '../core/links';
+import { saveMethod, type AndroidBridge } from '../core/download';
 import { AddFeedDialog, CategoriesDialog, Dialog, FeedDialog, useFocusInside } from './dialogs';
 import {
   IconAlert, IconAll, IconBookmark, IconBookmarkFilled, IconCheckAll, IconChevron, IconClose, IconCheckCircle, IconCircle, IconMenu,
@@ -734,10 +735,22 @@ function Settings({ store, state, onClose }: { store: Store; state: AppState; on
     if (stats) onClose();
   };
   const download = () => {
-    const blob = new Blob([store.exportOpml()], { type: 'text/x-opml' });
+    const name = 'filactu-abonnements.opml';
+    const mime = 'text/x-opml';
+    const bridge = (window as unknown as { FilActuAndroid?: AndroidBridge }).FilActuAndroid;
+    const method = saveMethod(navigator.userAgent, typeof bridge?.saveFile === 'function');
+    if (method === 'android') {
+      bridge!.saveFile(name, mime, store.exportOpml()); // Android confirme lui-même l'enregistrement
+      return;
+    }
+    if (method === 'old-app') {
+      store.toast('Pour exporter depuis le téléphone, installez la nouvelle version de l’appli (1.3.0), ou exportez depuis Chrome ou le PC.', undefined, 8000);
+      return;
+    }
+    const blob = new Blob([store.exportOpml()], { type: mime });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'filactu-abonnements.opml';
+    a.download = name;
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   };

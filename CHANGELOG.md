@@ -2,6 +2,11 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [1.5.1] — 2026-11-11
+
+### Corrigé
+- Dans l'appli Android, *Exporter en OPML* ne produisait aucun fichier, sans aucun message. L'appli Android 1.3.0 ouvre désormais la fenêtre d'enregistrement du téléphone (nom `filactu-abonnements.opml` proposé), puis confirme par « Fichier enregistré ». Avec une ancienne version de l'appli, un message invite à installer la nouvelle (EXG-089). **Installer la nouvelle APK** (`FilActu-1.3.0.apk`).
+
 ## [1.5.0] — 2026-11-11 — Mise à jour plus fiable
 
 ### Modifié

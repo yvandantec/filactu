@@ -37,6 +37,8 @@ describe('V1.4 — icône jaune et bleue', () => {
     expect(read(`${res}/values/colors.xml`)).toMatch(/name="filactu_icon_bg">#FFCF3A</i);
     const gradle = read('android/app/build.gradle.kts');
     expect(Number(/versionCode = (\d+)/.exec(gradle)![1])).toBeGreaterThanOrEqual(3);
-    expect(gradle).toMatch(/versionName = "1\.2\.0"/);
+    // 1.2.0 ou plus récente (la 1.3.0 ajoute l'export OPML, EXG-089)
+    const [major, minor] = /versionName = "(\d+)\.(\d+)\.\d+"/.exec(gradle)!.slice(1).map(Number);
+    expect(major * 100 + minor).toBeGreaterThanOrEqual(102);
   });
 });

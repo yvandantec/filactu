@@ -1,6 +1,6 @@
 {
   "name": "filactu",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "private": true,
   "type": "module",
   "description": "FilActu - lecteur de fils RSS personnel, inspiré de Feedly, synchronisé via GitHub",
