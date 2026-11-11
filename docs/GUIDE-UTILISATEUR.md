@@ -109,7 +109,7 @@ Ces articles sont gardés **pour toujours**, alors que les autres disparaissent 
 2. Collez l'adresse du fil, ou simplement celle du site : FilActu trouve le fil tout seul. Pour **YouTube**, l'adresse d'une playlist (`youtube.com/playlist?list=…`) ou d'une chaîne (`youtube.com/channel/…`) suffit : chaque nouvelle vidéo apparaît avec sa miniature et sa description.
 3. Donnez-lui un nom si vous le souhaitez ; sinon le titre du fil est repris automatiquement.
 4. Choisissez sa **catégorie**, ou *+ Nouvelle catégorie…* pour en créer une au passage : une icône est proposée d'après son nom.
-5. Touchez **Ajouter** : une collecte est lancée aussitôt, les articles arrivent en une à deux minutes.
+5. Touchez **Ajouter** : une collecte est lancée aussitôt, les articles arrivent en moins d'une minute.
 
 ### Renommer un fil, le déplacer, s'en désabonner
 Dans le volet, dépliez la catégorie, puis touchez **⋯** à droite du fil (sur PC, il apparaît au survol) :
@@ -174,7 +174,7 @@ Tout se fait au clavier : `Tab` passe d'un bouton à l'autre (un contour vert mo
 
 ## 12. Questions fréquentes
 
-**Les nouveaux articles n'arrivent pas, ou le bandeau « Les articles n'ont pas été mis à jour depuis… » s'affiche.** GitHub lance le robot moins souvent que prévu (parfois toutes les quelques heures) ; c'est pourquoi FilActu demande lui-même une collecte à chaque ouverture quand la dernière date de plus de 20 minutes. Si le bandeau reste affiché, la **clé du robot a expiré** : renouvelez-la (§ 2.1) puis mettez-la dans le secret `DATA_REPO_TOKEN` (§ 2.2). Attention : « Regenerate token » sur GitHub rend l'ancienne clé inutilisable partout, il faut donc la remplacer **à la fois** dans le secret et sur chaque appareil.
+**Les nouveaux articles n'arrivent pas, ou le bandeau « Les articles n'ont pas été mis à jour depuis… » s'affiche.** GitHub lance le robot moins souvent que prévu (parfois toutes les quelques heures) ; c'est pourquoi FilActu demande lui-même une collecte à chaque ouverture quand la dernière date de plus de 20 minutes. Le robot ne met qu'une trentaine de secondes : FilActu surveille sa fin et affiche les nouveaux articles aussitôt, puis le bandeau disparaît. Si le bandeau reste affiché plus de 3 minutes, la **clé du robot a expiré** : renouvelez-la (§ 2.1) puis mettez-la dans le secret `DATA_REPO_TOKEN` (§ 2.2). Attention : « Regenerate token » sur GitHub rend l'ancienne clé inutilisable partout, il faut donc la remplacer **à la fois** dans le secret et sur chaque appareil.
 
 **Après un gros import, certains fils n'ont pas encore d'articles.** Pour ne jamais dépasser le temps que GitHub lui accorde, le robot s'arrête au bout de 6 minutes et garde ce qu'il a déjà récupéré. Les fils qu'il n'a pas eu le temps de lire passent en premier à la collecte suivante. Ils ne sont pas signalés en erreur ; patientez une ou deux collectes.
 

@@ -17,7 +17,15 @@ describe('workflows GitHub Actions', () => {
 
   test('EXG-070 · la collecte est planifiée toutes les 15 minutes', () => {
     const { data } = load('collect.yml');
-    expect(data.on.schedule[0].cron).toBe('*/15 * * * *');
+    const minutes = String(data.on.schedule[0].cron).split(' ')[0].split(',').map(Number);
+    expect(minutes).toHaveLength(4);
+    expect(minutes.map((m, i) => (i ? m - minutes[i - 1] : 15))).toEqual([15, 15, 15, 15]);
+  });
+
+  test('EXG-087 · la collecte évite les minutes 0, 15, 30 et 45', () => {
+    const { data } = load('collect.yml');
+    const minutes = String(data.on.schedule[0].cron).split(' ')[0].split(',').map(Number);
+    expect(minutes.every((m) => Number.isInteger(m) && m % 15 !== 0)).toBe(true);
   });
 
   test('EXG-071 · la collecte peut être lancée à la demande (bouton Actualiser)', () => {

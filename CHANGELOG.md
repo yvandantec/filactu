@@ -2,6 +2,15 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [1.5.0] — 2026-11-11 — Mise à jour plus fiable
+
+### Modifié
+- Le robot de collecte est programmé aux minutes 7, 22, 37 et 52 au lieu de 0, 15, 30 et 45, que GitHub abandonne le plus souvent quand il est chargé (EXG-087).
+- Après *Actualiser* ou une collecte lancée à l'ouverture, les nouveaux articles s'affichent dès que le robot a fini (une trentaine de secondes), au lieu d'une attente fixe de 75 secondes à 3 minutes. Le bandeau « pas à jour » disparaît alors de lui-même (EXG-088).
+
+### Corrigé
+- Un appui sur *Actualiser* pouvait lancer deux collectes à la fois ; une seule est désormais demandée (EXG-088).
+
 ## [1.4.1] — 2026-11-08
 
 ### Modifié

@@ -21,6 +21,8 @@ export class FakeGitHub {
   forceConflicts = 0;
   /** Délai de réponse simulé (réseau lent), en millisecondes. */
   delayMs = 0;
+  /** Appelé à chaque demande de collecte (pour simuler le robot qui termine). */
+  onDispatch?: () => void;
 
   constructor(public owner = 'yvandantec', public repo = 'filactu-data') {}
 
@@ -68,6 +70,7 @@ export class FakeGitHub {
     }
     if (method === 'POST' && /\/repos\/[^/]+\/filactu\/actions\/workflows\/collect\.yml\/dispatches$/.test(url.pathname)) {
       this.dispatches++;
+      this.onDispatch?.();
       return route.fulfill({ status: 204 });
     }
     if (!url.pathname.startsWith(prefix + '/contents/')) return this.json(route, 404, { message: 'Not Found' });

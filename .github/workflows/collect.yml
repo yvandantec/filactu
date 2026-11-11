@@ -2,9 +2,10 @@ name: Collecte
 
 # Récupère les fils toutes les 15 minutes et écrit les articles dans le dépôt PRIVÉ filactu-data.
 # Ce dépôt est public : les journaux ne doivent contenir aucune adresse ni aucun titre (DEC-03).
+# Minutes décalées : GitHub abandonne surtout les tâches prévues à 0, 15, 30 et 45 (EXG-087).
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
 
 permissions:

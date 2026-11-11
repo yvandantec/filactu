@@ -27,6 +27,8 @@ export const POLL_MS = 120_000; // EXG-076
 export const STALE_COLLECT_MS = 2 * 3600_000;
 export const AUTO_COLLECT_AFTER_MS = 20 * 60_000; // EXG-078
 export const AUTO_COLLECT_EVERY_MS = 15 * 60_000;
+export const WATCH_EVERY_MS = 5_000; // EXG-088
+export const WATCH_MAX_MS = 180_000;
 
 const PATHS = {
   subs: 'state/subscriptions.json',
@@ -84,6 +86,8 @@ export class Store {
   private flushTimer?: ReturnType<typeof setTimeout>;
   private pollTimer?: ReturnType<typeof setInterval>;
   private flushing?: Promise<void>;
+  /** Une collecte demandée n'est pas encore terminée (EXG-088). */
+  private collecting = false;
 
   constructor(private makeClient = (c: Config) => new GitHubClient(c.token, c.owner, c.repo)) {}
 
@@ -271,7 +275,7 @@ export class Store {
    */
   private async autoCollect(): Promise<void> {
     const { subs, status } = this.state;
-    if (!subs.feeds.length) return;
+    if (!subs.feeds.length || this.collecting) return;
     const now = Date.now();
     const last = status.lastRun ? Date.parse(status.lastRun) : 0;
     if (now - last < AUTO_COLLECT_AFTER_MS) return;
@@ -454,7 +458,7 @@ export class Store {
   async addFeed(input: NewFeed): Promise<boolean> {
     const ok = await this.mutateSubs((s) => addFeed(s, input).subs, 'FilActu : nouvel abonnement');
     if (ok) {
-      this.toast('Abonnement ajouté : les articles arrivent d’ici une à deux minutes');
+      this.toast('Abonnement ajouté : les articles arrivent d’ici une minute');
       void this.collectNow(true);
     }
     return ok;
@@ -511,21 +515,46 @@ export class Store {
   async collectNow(silent = false): Promise<void> {
     const client = this.client;
     if (!client) return;
+    // Une seule demande à la fois (EXG-088)
+    if (this.collecting) {
+      if (!silent) this.toast('Mise à jour déjà en cours : les nouveaux articles arrivent dans quelques secondes');
+      return;
+    }
+    this.collecting = true;
+    const before = this.state.status.lastRun;
     try {
-      const requested = new Date().toISOString();
       await client.dispatchCollect();
-      if (!silent) this.toast('Collecte demandée : les nouveaux articles arrivent d’ici une à deux minutes');
-      // Rechargement automatique, puis message si la collecte tarde (EXG-071)
-      setTimeout(() => void this.refresh(), 75_000);
-      setTimeout(() => {
-        void this.refresh().then(() => {
-          if (!silent && !((this.state.status.lastRun ?? '') > requested)) {
-            this.toast('La collecte n’est pas encore terminée : GitHub est peut-être chargé. Réessayez dans quelques minutes.');
-          }
-        });
-      }, 180_000);
     } catch (e) {
+      this.collecting = false;
       if (!silent) this.toast(errorText(e));
+      return;
+    }
+    void safeSet('lastAutoCollect', Date.now());
+    if (!silent) this.toast('Collecte demandée : les nouveaux articles arrivent d’ici une minute');
+    void this.watchCollect(client, before, silent);
+  }
+
+  /** Surveille la fin du robot et recharge les articles dès qu'il a fini (EXG-088, EXG-071). */
+  private async watchCollect(client: GitHubClient, before: string | undefined, silent: boolean): Promise<void> {
+    const start = Date.now();
+    let done = false;
+    while (!done && Date.now() - start < WATCH_MAX_MS) {
+      await new Promise((r) => setTimeout(r, WATCH_EVERY_MS));
+      if (this.client !== client) {
+        this.collecting = false;
+        return;
+      }
+      try {
+        const lastRun = (await client.getFile<FeedsStatus>(PATHS.status))?.data.lastRun;
+        done = !!lastRun && lastRun !== before;
+      } catch {
+        // réseau coupé un instant : on réessaie au tour suivant
+      }
+    }
+    this.collecting = false;
+    await this.refresh();
+    if (!done && !silent) {
+      this.toast('La collecte n’est pas encore terminée : GitHub est peut-être chargé. Réessayez dans quelques minutes.');
     }
   }
 

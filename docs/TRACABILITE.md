@@ -63,6 +63,8 @@
 | **EXG-080** Une collecte se termine toujours avant la limite de 10 minutes imposée par GitHub, même après un gros import ou si des sites sont lents. | oui | 3 | ✅ couverte |
 | **EXG-081** L'enregistrement d'une collecte résiste aux pannes passagères de GitHub. | oui | 1 | ✅ couverte |
 | **EXG-082** Le bandeau « articles pas à jour » est écrit en langage courant et peut se fermer. | oui | 1 | ✅ couverte |
+| **EXG-087** La collecte planifiée évite les minutes les plus demandées sur GitHub (demande du 2026-11-11 : bandeau « pas à jour » à chaque ouverture). |  | 1 | ✅ couverte |
+| **EXG-088** Après une demande de collecte (bouton *Actualiser* ou lancement automatique EXG-078), les nouveaux articles s'affichent dès que le robot a fini. |  | 3 | ✅ couverte |
 | **EXG-077** Pas de doublon. | oui | 6 | ✅ couverte |
 | **ENF-01** Performance : affichage de la liste en moins de 1,5 s à l'ouverture sur un téléphone de milieu de gamme (articles en cache), défilement fluide avec 2 000 articles chargés. | oui | 2 | ✅ couverte |
 | **ENF-02** Accessibilité : navigation complète au clavier, contrastes conformes RGAA/WCAG AA, libellés pour les lecteurs d'écran, zones tactiles d'au moins 44 px. | oui | 6 | ✅ couverte |
@@ -400,3 +402,11 @@
 
 ### EXG-086
 - tests/e2e/v141.spec.ts › EXG-086 · le nom FilActu reprend les couleurs du logo (thème ${scheme === 
+
+### EXG-087
+- tests/unit/workflows.test.ts › EXG-087 · la collecte évite les minutes 0, 15, 30 et 45
+
+### EXG-088
+- tests/e2e/fraicheur.spec.ts › EXG-088 · à l’ouverture, les articles arrivent dès que le robot a fini et le bandeau disparaît
+- tests/e2e/fraicheur.spec.ts › EXG-088 · Actualiser affiche les nouveaux articles dès la fin de la collecte
+- tests/e2e/fraicheur.spec.ts › EXG-088 · une seule demande de collecte à la fois
