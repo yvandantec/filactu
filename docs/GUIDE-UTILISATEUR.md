@@ -64,6 +64,17 @@ Répétez l'étape 2.3 sur chaque appareil : la clé est saisie une fois par app
 
 Sur téléphone, le volet est caché : touchez ☰ en haut à gauche, ou glissez depuis le bord gauche.
 
+### Passer d'une catégorie à l'autre en glissant le doigt (téléphone, tablette, appli Android)
+
+Dans *Réglages*, choisissez **Glisser le doigt sur la liste : Changer de catégorie**. Ensuite, glissez le doigt horizontalement sur la liste d'articles :
+
+- **vers la gauche** : catégorie suivante (dans l'ordre du volet) ;
+- **vers la droite** : catégorie précédente ;
+- après la dernière catégorie, on revient à la première, et inversement : on tourne en boucle ;
+- depuis *Aujourd'hui*, *Tous les articles*, *À lire plus tard* ou un fil seul, on arrive sur la première catégorie (vers la gauche) ou la dernière (vers la droite).
+
+Dans ce mode, glisser sur un article ne le marque plus lu ni « à lire plus tard » : utilisez les deux boutons à droite de l'article. Glisser depuis le tout bord gauche ouvre toujours le volet.
+
 <p>
   <img src="images/telephone-magazine.png" alt="FilActu sur téléphone : liste des articles" width="260">
   <img src="images/telephone-volet.png" alt="FilActu sur téléphone : volet de navigation ouvert" width="260">
@@ -93,13 +104,13 @@ Sur téléphone, le volet est caché : touchez ☰ en haut à gauche, ou glissez
 ## 5. Lu / non lu
 
 - Un article devient **lu** quand vous l'ouvrez, ou quand vous le faites **défiler au-delà du haut de l'écran**. Ce second comportement se désactive dans **Réglages → Marquer comme lu en défilant**.
-- Bouton rond à droite de chaque article, toujours au même endroit : cercle vide = non lu, cercle coché (jaune en thème sombre, ambre en thème clair) = lu ; touchez-le pour basculer. Sur mobile, **balayez l'article vers la gauche** ; sur PC, touche `m`.
+- Bouton rond à droite de chaque article, toujours au même endroit : cercle vide = non lu, cercle coché (jaune en thème sombre, ambre en thème clair) = lu ; touchez-le pour basculer. Sur mobile, **balayez l'article vers la gauche** (sauf si le glissement sert à changer de catégorie, voir § 3) ; sur PC, touche `m`.
 - **Tout marquer comme lu** (✓✓) : choisissez *Tout*, *Plus vieux qu'un jour* ou *Plus vieux qu'une semaine*. Une notification **Annuler** reste affichée 10 secondes.
 - **Marquer la page comme lue** : en bas de la liste, le bouton *Marquer les N articles affichés comme lus* marque d'un coup les articles que vous venez de parcourir.
 
 ## 6. À lire plus tard
 
-Bouton 🔖 sur l'article, **balayage vers la droite** sur mobile, ou touche `s` sur PC. Retrouvez-les dans *À lire plus tard* (volet de gauche).
+Bouton 🔖 sur l'article, **balayage vers la droite** sur mobile (sauf si le glissement sert à changer de catégorie, voir § 3), ou touche `s` sur PC. Retrouvez-les dans *À lire plus tard* (volet de gauche).
 Ces articles sont gardés **pour toujours**, alors que les autres disparaissent après 30 jours. Touchez à nouveau 🔖 pour en retirer un.
 
 ## 7. Gérer les abonnements et les catégories
@@ -168,6 +179,7 @@ Tout se fait au clavier : `Tab` passe d'un bouton à l'autre (un contour vert mo
 | Thème | Automatique (comme le téléphone ou le PC), clair ou sombre. Le thème sombre est le « tableau » : fond noir, sources en jaune. Quand le téléphone passe du clair au sombre, FilActu suit aussitôt. |
 | Taille du texte des articles | Petit, Normal ou Grand (réglée séparément pour le PC et le téléphone) |
 | Ouvrir les articles avec *(Android seulement)* | Navigateur qui ouvre les articles : Brave, Firefox, Edge, Samsung Internet ou Chrome. *Automatique* garde l'onglet intégré de Chrome. |
+| Glisser le doigt sur la liste *(écran tactile seulement)* | *Marquer lu / À lire plus tard* (par défaut) : glisser un article vers la gauche le marque lu, vers la droite le met de côté. *Changer de catégorie* : glisser passe à la catégorie suivante ou précédente, en boucle (voir § 3). |
 | Marquer comme lu en défilant | Activé par défaut |
 | Afficher le début des articles | Même option que dans ▦, réglée séparément pour le PC et le téléphone |
 | Masquer les fils sans articles non lus | Allège le volet de gauche |

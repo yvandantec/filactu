@@ -2,6 +2,11 @@
 
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 
+## [1.6.0] — 2026-11-14 — Glisser entre catégories
+
+### Ajouté
+- Sur téléphone, tablette et dans l'appli Android : on peut passer d'une catégorie à l'autre en glissant le doigt sur la liste (vers la gauche = suivante, vers la droite = précédente), en boucle. À activer dans *Réglages* → *Glisser le doigt sur la liste* → *Changer de catégorie* ; par défaut, le glissement garde son rôle d'avant (marquer lu / à lire plus tard). Aucune nouvelle APK à installer (EXG-090).
+
 ## [1.5.1] — 2026-11-11
 
 ### Corrigé

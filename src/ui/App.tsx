@@ -4,7 +4,7 @@ import type { Store, AppState } from '../app/store';
 import { DEFAULT_DATA_REPO, STALE_COLLECT_MS } from '../app/store';
 import { getPref, isRead, isSaved } from '../core/reading';
 import {
-  ageLabel, DISPLAY_MODES, failingSince, itemsForView, prefKey, searchItems, sortItems, unreadCounts,
+  adjacentCategory, ageLabel, DISPLAY_MODES, failingSince, itemsForView, prefKey, searchItems, sortItems, unreadCounts,
   type DisplayMode, type UnreadCounts, type ViewId,
 } from '../core/views';
 import type { Feed, FeedsStatus, Item, Subscriptions } from '../core/types';
@@ -51,6 +51,11 @@ function fontPref(wide: boolean): string {
 }
 
 const ANDROID = typeof navigator !== 'undefined' && canChooseBrowser(navigator.userAgent);
+/** Écran tactile : le réglage du glissement sur la liste n'a de sens que là (EXG-090). */
+const TOUCH = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
+/** Ce que fait un glissement horizontal sur la liste (EXG-090). */
+type SwipeAction = 'article' | 'category';
 
 const GUIDE_URL = 'https://github.com/yvandantec/filactu/blob/main/docs/GUIDE-UTILISATEUR.md';
 const PAGE_SIZE = 150;
@@ -156,6 +161,7 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
   const fontKey = fontPref(wide);
   const fontSize = getPref<FontSize>(reading, fontKey, 'normal');
   const browser = getPref<string>(reading, 'androidBrowser', 'auto');
+  const swipeAction = getPref<SwipeAction>(reading, 'swipeAction', 'article');
   const activeQuery = searchOpen ? query.trim() : '';
 
   // Articles lus pendant la consultation : restent affichés jusqu'au changement de vue (EXG-024)
@@ -195,7 +201,31 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
     store.setView(v);
     setDrawer(false);
     setSelected(null);
+    setSlide('');
     document.querySelector('.content')?.scrollTo(0, 0);
+  };
+
+  // Glisser sur la liste pour changer de catégorie, en boucle (EXG-090)
+  const [slide, setSlide] = useState<'' | 'from-right' | 'from-left'>('');
+  const swipeNav = useRef({ x: -1, y: 0 });
+  const onListTouchStart = (e: TouchEvent) => {
+    const t = e.touches[0];
+    // Le bord gauche reste réservé à l'ouverture du volet (EXG-021)
+    swipeNav.current = e.touches.length === 1 && t.clientX >= 24 ? { x: t.clientX, y: t.clientY } : { x: -1, y: 0 };
+  };
+  const onListTouchEnd = (e: TouchEvent) => {
+    const start = swipeNav.current;
+    swipeNav.current = { x: -1, y: 0 };
+    const t = e.changedTouches[0];
+    if (start.x < 0 || !t || drawer || dialog || menu) return;
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    if (Math.abs(dx) < SWIPE || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    const dir = dx < 0 ? 1 : -1;
+    const next = adjacentCategory(view, subs.categories, dir);
+    if (!next) return;
+    go(next);
+    setSlide(dir === 1 ? 'from-right' : 'from-left');
   };
 
   const openItem = (item: Item) => {
@@ -344,9 +374,11 @@ function Reader({ store, state }: { store: Store; state: AppState }) {
             <button class="icon-btn" aria-label="Fermer" onClick={() => setStaleClosed(true)}><IconClose /></button>
           </div>
         )}
-        <section class="content" aria-live="polite">
+        <section key={view} class={`content ${slide}`} aria-live="polite"
+          onTouchStart={swipeAction === 'category' ? onListTouchStart : undefined}
+          onTouchEnd={swipeAction === 'category' ? onListTouchEnd : undefined}>
           <ArticleList store={store} state={state} items={list} mode={mode} showSummary={showSummary} feedsById={feedsById}
-            fontSize={fontSize} browser={browser}
+            fontSize={fontSize} browser={browser} articleSwipe={swipeAction === 'article'}
             selected={selected} searching={!!activeQuery}
             onSettings={() => setDialog('settings')} onAddFeed={() => setDialog('add')} />
         </section>
@@ -502,9 +534,9 @@ function FeedRow({ feed, state, n, onGo, onEdit }: {
 
 // ---------- Liste d'articles (EXG-030 à EXG-036, EXG-041, EXG-042, EXG-045, EXG-050) ----------
 
-function ArticleList({ store, state, items, mode, showSummary, feedsById, fontSize, browser, selected, searching, onSettings, onAddFeed }: {
+function ArticleList({ store, state, items, mode, showSummary, feedsById, fontSize, browser, articleSwipe, selected, searching, onSettings, onAddFeed }: {
   store: Store; state: AppState; items: Item[]; mode: DisplayMode; showSummary: boolean; feedsById: Map<string, Feed>;
-  fontSize: FontSize; browser: string; selected: string | null; searching: boolean; onSettings: () => void; onAddFeed: () => void;
+  fontSize: FontSize; browser: string; articleSwipe: boolean; selected: string | null; searching: boolean; onSettings: () => void; onAddFeed: () => void;
 }) {
   const [limit, setLimit] = useState(PAGE_SIZE);
   const sentinel = useRef<HTMLDivElement>(null);
@@ -576,7 +608,7 @@ function ArticleList({ store, state, items, mode, showSummary, feedsById, fontSi
         {page.map((item) => (
           <ArticleRow key={item.id} item={item} feed={feedsById.get(item.feedId)} status={state.status} mode={mode}
             showSummary={showSummary} read={isRead(state.reading, item, state.subs)} saved={isSaved(state.reading, item.id)}
-            selected={selected === item.id} now={now} store={store} browser={browser} />
+            selected={selected === item.id} now={now} store={store} browser={browser} articleSwipe={articleSwipe} />
         ))}
       </ul>
       {/* EXG-045 : marquer lus les articles affichés */}
@@ -596,9 +628,9 @@ function ArticleList({ store, state, items, mode, showSummary, feedsById, fontSi
 
 const SWIPE = 80;
 
-function ArticleRow({ item, feed, status, mode, showSummary, read, saved, selected, now, store, browser }: {
+function ArticleRow({ item, feed, status, mode, showSummary, read, saved, selected, now, store, browser, articleSwipe }: {
   item: Item; feed?: Feed; status: FeedsStatus; mode: DisplayMode; showSummary: boolean; read: boolean; saved: boolean;
-  selected: boolean; now: Date; store: Store; browser: string;
+  selected: boolean; now: Date; store: Store; browser: string; articleSwipe: boolean;
 }) {
   // Sur Android, lien intent:// vers le navigateur choisi (EXG-038)
   const href = articleHref(item.link, browser, navigator.userAgent);
@@ -623,7 +655,8 @@ function ArticleRow({ item, feed, status, mode, showSummary, read, saved, select
     const mx = e.touches[0].clientX - t.x;
     const my = e.touches[0].clientY - t.y;
     if (Math.abs(mx) > 8 || Math.abs(my) > 8) { t.moved = true; clearTimeout(t.timer); }
-    if (!t.horizontal && Math.abs(mx) > 12 && Math.abs(mx) > Math.abs(my) * 1.5) t.horizontal = true;
+    // Le balayage d'article est remplacé par le changement de catégorie si l'utilisateur l'a choisi (EXG-090)
+    if (articleSwipe && !t.horizontal && Math.abs(mx) > 12 && Math.abs(mx) > Math.abs(my) * 1.5) t.horizontal = true;
     if (t.horizontal) {
       t.dx = Math.max(-140, Math.min(140, mx));
       setDx(t.dx);
@@ -794,6 +827,15 @@ function Settings({ store, state, onClose }: { store: Store; state: AppState; on
             Ouvrir les articles avec
             <select value={getPref(r, 'androidBrowser', 'auto')} onChange={(e) => store.setPref('androidBrowser', e.currentTarget.value)}>
               {ANDROID_BROWSERS.map((b) => <option key={b.id} value={b.id}>{b.label}</option>)}
+            </select>
+          </label>
+        )}
+        {TOUCH && (
+          <label class="field">
+            Glisser le doigt sur la liste
+            <select value={getPref(r, 'swipeAction', 'article')} onChange={(e) => store.setPref('swipeAction', e.currentTarget.value)}>
+              <option value="article">Marquer lu / À lire plus tard</option>
+              <option value="category">Changer de catégorie</option>
             </select>
           </label>
         )}

@@ -1,6 +1,6 @@
 # Matrice de traçabilité
 
-> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2, V1.0, V1.0.1, V1.1, V1.2, V1.3, V1.4, V1.4.1. Ne pas modifier à la main.
+> Générée par `npm run trace` — lots livrés : V0.1, V0.1.2, V0.1.3, V0.2, V0.3, V0.3.1, V0.3.2, V0.3.4, V0.4, V0.4.1, V0.4.2, V1.0, V1.0.1, V1.1, V1.2, V1.3, V1.4, V1.4.1, V1.5, V1.5.1, V1.6. Ne pas modifier à la main.
 
 | Exigence | Lot livré | Tests | Statut |
 |---|---|---|---|
@@ -19,7 +19,7 @@
 | **EXG-018** Proposer automatiquement une icône d'après le nom de la catégorie. | oui | 5 | ✅ couverte |
 | **EXG-016** Associer une icône à une catégorie. | oui | 4 | ✅ couverte |
 | **EXG-014** Exporter les abonnements en OPML. | oui | 1 | ✅ couverte |
-| **EXG-089** Dans l'appli Android, *Exporter en OPML* enregistre vraiment le fichier (demande du 2026-11-11 : « je ne retrouve pas le fichier »). |  | 5 | ✅ couverte |
+| **EXG-089** Dans l'appli Android, *Exporter en OPML* enregistre vraiment le fichier (demande du 2026-11-11 : « je ne retrouve pas le fichier »). | oui | 5 | ✅ couverte |
 | **EXG-015** Signaler les fils en erreur. | oui | 2 | ✅ couverte |
 | **EXG-019** Un fil en erreur s'explique en mots simples. | oui | 1 | ✅ couverte |
 | **EXG-020** Volet de navigation avec : Aujourd'hui, Tous les articles, À lire plus tard, puis les catégories dépliables contenant leurs fils. | oui | 3 | ✅ couverte |
@@ -27,6 +27,7 @@
 | **EXG-022** En-tête de liste : nom de la vue, nombre de non-lus, boutons *Tout marquer comme lu*, *Changer d'affichage*, *Actualiser*, *Rechercher*. | oui | 1 | ✅ couverte |
 | **EXG-023** Les articles sont triés du plus récent au plus ancien ; l'option « plus ancien d'abord » est disponible par vue. | oui | 2 | ✅ couverte |
 | **EXG-024** Filtre « non lus seulement » / « tous ». | oui | 1 | ✅ couverte |
+| **EXG-090** Sur écran tactile (appli Android, téléphone, tablette), on peut changer de catégorie en glissant le doigt sur la liste (demande du 2026-11-14). Un réglage choisit ce que fait le glissement sur la liste : *Marquer lu / À lire plus tard* (comportement d'avant, par défaut, EXG-042, EXG-050) ou *Changer de catégorie*. | oui | 7 | ✅ couverte |
 | **EXG-030** Trois affichages : Titres (une ligne par article : source, titre — renvoyé à la ligne s'il est long, jamais coupé —, âge), Magazine (source et fraîcheur sur une ligne, titre en entier dessous, vignette à droite — voir EXG-039), Cartes (grille, grande image, titre, fil, fraîcheur). | oui | 5 | ✅ couverte |
 | **EXG-037** Taille du texte des articles réglable sur 3 niveaux : Petit, Normal, Grand. | oui | 2 | ✅ couverte |
 | **EXG-038** Sur Android, choisir le navigateur qui ouvre les articles (Brave, Firefox, Edge, Samsung Internet, Chrome), au lieu de l'onglet intégré de Chrome. | oui | 7 | ✅ couverte |
@@ -64,8 +65,8 @@
 | **EXG-080** Une collecte se termine toujours avant la limite de 10 minutes imposée par GitHub, même après un gros import ou si des sites sont lents. | oui | 3 | ✅ couverte |
 | **EXG-081** L'enregistrement d'une collecte résiste aux pannes passagères de GitHub. | oui | 1 | ✅ couverte |
 | **EXG-082** Le bandeau « articles pas à jour » est écrit en langage courant et peut se fermer. | oui | 1 | ✅ couverte |
-| **EXG-087** La collecte planifiée évite les minutes les plus demandées sur GitHub (demande du 2026-11-11 : bandeau « pas à jour » à chaque ouverture). |  | 1 | ✅ couverte |
-| **EXG-088** Après une demande de collecte (bouton *Actualiser* ou lancement automatique EXG-078), les nouveaux articles s'affichent dès que le robot a fini. |  | 3 | ✅ couverte |
+| **EXG-087** La collecte planifiée évite les minutes les plus demandées sur GitHub (demande du 2026-11-11 : bandeau « pas à jour » à chaque ouverture). | oui | 1 | ✅ couverte |
+| **EXG-088** Après une demande de collecte (bouton *Actualiser* ou lancement automatique EXG-078), les nouveaux articles s'affichent dès que le robot a fini. | oui | 3 | ✅ couverte |
 | **EXG-077** Pas de doublon. | oui | 6 | ✅ couverte |
 | **ENF-01** Performance : affichage de la liste en moins de 1,5 s à l'ouverture sur un téléphone de milieu de gamme (articles en cache), défilement fluide avec 2 000 articles chargés. | oui | 2 | ✅ couverte |
 | **ENF-02** Accessibilité : navigation complète au clavier, contrastes conformes RGAA/WCAG AA, libellés pour les lecteurs d'écran, zones tactiles d'au moins 44 px. | oui | 6 | ✅ couverte |
@@ -418,3 +419,12 @@
 - tests/e2e/export-android.spec.ts › EXG-089 · sur PC, l’export télécharge le fichier
 - tests/unit/v151.test.ts › EXG-089 · le fichier exporté passe par l’appli Android, ou par le navigateur ailleurs
 - tests/unit/v151.test.ts › EXG-089 · l’appli Android ouvre la fenêtre d’enregistrement et confirme
+
+### EXG-090
+- tests/e2e/v16.spec.ts › EXG-090 · glisser change de catégorie, en boucle, et le réglage est synchronisé
+- tests/e2e/v16.spec.ts › EXG-090 · un défilement vertical ou un geste trop court ne change pas de catégorie
+- tests/e2e/v16.spec.ts › EXG-090 · par défaut, glisser sur un article garde son rôle (lu / à lire plus tard)
+- tests/e2e/v16.spec.ts › EXG-090 · sur PC (sans écran tactile), le réglage n’apparaît pas
+- tests/unit/v16.test.ts › EXG-090 · catégorie suivante / précédente dans l’ordre du volet, en boucle
+- tests/unit/v16.test.ts › EXG-090 · hors d’une catégorie : première vers la gauche, dernière vers la droite
+- tests/unit/v16.test.ts › EXG-090 · sans catégorie, ou avec une seule, rien ne change

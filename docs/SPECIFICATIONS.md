@@ -156,6 +156,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 | EXG-022 | En-tête de liste : nom de la vue, nombre de non-lus, boutons *Tout marquer comme lu*, *Changer d'affichage*, *Actualiser*, *Rechercher*. | — |
 | EXG-023 | Les articles sont triés du plus récent au plus ancien ; l'option « plus ancien d'abord » est disponible par vue. | — |
 | EXG-024 | Filtre « non lus seulement » / « tous ». | Mémorisé par vue ; « non lus seulement » par défaut. Un article lu pendant la consultation reste affiché (atténué) jusqu'au changement de vue. |
+| EXG-090 | Sur écran tactile (appli Android, téléphone, tablette), on peut changer de catégorie en glissant le doigt sur la liste (demande du 2026-11-14). Un réglage choisit ce que fait le glissement sur la liste : *Marquer lu / À lire plus tard* (comportement d'avant, par défaut, EXG-042, EXG-050) ou *Changer de catégorie*. | Avec *Changer de catégorie* : glisser vers la gauche affiche la catégorie suivante, vers la droite la précédente, dans l'ordre du volet ; après la dernière on revient à la première et inversement (boucle). Depuis *Aujourd'hui*, *Tous les articles*, *À lire plus tard* ou un fil seul : vers la gauche = première catégorie, vers la droite = dernière. Un glissement surtout vertical (défilement) ne change rien ; le glissement depuis le bord gauche ouvre toujours le volet (EXG-021). Les boutons lu / à lire plus tard de chaque article restent disponibles. Le réglage n'apparaît que sur écran tactile et est synchronisé. Aucune nouvelle APK à installer. |
 
 ### 4.4 Liste d'articles et résumé
 
@@ -178,7 +179,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 |---|---|---|
 | EXG-040 | Marquer lu à l'ouverture d'un article. | — |
 | EXG-041 | Marquer lu en défilant (réglable, activé par défaut). | Un article est marqué lu quand il est entièrement sorti par le haut de l'écran. |
-| EXG-042 | Basculer lu/non lu manuellement sur un article. | Bouton sur l'article ; balayage vers la gauche sur mobile. |
+| EXG-042 | Basculer lu/non lu manuellement sur un article. | Bouton sur l'article ; balayage vers la gauche sur mobile (sauf si le glissement change de catégorie, EXG-090). |
 | EXG-043 | *Tout marquer comme lu* sur la vue en cours (fil, catégorie, Aujourd'hui, Tous) avec le choix : tout, plus vieux qu'un jour, plus vieux qu'une semaine. | Une notification « Annuler » est proposée pendant 10 secondes. |
 | EXG-044 | Les compteurs de non-lus se mettent à jour immédiatement. | — |
 | EXG-045 | En bas de la liste, un bouton marque comme lus tous les articles affichés sur la page. | Le bouton indique le nombre d'articles non lus concernés et n'apparaît que s'il y en a ; les articles non encore chargés plus bas ne sont pas touchés. |
@@ -189,7 +190,7 @@ Un article est **lu** si : (horodatage dans `read` > horodatage dans `unread`) *
 
 | ID | Exigence | Critères d'acceptation |
 |---|---|---|
-| EXG-050 | Ajouter ou retirer un article de « À lire plus tard ». | Bouton sur l'article ; balayage vers la droite sur mobile ; touche `s` sur PC. |
+| EXG-050 | Ajouter ou retirer un article de « À lire plus tard ». | Bouton sur l'article ; balayage vers la droite sur mobile (sauf si le glissement change de catégorie, EXG-090) ; touche `s` sur PC. |
 | EXG-051 | Les articles mis de côté sont conservés **sans limite de durée**, même après la purge des 30 jours. | Une copie de l'article est stockée dans `reading.json`. |
 
 ### 4.7 Recherche, apparence, raccourcis
@@ -291,3 +292,4 @@ Le workflow du collecteur lit la clé dans le **secret** `DATA_REPO_TOKEN` du d�
 | **V1.4.1 — Titre aux couleurs du logo** | « Fil » en bleu, « Actu » en blanc ou noir selon le fond | EXG-086 |
 | **V1.5 — Mise à jour plus fiable** | Robot planifié hors des heures pleines, articles affichés dès la fin de la collecte | EXG-087, 088 |
 | **V1.5.1 — Export sur Android** | L'appli Android enregistre le fichier d'export OPML | EXG-089 |
+| **V1.6 — Glisser entre catégories** | Changer de catégorie d'un glissement de doigt, en boucle (au choix dans les réglages) | EXG-090 |

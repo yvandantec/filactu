@@ -1,5 +1,5 @@
 import { isRead } from './reading';
-import type { Item, ReadingState, Subscriptions } from './types';
+import type { Category, Item, ReadingState, Subscriptions } from './types';
 
 export type ViewId = 'today' | 'all' | 'saved' | `category:${string}` | `feed:${string}`;
 
@@ -26,6 +26,20 @@ export function itemsForView(view: ViewId, items: Item[], subs: Subscriptions, r
   const cat = view.slice(9);
   const feeds = new Set(subs.feeds.filter((f) => f.categories.includes(cat)).map((f) => f.id));
   return visible.filter((i) => feeds.has(i.feedId));
+}
+
+/**
+ * Catégorie voisine dans l'ordre du volet, en boucle (EXG-090).
+ * `dir` = 1 : suivante (glisser vers la gauche) ; -1 : précédente (glisser vers la droite).
+ * Hors d'une catégorie : la première (1) ou la dernière (-1). `null` si rien ne doit changer.
+ */
+export function adjacentCategory(view: ViewId, categories: Category[], dir: 1 | -1): ViewId | null {
+  const ids = [...categories].sort((a, b) => a.order - b.order).map((c) => c.id);
+  if (!ids.length) return null;
+  const idx = view.startsWith('category:') ? ids.indexOf(view.slice(9)) : -1;
+  if (idx < 0) return `category:${dir === 1 ? ids[0] : ids[ids.length - 1]}`;
+  if (ids.length === 1) return null;
+  return `category:${ids[(idx + dir + ids.length) % ids.length]}`;
 }
 
 export interface UnreadCounts {

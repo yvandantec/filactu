@@ -218,6 +218,12 @@ button:disabled { opacity: .5; cursor: default; }
 .feed-error { margin: 0 0 12px; padding: 10px 12px; border-radius: 8px; background: var(--error-bg); color: var(--error-fg); font-size: 14px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .content { flex: 1; overflow-y: auto; padding: 4px 28px 48px; }
+/* Changement de catégorie au glissement : la liste arrive du côté du geste (EXG-090) */
+.content.from-right { animation: slide-from-right 180ms ease-out; }
+.content.from-left { animation: slide-from-left 180ms ease-out; }
+@keyframes slide-from-right { from { transform: translateX(32px); opacity: 0.4; } }
+@keyframes slide-from-left { from { transform: translateX(-32px); opacity: 0.4; } }
+@media (prefers-reduced-motion: reduce) { .content.from-right, .content.from-left { animation: none; } }
 
 /* ---------- Articles (EXG-030, EXG-039) ---------- */
 .articles { list-style: none; margin: 0 auto; padding: 0; max-width: 760px; }
